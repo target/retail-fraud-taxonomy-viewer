@@ -13,7 +13,7 @@
     "start": "vite",
     "build": "vite build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d dist",
     "release": "auto shipit --message 'Update CHANGELOG.md'",
     "test": "vitest",
     "lint": "eslint src/**/*.{js,jsx}"
