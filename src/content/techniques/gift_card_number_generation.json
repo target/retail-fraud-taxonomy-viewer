@@ -1,0 +1,49 @@
+{
+  "code": "FT1005",
+  "name": "Gift Card Number Generation",
+  "parent_technqiue": "",
+  "tactics": ["Pre-Compromise"],
+  "schemes": [
+    "Gift Card Fraud"
+  ],
+  "sub_techniques": [],
+  "details": [
+    {
+      "technique_description": [
+        {
+          "description": [
+            "Fraudster uses an algorithm or brute force to generate gift card numbers that can potentially be legitimate. This can be conducted by predicting or acquiring the algorithm used to generate gift card numbers and creating them. This can be used with Check Gift Card Balance to identify legitimate gift cards with funds for future use."
+          ]
+        }
+      ]
+    },
+    {
+      "mitigation": [
+        {
+          "brute_force_resistant_gift_card_numbers": [
+            "Generate long and complicated gift card numbers that are resistant to prediction."
+          ]
+        }
+      ]
+    },
+    {
+      "detection": [
+        {
+          "info": [
+            "This technique cannot be easily detected by organizational controls due to it occurring outside of the organization’s scope."
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "references": [
+        {
+          "name": "Industry Partner Collaboration",
+          "link": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "code": "FT1104.1",
+  "name": "Fraudulent Account",
+  "parent_technqiue": "Valid Accounts",
+  "tactics": [
+    "Pre-Compromise", "Initial Access"
+  ],
+  "schemes": [
+    "Gift Card Fraud",
+    "Account Take Over"
+  ],
+  "sub_techniques": [],
+  "details": [
+    {
+      "technique_description": [
+        {
+          "description": [
+            "The fraudster uses a legitimate resource to create an account for malicious usage. These accounts may be used for reconnaissance and to probe the defenses of the victim’s applications.",
+            "One example of this is if a fraudster creates an account with fake information. Using this as a foothold the fraudster may gather information on the application itself such as naming convention, loyalty points and other information that may be used to monetize the account."
+          ]
+        }
+      ]
+    },
+    {
+      "mitigation": [
+        {
+          "multi-factor_authentication": [
+            "Before permitting account changes, use multiple forms of authentication such as username and password paired with a one-time passcode before permitting access.",
+            "If relevant, send confirmatory message to the original contact fields (eg, original email address, phone number, street address)."
+          ]
+        }
+      ]
+    },
+    {
+      "detection": [
+        {
+          "network_traffic_address_attributes": [
+            "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
+          ]
+        },
+        {
+          "time-based_attributes": [
+            "Based on the location of your operations, monitor for activities that occur during off hours."
+          ]
+        },
+        {
+          "device_attributes": [
+            "Monitor device factors such as device type, user agent string, operating system, cookies."
+          ]
+        },
+        {
+          "velocity_attributes ": [
+            "Monitor for accounts that are created quickly in succession from the same location or with similar features."
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "references": [
+        {
+          "name": "Top 10 Digital Commerce Account Risks & How to Mitigate Them by Gunnar Peterson",
+          "link":"https://www.forter.com/blog/rh-isac-account-risk-mitigation/"
+        }
+      ]
+    }
+  ]
+}

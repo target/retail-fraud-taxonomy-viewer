@@ -1,0 +1,72 @@
+{
+  "code": "FT1303.3",
+  "name": "Online Or Web Mobile",
+  "parent_technqiue": "Checkout",
+  "tactics": [
+    "Monetization"
+  ],
+  "schemes": [
+    "Gift Card Fraud",
+    "Account Take Over"
+  ],
+  "sub_techniques": [],
+  "details": [
+    {
+      "technique_description": [
+        {
+          "description": [
+            "The fraudster uses digital resources to convert illicit resources into liquid funds."
+          ]
+        }
+      ]
+    },
+    {
+      "mitigation": [
+        {
+          "online_location_data": [
+            "Some physical locations should not be able to return items. Some locations may also be the source of repeated fraud attempts. Prevent the ability to return items for funds based on locations."
+          ]
+        }
+      ]
+    },
+    {
+      "detection": [
+        {
+          "transaction_data ": [
+            "Monitor and record product serial number of items that are commonly related to fraud."
+          ]
+        },
+        {
+          "network_traffic_attributes": [
+            "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
+          ]
+        },
+        {
+          "time-Based_attributes": [
+            "Based on the location of your operations, monitor for activities that occur during off hours."
+          ]
+        },
+        {
+          "device_attributes": [
+            "Monitor device factors such as device type, user agent string, operating system, cookies."
+          ]
+        },
+        {
+          "velocity_attributes": [
+            "Monitor for number of requests based on a predetermined number of requests over a set amount of time."
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "references": [
+        {
+          "name": "Industry Partner Collaboration",
+          "link": ""
+        }
+      ]
+    }
+  ]
+}

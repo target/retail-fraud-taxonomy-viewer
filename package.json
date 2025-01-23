@@ -1,0 +1,60 @@
+{
+  "homepage": "https://target.github.io/retail-fraud-taxonomy-viewer",
+  "name": "retail-fraud-taxonomy-viewer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.4.0"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "release": "auto shipit --message 'Update CHANGELOG.md'",
+    "test": "vitest",
+    "lint": "eslint src/**/*.{js,jsx}"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@auto-it/first-time-contributor": "11.3.0",
+    "@auto-it/git-tag": "11.3.0",
+    "@auto-it/omit-commits": "11.3.0",
+    "@auto-it/omit-release-notes": "11.3.0",
+    "@auto-it/slack": "11.3.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react-swc": "^3.7.2",
+    "auto": "11.3.0",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "gh-pages": "^6.2.0",
+    "happy-dom": "^16.6.0",
+    "vite": "^6.0.7",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.0.2",
+    "web-vitals": "^2.1.4"
+  },
+  "prettier": {
+    "singleQuote": true
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "code": "FT1104.2",
+  "name": "Fraudulent Account Update",
+  "parent_technqiue": "Valid Accounts",
+  "tactics": [
+    "Pre-Compromise", "Initial Access"
+  ],
+  "schemes": [
+    "Gift Card Fraud",
+    "Account Take Over"
+  ],
+  "sub_techniques": [],
+  "details": [
+    {
+      "technique_description": [
+        {
+          "description": [
+            "The fraudster uses and makes changes to an account without the knowledge of the account holder.",
+            "One example of this is if a fraudster convinces a helpdesk to update the phone number of a legitimate account to one they control. The fraudster can then use this to reset the password or otherwise authenticate to control the victim’s account."
+          ]
+        }
+      ]
+    },
+    {
+      "mitigation": [
+        {
+          "multi-factor_authentication": [
+            "Use multiple forms of authentication such as username and password paired with a one-time passcode before permitting access.",
+            "Require identity verification upon detection of access requests that are significantly different than what is expected for the individual.",
+            "Send confirmatory message to the original contact fields (e.g., original email address, phone number, street address)"
+          ]
+        }
+      ]
+    },
+    {
+      "detection": [
+        {
+          "network_traffic_address_attributes": [
+            "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
+          ]
+        },
+        {
+          "time-based_attributes": [
+            "Based on the location of your operations, monitor for activities that occur during off hours."
+          ]
+        },
+        {
+          "device_attributes": [
+            "Monitor device factors such as device type, user agent string, operating system, cookies."
+          ]
+        },
+        {
+          "velocity_attributes ": [
+            "Monitor for accounts that are created quickly in succession from the same location or with similar features."
+          ]
+        },
+        {
+          "online_identifies": [
+            "Monitor for account creations with suspicious names that do not appear legitimate. Some examples are ABCD, AAA, QAZ, etc."
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "references": [
+        {
+          "name": "Top 10 Digital Commerce Account Risks & How to Mitigate Them by Gunnar Peterson",
+          "link":"https://www.forter.com/blog/rh-isac-account-risk-mitigation/"
+        }
+      ]
+    }
+  ]
+}

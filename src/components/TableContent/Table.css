@@ -1,0 +1,62 @@
+  .App > nav {
+    margin-bottom: var(--v-rhythm);
+  }
+
+  .table-container {
+    width: 100%;
+    transition: width 0.3s ease-in-out;
+    border-collapse: collapse;
+    height: 100%;
+  }
+
+  .table-container.shrink {
+    width: 80%; /* Shrink the table to 80% when RightPanel is open */
+  }
+
+  .tableheader {
+    padding: 7px;
+    border: 2px solid #444;
+    font-weight: bold;
+    text-align: center;
+    background-color: #0099cc;
+    color: white;
+  }
+
+  .description {
+    font-size: 20px;  
+    color: white;
+  }
+  
+  .emptycell {
+    border: none;
+  }
+
+  .highlight {
+    background-color: rgb(0, 255, 200);
+  }
+  
+  .tabledata {
+    text-align: center;
+    border: 1px solid #ddd;
+    color: white;
+    background-color: rgba(20, 19, 19, 0.9);
+    font-size: 20px;
+    position: relative;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  
+  .sidebar {
+    width: 30px;
+    height: 100%;
+    background-color: rgb(48, 48, 48);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute; 
+    top: 0;
+    right: 0;
+    z-index: 999;
+    transition: background-color 0.3s ease, z-index 0.3s ease;
+  }
+

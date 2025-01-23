@@ -1,0 +1,65 @@
+{
+  "code": "FT1303",
+  "name": "Checkout",
+  "parent_technqiue": "",
+  "tactics": ["Monetization"],
+  "schemes": [
+    "Gift Card Fraud",
+    "Account Take Over"
+  ],
+  "sub_techniques": ["Point of Sale", "Guest Services", "Online Or Web Mobile"],
+  "details": [
+    {
+      "technique_description": [
+        {
+          "description": [
+            "The fraudster uses legitimate checkout to redeem or otherwise convert illicit resources into liquid funds."
+          ]
+        }
+      ]
+    },
+    {
+      "mitigation": [
+        {
+          "access_code_required": [
+            "Require an access code that is separate from the gift card before refunding gift card value."
+          ]
+        },
+        {
+          "behavior_prevention": [
+            "Identify potentially fraudulent returns and do not refund money if fraud is detected."
+          ]
+        },
+        {
+          "restocking_fees": [
+            "Require a fee for potentially fraudulent returns."
+          ]
+        },
+        {
+          "delayed_reimbursement": [
+            "Postpone refund by a predetermined amount of time for items that are commonly related to fraud."
+          ]
+        }
+      ]
+    },
+    {
+      "detection": [
+        {
+          "transaction_data ": [
+            "Monitor for returns of items commonly related to fraud such as gift cards, luxury items and electronics for fraudulent activity."
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "references": [
+        {
+          "name": "Industry Partner Collaboration",
+          "link": ""
+        }
+      ]
+    }
+  ]
+}

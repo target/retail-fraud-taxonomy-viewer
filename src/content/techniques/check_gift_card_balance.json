@@ -1,0 +1,86 @@
+{
+  "code": "FT1103",
+  "name": "Check Gift Card Balance",
+  "parent_technqiue": "",
+  "tactics": [
+    "Initial Access"
+  ],
+  "schemes": [
+    "Gift Card Fraud"
+  ],
+  "sub_techniques": ["Application", "Phone Verification", "In-Store Gift Card Verification"],
+  "details": [
+    {
+      "technique_description": [
+        {
+          "description": [
+            "The fraudster may abuse legitimate functions to confirm a gift card is active and has funds. To reduce overhead, retailers may have autonomous systems for gift card owners and recipients to check if their gift card is usable and has value. These systems are generally available to the public for interaction."
+          ]
+        }
+      ]
+    },
+    {
+      "mitigation": [
+        {
+          "login_required": [
+            "Require authentication before displaying gift card status or value."
+          ]
+        },
+        {
+          "access_code_required": [
+            "Require an access code that is separate from the gift card number before revealing the status and funds on the gift cards."
+          ]
+        },
+        {
+          "online_location_data": [
+            "Some physical locations should not be able to check gift card balance. Some locations may also be the source of repeated fraud attempts. Prevent the ability to check gift card status and funds based on locations."
+          ]
+        },
+        {
+          "phone_number": [
+            "Automatically block phone numbers related to VoIP services and phone numbers that have been known to be used to perpetrate fraud."
+          ]
+        }
+      ]
+    },
+    {
+      "detection": [
+        {
+          "network_traffic_attributes": [
+            "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
+          ]
+        },
+        {
+          "time-Based_attributes": [
+            "Based on the location of your operations, monitor for activities that occur during off hours."
+          ]
+        },
+        {
+          "device_attributes": [
+            "Monitor device factors such as device type, user agent string, operating system, cookies."
+          ]
+        },
+        {
+          "velocity_attributes": [
+            "Monitor for number of requests based on a predetermined number of requests over a set amount of time."
+          ]
+        },
+        {
+          "voip_attribute": [
+            "Monitor for use of VoIP numbers that are not tied to a physical landline or mobile phone."
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "references": [
+        {
+          "name": "Industry Partner Collaboration",
+          "link": ""
+        }
+      ]
+    }
+  ]  
+}

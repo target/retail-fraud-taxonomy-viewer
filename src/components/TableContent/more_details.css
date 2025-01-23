@@ -1,0 +1,102 @@
+.Collapsible__trigger {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  padding: calc(var(--gap) / 3) var(--gap);
+
+  cursor: pointer;
+  color: white;
+  background-color: #0099cc;
+  border-radius: 4px 4px 0 0;
+}
+
+/* collapsible trigger heading, sub-heading */
+h3, h4 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: normal;
+}
+
+.Collapsible__trigger:not(.open) {
+  border-radius: 4px;
+}
+
+.Collapsible__trigger.shrink {
+  width: 80%; /* Shrink the details to 80% when RightPanel is open */
+}
+
+.Collapsible__trigger .collapse-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.Collapsible__trigger .collapse-icon {
+  /* just a little tweak to get it to optically align with the technique name's
+     close icon */
+  margin-right: 4px;
+}
+
+.collapsible-details {
+  --collapsible-details-rhythm: calc(var(--gap) / 4);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+  padding: calc(var(--gap) * 0.8) var(--gap);
+  margin-left: 0;
+  margin-bottom: var(--v-rhythm);
+  border: 1px solid #ddd;
+  border-top: none;
+
+  line-height: 1.3;
+  background-color: #2b2d31;
+  color: white;
+}
+
+/* when the side drawer is open */
+.collapsible-details.shrink {
+  width: 80%;
+}
+
+/* collapsible details ubheadings */
+h4 {
+  font-weight: bold;
+}
+.collapsible-details > div:not(:first-of-type) h4 {
+  margin-top: var(--gap);
+  margin-bottom: var(--collapsible-details-rhythm);
+}
+
+.collapsible-details > div h4 {
+  margin-bottom: var(--collapsible-details-rhythm);
+}
+
+/* most list content is formatted like paragraphs, with a little indent */
+.collapsible-details-list > li {
+  list-style-type: disc;
+  margin-left: var(--gap);
+  border-bottom: none;
+}
+.collapsible-details-list > li:not(:last-of-type) {
+  margin-bottom: calc(var(--gap) / 4);
+}
+
+/* references list is numbered */
+.collapsible-details-references > li {
+  list-style-type: decimal;
+  border-bottom: none;
+}
+
+
+
+
+
+

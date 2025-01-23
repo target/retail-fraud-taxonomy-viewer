@@ -1,0 +1,16 @@
+:is(ul, ol) {
+  list-style-position: inside;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+:is(ul, ol) > li {
+  padding: 0px;
+  border-bottom: 1px solid #ddd; /* Horizontal dividing line */
+}
+
+ul li:last-child {
+  border-bottom: none;
+}
+

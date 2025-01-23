@@ -1,0 +1,51 @@
+{
+    "code": "FT1103.3",
+    "name": "In-Store Gift Card Verification",
+    "parent_technqiue": "Check Gift Card Balance",
+    "tactics": [
+      "Initial Access"
+    ],
+    "schemes": [
+      "Gift Card Fraud"
+    ],
+    "sub_techniques": [],
+    "details": [
+      {
+        "technique_description": [
+          {
+            "description": [
+              "The fraudster uses legitimate functions inside a bricks-and-mortar store to verify status of gift cards. The fraudster may use kiosks, checkout or customer service to verify legitimacy of a gift card."
+            ]
+          }
+        ]
+      },
+      {
+        "mitigation": [
+          {
+            "access_code_required": [
+              "Require an access code that is separate from the gift card number before revealing the status and funds on the gift cards."
+            ]
+          }
+        ]
+      },
+      {
+        "detection": [
+          {
+            "velocity_attributes": [
+              "Monitor for gift cards a person is attempting to verify."
+            ]
+          }
+        ]
+      }
+    ],
+    "sources": [
+      {
+        "references": [
+          {
+            "name": "Industry Partner Collaboration",
+            "link": ""
+          }
+        ]
+      }
+    ]
+  }

@@ -1,0 +1,50 @@
+{
+  "code": "FT1007",
+  "name": "Proxy Abuse",
+  "parent_technqiue": "",
+  "tactics": ["Pre-Compromise"],
+  "schemes": [
+    "Account Take Over"
+  ],
+  "sub_techniques": [],
+  "details": [
+    {
+      "technique_description": [
+        {
+          "description": [
+            "Actors abuse legitimate or illegal proxy services that act as an intermediary for requests from clients seeking resources from other servers, effectively masking the fraudster’s IP address or other network attributes. Some examples of this are use of commercial VPN services, proxies through hosting providers, residential proxies, compromised machines such as botnets and malware infected hosts, and TOR services."
+          ]
+        }
+      ]
+    },
+    {
+      "mitigation": [
+        {
+          "behavioral_prevention": [
+            "Block traffic from known proxies, TOR exit nodes and infected machines."
+          ]
+        }
+      ]
+    },
+    {
+      "detection": [
+        {
+          "network_traffic_attributes": [
+            "Aggregate IP addresses to identify the common carriers / autonomous system numbers.",
+            "Establish normal and abnormal behavior for traffic originating from those networks."
+          ]
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "references": [
+        {
+          "name": "MITRE ATT&CK",
+          "link":"https://attack.mitre.org/techniques/T1090/"
+        }
+      ]
+    }
+  ]
+}
