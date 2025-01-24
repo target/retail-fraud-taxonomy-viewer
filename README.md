@@ -38,7 +38,7 @@ Use our [GitHub Issue Tracker](https://github.com/target/retail-fraud-taxonomy-v
 ### Serve application on local machine
 
 1. Run `npm start` within the **root** directory
-2. Navigate to `http://localhost:3000/retail-fraud-taxonomy-viewer` in browser
+2. Navigate to `http://localhost:5173/retail-fraud-taxonomy-viewer/` in browser
 
 ## Adding Custom Technique/Sub-Technique Options
 
@@ -68,16 +68,4 @@ Offers practical, real-world techniques to aid in modeling potential fraud schem
 
 ## Notice
 
-Copyright (C) 2024 Target Brands, Inc.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+The NRF Retail Fraud Taxonomy is a collaborative initiative led and sponsored by the National Retail Federation, through its Center for Digital Risk & Innovation (CDRI), in partnership with Retail & Hospitality Information Sharing and Analysis Center (RH-ISAC) and the Target Corporation along with other retail industry members. The Chertoff Group serves as technical advisor and project manager.
