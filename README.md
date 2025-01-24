@@ -38,7 +38,7 @@ Use our [GitHub Issue Tracker](https://github.com/target/retail-fraud-taxonomy-v
 ### Serve application on local machine
 
 1. Run `npm start` within the **root** directory
-2. Navigate to `http://localhost:3000/vc-shortages/retail-fraud-taxonomy-viewer` in browser
+2. Navigate to `http://localhost:3000/retail-fraud-taxonomy-viewer` in browser
 
 ## Adding Custom Technique/Sub-Technique Options
 
