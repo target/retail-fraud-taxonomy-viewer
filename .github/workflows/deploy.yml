@@ -1,10 +1,12 @@
-# Simple workflow for deploying static content to GitHub Pages
 name: Deploy static content to Pages
 
 on:
-  # Runs on pushes targeting the default branch
+  # Runs on pushes to 'main'
   push:
-    branches: ['main']
+    branches:
+      - 'main'
+
+  # Runs when a PR is closed and merged with 'release' label
   pull_request:
     types: [closed] 
     branches:
@@ -12,59 +14,68 @@ on:
     labels:
       - 'release'
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
 permissions:
   contents: write
   pages: write
   id-token: write
   actions: read
 
-# Allow one concurrent deployment
 concurrency:
-  group: 'pages'
+  group: 'deploy-pages-${{ github.ref }}'
   cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    # Ensure the job runs only when the PR is merged (for pull_request event)
+    if: |
+      github.event_name == 'push' || 
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 
+
       - name: Check if PR is merged
-        if: github.event.pull_request.merged == true
+        if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
         run: echo "This PR was merged, proceeding with deployment."
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
+
       - name: Install dependencies
         run: npm ci
+
       - name: Build
         run: npm run build
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
       - name: Set up Git user
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+
       - name: Set up GH_TOKEN for release
         run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+
       - name: Release
         run: npm run release
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: './dist'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
