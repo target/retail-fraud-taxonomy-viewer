@@ -5,6 +5,12 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ['main']
+  pull_request:
+    types: [closed] 
+    branches:
+      - 'main' 
+    labels:
+      - 'release'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -31,6 +37,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Check if PR is merged
+        if: github.event.pull_request.merged == true
+        run: echo "This PR was merged, proceeding with deployment."
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
