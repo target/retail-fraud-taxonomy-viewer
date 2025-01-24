@@ -1,3 +1,23 @@
+# v0.1.3 (Fri Jan 24 2025)
+
+### Release Notes
+
+#### PR release automation ([#4](https://github.com/target/retail-fraud-taxonomy-viewer/pull/4))
+
+
+
+---
+
+#### 🐛 Bug Fix
+
+- PR release automation [#4](https://github.com/target/retail-fraud-taxonomy-viewer/pull/4) ([@Keerthanab14](https://github.com/Keerthanab14))
+
+#### Authors: 1
+
+- Keerthana B ([@Keerthanab14](https://github.com/Keerthanab14))
+
+---
+
 # v0.1.2 (Fri Jan 24 2025)
 
 ### Release Notes
