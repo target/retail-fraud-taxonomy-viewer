@@ -1,3 +1,28 @@
+# v0.1.2 (Fri Jan 24 2025)
+
+### Release Notes
+
+#### Validate PR merge automation ([#3](https://github.com/target/retail-fraud-taxonomy-viewer/pull/3))
+
+
+
+#### Validate PR merge automation ([#2](https://github.com/target/retail-fraud-taxonomy-viewer/pull/2))
+
+
+
+---
+
+#### 🐛 Bug Fix
+
+- Validate PR merge automation [#3](https://github.com/target/retail-fraud-taxonomy-viewer/pull/3) ([@Keerthanab14](https://github.com/Keerthanab14))
+- Validate PR merge automation [#2](https://github.com/target/retail-fraud-taxonomy-viewer/pull/2) ([@Keerthanab14](https://github.com/Keerthanab14))
+
+#### Authors: 1
+
+- Keerthana B ([@Keerthanab14](https://github.com/Keerthanab14))
+
+---
+
 # v0.1.1 (Fri Jan 24 2025)
 
 #### ⚠️ Pushed to `main`
