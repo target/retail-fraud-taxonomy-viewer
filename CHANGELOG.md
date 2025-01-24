@@ -1,3 +1,23 @@
+# v0.1.4 (Fri Jan 24 2025)
+
+### Release Notes
+
+#### Remove pull request based triggers of workflow ([#5](https://github.com/target/retail-fraud-taxonomy-viewer/pull/5))
+
+
+
+---
+
+#### 🐛 Bug Fix
+
+- Remove pull request based triggers of workflow [#5](https://github.com/target/retail-fraud-taxonomy-viewer/pull/5) ([@Keerthanab14](https://github.com/Keerthanab14))
+
+#### Authors: 1
+
+- Keerthana B ([@Keerthanab14](https://github.com/Keerthanab14))
+
+---
+
 # v0.1.3 (Fri Jan 24 2025)
 
 ### Release Notes
