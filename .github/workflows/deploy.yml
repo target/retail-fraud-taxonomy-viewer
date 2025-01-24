@@ -37,6 +37,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
       - name: Check if PR is merged
         if: github.event.pull_request.merged == true
         run: echo "This PR was merged, proceeding with deployment."
