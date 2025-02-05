@@ -1,3 +1,34 @@
+# v0.1.7 (Wed Feb 05 2025)
+
+### Release Notes
+
+#### Update deploy.yml ([#17](https://github.com/target/retail-fraud-taxonomy-viewer/pull/17))
+
+
+
+#### feat:Updated auto config ([#16](https://github.com/target/retail-fraud-taxonomy-viewer/pull/16))
+
+
+
+#### Added autorc config to increment the version ([#15](https://github.com/target/retail-fraud-taxonomy-viewer/pull/15))
+
+
+
+---
+
+#### 🐛 Bug Fix
+
+- Update deploy.yml [#17](https://github.com/target/retail-fraud-taxonomy-viewer/pull/17) ([@Keerthanab14](https://github.com/Keerthanab14))
+- feat:Updated auto config [#16](https://github.com/target/retail-fraud-taxonomy-viewer/pull/16) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Added autorc config to increment the version [#15](https://github.com/target/retail-fraud-taxonomy-viewer/pull/15) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 2
+
+- Keerthana B ([@Keerthanab14](https://github.com/Keerthanab14))
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
 # v0.1.4 (Fri Jan 24 2025)
 
 ### Release Notes
