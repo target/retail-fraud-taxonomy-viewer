@@ -106,6 +106,7 @@ const TechniquesTable = ({
         // If there are non-empty values for this column, set them in sequence
         if (nonEmptyValues[key] && nonEmptyValues[key].length > 0) {
           // Pop the first non-empty value and assign it to the row
+
           newRow[key] = nonEmptyValues[key].shift();
         } else {
           // If there are no non-empty values left, set the column to an empty string
@@ -142,8 +143,17 @@ const TechniquesTable = ({
 
     if (filteredTechniques.length > 0) {
       const result = consolidateData(filteredTechniques);
+
+      if (result !== null && result.length > 0) {
+        let index = Object.keys(result[0]).findIndex(key => result[0][key] !== '');
+        setFocusedCell({ row: 0, col: index })
+      }
       setTableData(result);
     } else {
+      if (filteredDataMap !== null && filteredDataMap.length > 0) {
+        let index = Object.keys(filteredDataMap[0]).findIndex(key => filteredDataMap[0][key] !== '');
+        setFocusedCell({ row: 0, col: index })
+      }
       setTableData(filteredDataMap);
     }
     // eslint-disable-next-line
@@ -595,8 +605,8 @@ const TechniquesTable = ({
               style={{
                 backgroundColor:
                   focusedCell.row === rowIndex &&
-                  focusedCell.col === colIndex &&
-                  focusedLiIndex == null
+                    focusedCell.col === colIndex &&
+                    focusedLiIndex == null
                     ? FOCUS
                     : NO_FOCUS,
                 outline: 'none',
