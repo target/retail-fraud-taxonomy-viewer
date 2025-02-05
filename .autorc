@@ -1,7 +1,0 @@
-{
-  "version": "auto",
-  "plugins": [
-    "@auto-it/git",
-    "@auto-it/semantic-release"
-  ]
-}
