@@ -46,6 +46,7 @@ To create custom techniques to the **Retail Fraud Taxonomy Viewer**-
 
 1. The json file needs to be created referring to an eg `src/content/techniques/reconaissance.json`. Each file needs to have exactly the same json keys for it to show up on the application.
 2. Place it into directory `src/content/techniques/`
+   
 ## Embedding the Retail Fraud Taxonomy Viewer in a Webpage
 
 If you want to embed the Navigator in a webpage, use an iframe:
