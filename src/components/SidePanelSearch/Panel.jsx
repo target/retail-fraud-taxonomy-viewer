@@ -29,7 +29,7 @@ const SidePanel = ({ onFilterChange, onClose }) => {
         />
         <button
           className="show-all-button"
-          onMouseEnter={() => handleFilterChange(SHOW_ALL, SHOW_ALL)}
+          onClick={() => handleFilterChange(SHOW_ALL, SHOW_ALL)}
         >
           Show All
         </button>
@@ -40,7 +40,7 @@ const SidePanel = ({ onFilterChange, onClose }) => {
           {mitigations.map((mitigation, index) => (
             <button
               key={index}
-              onMouseEnter={() => handleFilterChange(mitigation, MITIGATION)}
+              onClick={() => handleFilterChange(mitigation, MITIGATION)}
             >
               {formatData(mitigation)}
             </button>
@@ -53,7 +53,7 @@ const SidePanel = ({ onFilterChange, onClose }) => {
           {schemes.map((scheme, index) => (
             <button
               key={index}
-              onMouseEnter={() => handleFilterChange(scheme, SCHEMES)}
+              onClick={() => handleFilterChange(scheme, SCHEMES)}
             >
               {scheme}
             </button>
