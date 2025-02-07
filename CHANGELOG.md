@@ -1,3 +1,45 @@
+# v0.1.7 (Fri Feb 07 2025)
+
+### Release Notes
+
+#### mouse handler fix ([#19](https://github.com/target/retail-fraud-taxonomy-viewer/pull/19))
+
+
+
+#### Update deploy.yml ([#17](https://github.com/target/retail-fraud-taxonomy-viewer/pull/17))
+
+
+
+#### feat:Updated auto config ([#16](https://github.com/target/retail-fraud-taxonomy-viewer/pull/16))
+
+
+
+#### Added autorc config to increment the version ([#15](https://github.com/target/retail-fraud-taxonomy-viewer/pull/15))
+
+
+
+---
+
+#### 🐛 Bug Fix
+
+- mouse handler fix [#19](https://github.com/target/retail-fraud-taxonomy-viewer/pull/19) ([@Keerthanab14](https://github.com/Keerthanab14))
+- Update deploy.yml [#17](https://github.com/target/retail-fraud-taxonomy-viewer/pull/17) ([@Keerthanab14](https://github.com/Keerthanab14))
+- feat:Updated auto config [#16](https://github.com/target/retail-fraud-taxonomy-viewer/pull/16) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Added autorc config to increment the version [#15](https://github.com/target/retail-fraud-taxonomy-viewer/pull/15) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### ⚠️ Pushed to `main`
+
+- Update package.json ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Update CHANGELOG.md ([@actions-user](https://github.com/actions-user))
+
+#### Authors: 3
+
+- [@actions-user](https://github.com/actions-user)
+- Keerthana B ([@Keerthanab14](https://github.com/Keerthanab14))
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
 # v0.1.7 (Wed Feb 05 2025)
 
 ### Release Notes
