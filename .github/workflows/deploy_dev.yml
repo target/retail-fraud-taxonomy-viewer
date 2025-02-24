@@ -66,6 +66,8 @@ jobs:
           else
             npm run build:prod
           fi
+        env:
+          BUILD_MODE: ${{ github.ref == 'refs/heads/dev' && 'development' || 'production' }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

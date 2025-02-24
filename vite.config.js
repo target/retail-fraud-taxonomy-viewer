@@ -5,7 +5,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
   },
-  base: process.env.BUILD_MODE === 'development' 
+  base: process.env.VITE_BUILD_MODE === 'development' 
     ? '/retail-fraud-taxonomy-viewer/dev/' 
     : '/retail-fraud-taxonomy-viewer/',  // For production, change this as per your URL
   plugins: [react()],
