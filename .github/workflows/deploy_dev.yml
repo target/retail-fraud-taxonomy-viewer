@@ -26,7 +26,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: "https://${{ github.actor }}.github.io/${{ github.repository }}/dev"
+      url: "https://${{ github.repository_owner }}.github.io/${{ github.repository }}/dev"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
