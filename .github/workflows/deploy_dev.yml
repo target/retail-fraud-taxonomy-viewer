@@ -112,16 +112,30 @@ jobs:
       #     path: './dist/dev'  # Upload dev build
       #     destination_dir: 'dev'
 
-      - name: Deploy to GitHub Pages
-        id: deployment
+      # - name: Deploy to GitHub Pages
+      #   id: deployment
+      #   uses: actions/deploy-pages@v4
+      #   with:
+      #     # For production deployment (main branch)
+      #     path: './dist'  # If the branch is main, deploy the root build
+      #     destination_dir: ''  # Deploy to the root
+      #     # For dev deployment (dev branch)
+      #     dev_path: './dist/dev'  # Deploy the dev build
+      #     dev_destination_dir: 'dev'  # Deploy to /dev
+
+      # Deploy to GitHub Pages (main branch)
+      - name: Deploy to GitHub Pages for production
+        if: github.ref == 'refs/heads/main'
         uses: actions/deploy-pages@v4
         with:
-          # For production deployment (main branch)
-          path: './dist'  # If the branch is main, deploy the root build
-          destination_dir: ''  # Deploy to the root
-          # For dev deployment (dev branch)
-          dev_path: './dist/dev'  # Deploy the dev build
-          dev_destination_dir: 'dev'  # Deploy to /dev
+          path: './dist'  # Deploy production build to root
+
+      # Deploy to GitHub Pages (dev branch)
+      - name: Deploy to GitHub Pages for development
+        if: github.ref == 'refs/heads/dev'
+        uses: actions/deploy-pages@v4
+        with:
+          path: './dist/dev'  # Deploy dev build to /dev folder
 
       - name: Log deployment URL
         run: |
