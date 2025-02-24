@@ -24,8 +24,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ github.ref == 'refs/heads/dev' && 'https://${{ github.repository_owner }}.github.io/${{ github.repository.split('/')[1] }}/dev' || 'https://${{ github.repository_owner }}.github.io/${{ github.repository.split('/')[1] }}/' }}
-
+      url: ${{ github.ref == 'refs/heads/dev' && format('https://{0}.github.io/{1}/dev', github.repository_owner, github.repository) || format('https://{0}.github.io/{1}/', github.repository_owner, github.repository) }}
     runs-on: ubuntu-latest
 
     steps:
