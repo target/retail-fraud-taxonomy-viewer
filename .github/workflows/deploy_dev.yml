@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   # Runs on pushes targeting the dev or main branch
   push:
-    branches: ['dev']
+    branches: ['dev', 'main']
   
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -25,8 +25,8 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      # Set dynamic URL based on branch (dev -> dev, main -> prod)
-      url: ${{ github.ref == 'refs/heads/dev' && 'https://${{ github.repository_owner }}.github.io/${{ github.repository }}/dev' || 'https://${{ github.repository_owner }}.github.io/${{ github.repository }}' }}
+      # Dynamic URL based on the branch (dev -> /dev, main -> no /dev)
+      url: ${{ github.ref == 'refs/heads/dev' && 'https://target.github.io/retail-fraud-taxonomy-viewer/dev' || 'https://target.github.io/retail-fraud-taxonomy-viewer/' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -79,8 +79,9 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
-          destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || (github.ref == 'refs/heads/main' && 'prod' || '') }}
+          path: './dist'  # Correct usage of the path input here
+          # Set dynamic directory based on the branch
+          destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
 
       - name: Deploy to GitHub Pages
         id: deployment
