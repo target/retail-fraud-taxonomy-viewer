@@ -87,6 +87,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
+          name: dist-prod-artifact
           path: './dist'  # Only specify the path to the build output
           # destination_dir: ''
       
@@ -94,6 +95,7 @@ jobs:
         if: github.ref == 'refs/heads/dev'
         uses: actions/upload-pages-artifact@v3
         with:
+          name: dist-dev-artifact
           path: './dist/dev' # Only specify the path to the build output
           # destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
           # destination_dir: 'dev'
@@ -128,14 +130,14 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: actions/deploy-pages@v4
         with:
-          artifact_name: 'dist'  # Deploy production build to root
+          artifact_name: dist-prod-artifact  # Deploy production build to root
 
       # Deploy to GitHub Pages (dev branch)
       - name: Deploy to GitHub Pages for development
         if: github.ref == 'refs/heads/dev'
         uses: actions/deploy-pages@v4
         with:
-          artifact_name: 'dist/dev'  # Deploy dev build to /dev folder
+          artifact_name: dist-dev-artifact  # Deploy dev build to /dev folder
 
       - name: Log deployment URL
         run: |
