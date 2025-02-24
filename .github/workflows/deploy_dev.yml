@@ -60,7 +60,12 @@ jobs:
         run: echo "BUILD_MODE=$BUILD_MODE"
 
       - name: Run predeploy
-        run: npm run build --mode $BUILD_MODE
+        run: |
+          echo "Running build with BUILD_MODE=$BUILD_MODE"
+          npm run build --mode $BUILD_MODE
+        env:
+          BUILD_MODE: ${{ env.BUILD_MODE }}
+
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
