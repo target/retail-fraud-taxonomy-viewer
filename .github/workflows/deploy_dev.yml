@@ -23,8 +23,8 @@ concurrency:
 jobs:
   deploy:
     environment:
-      name: github-pages
-      url: ${{ github.ref == 'refs/heads/dev' && format('https://{0}.github.io/{1}/dev', github.repository_owner, github.repository) || format('https://{0}.github.io/{1}/', github.repository_owner, github.repository) }}
+      name: github-pages-dev
+      url: ${{ github.ref == 'refs/heads/dev' && format('https://{0}.github.io/{1}/dev', github.repository_owner, github.event.repository.name) || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
     runs-on: ubuntu-latest
 
     steps:
@@ -83,8 +83,8 @@ jobs:
       - name: Log deployment URL
         run: |
           if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
-            echo "Deployment URL: format('https://{0}.github.io/{1}/dev', github.repository_owner, github.repository)/dev"
+            echo "Deployment URL: format('https://{0}.github.io/{1}/dev', github.repository_owner, github.event.repository.name)/dev"
           else
-            echo "Deployment URL: format('https://{0}.github.io/{1}/dev', github.repository_owner, github.repository)/"
+            echo "Deployment URL: format('https://{0}.github.io/{1}/dev', github.repository_owner, github.event.repository.name)/"
           fi
 
