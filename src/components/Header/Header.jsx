@@ -11,6 +11,7 @@ const Header = ({ toggleControl }) => {
         alt="NRF Logo"
         src={NRFLogo}
       />
+      <span>Dev Build</span>
       <button
         className="header-button"
         onClick={() => toggleControl('selection')}
