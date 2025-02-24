@@ -128,14 +128,14 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: actions/deploy-pages@v4
         with:
-          path: './dist'  # Deploy production build to root
+          artifact_name: 'dist'  # Deploy production build to root
 
       # Deploy to GitHub Pages (dev branch)
       - name: Deploy to GitHub Pages for development
         if: github.ref == 'refs/heads/dev'
         uses: actions/deploy-pages@v4
         with:
-          path: './dist/dev'  # Deploy dev build to /dev folder
+          artifact_name: 'dist/dev'  # Deploy dev build to /dev folder
 
       - name: Log deployment URL
         run: |
