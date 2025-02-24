@@ -53,8 +53,14 @@ jobs:
             echo "BUILD_MODE=production" >> $GITHUB_ENV
           fi
 
+      # - name: Run predeploy
+      #   run: npm run predeploy
+
+      - name: Log BUILD_MODE
+        run: echo "BUILD_MODE=$BUILD_MODE"
+
       - name: Run predeploy
-        run: npm run predeploy
+        run: npm run build --mode $BUILD_MODE
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
