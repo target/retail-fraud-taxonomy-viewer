@@ -1,58 +1,37 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Runs on pushes targeting the dev or main branch
   push:
-    branches: ['dev', 'main']
-  
-  # Allows you to run this workflow manually from the Actions tab
+    branches: ['dev']
   workflow_dispatch:
 
-# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-  actions: write
-
-# Allow one concurrent deployment
-concurrency:
-  group: 'pages'
-  cancel-in-progress: true
-
 jobs:
-  # Single deploy job since we're just deploying
   deploy:
     environment:
       name: github-pages
-      # Dynamic URL based on the branch (dev -> /dev, main -> no /dev)
-      url: ${{ github.ref == 'refs/heads/dev' && 'https://target.github.io/retail-fraud-taxonomy-viewer/dev' || 'https://target.github.io/retail-fraud-taxonomy-viewer/' }}
+      url: ${{ github.ref == 'refs/heads/dev' && 'https://${{ github.repository_owner }}.github.io/${{ github.repository }}/dev' || 'https://${{ github.repository_owner }}.github.io/${{ github.repository }}/' }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 
 
-      - name: Set up Node
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: '20'
 
       - name: Install dependencies
         run: npm ci
 
-      # Set the NODE_ENV and BUILD_MODE based on the branch (dev or main)
-      - name: Set build mode and NODE_ENV
+      - name: Set build mode based on the branch
         run: |
           if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
             echo "Setting NODE_ENV=development"
             echo "NODE_ENV=development" >> $GITHUB_ENV
             echo "Setting BUILD_MODE=development"
             echo "BUILD_MODE=development" >> $GITHUB_ENV
-          elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+          else
             echo "Setting NODE_ENV=production"
             echo "NODE_ENV=production" >> $GITHUB_ENV
             echo "Setting BUILD_MODE=production"
@@ -60,7 +39,7 @@ jobs:
           fi
 
       - name: Run predeploy
-        run: npm run predeploy  # This will trigger npm run build with the correct mode
+        run: npm run predeploy
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -79,10 +58,17 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'  # Correct usage of the path input here
-          # Set dynamic directory based on the branch
-          destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
+          path: './dist'  # Only specify the path to the build output
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # Log the dynamic URL based on the branch (dev or main)
+      - name: Log deployment URL
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+            echo "Deployment URL: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/dev"
+          else
+            echo "Deployment URL: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/"
+          fi
