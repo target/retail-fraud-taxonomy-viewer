@@ -89,16 +89,17 @@ jobs:
         with:
           name: dist-prod-artifact
           path: './dist'  # Only specify the path to the build output
-          # destination_dir: ''
+          destination_dir: ''
       
       - name: Upload artifact for dev
         if: github.ref == 'refs/heads/dev'
         uses: actions/upload-pages-artifact@v3
         with:
           name: dist-dev-artifact
-          path: './dist/dev' # Only specify the path to the build output
+          # path: './dist/dev' # Only specify the path to the build output
           # destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
-          # destination_dir: 'dev'
+          path: './dist'
+          destination_dir: 'dev'
 
       # - name: Upload artifact for production
       #   if: github.ref == 'refs/heads/main'  # Only run this if the branch is main
@@ -144,6 +145,6 @@ jobs:
           if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
             echo "Deployment URL: format('https://{0}.github.io/{1}/dev', github.repository_owner, github.event.repository.name)/dev"
           else
-            echo "Deployment URL: format('https://{0}.github.io/{1}/dev', github.repository_owner, github.event.repository.name)/"
+            echo "Deployment URL: format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name)/"
           fi
 
