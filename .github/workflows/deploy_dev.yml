@@ -61,11 +61,11 @@ jobs:
 
       - name: Run predeploy
         run: |
-          echo "Running build with BUILD_MODE=$BUILD_MODE"
-          npm run build --mode $BUILD_MODE
-        env:
-          BUILD_MODE: ${{ env.BUILD_MODE }}
-
+          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+            npm run build:dev
+          else
+            npm run build:prod
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
