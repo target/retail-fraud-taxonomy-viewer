@@ -83,8 +83,8 @@ jobs:
       - name: Log deployment URL
         run: |
           if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
-            echo "Deployment URL: https://${{ github.repository_owner }}.github.io/${{ github.repository.split('/')[1] }}/dev"
+            echo "Deployment URL: format('https://{0}.github.io/{1}/dev', github.repository_owner, github.repository)/dev"
           else
-            echo "Deployment URL: https://${{ github.repository_owner }}.github.io/${{ github.repository.split('/')[1] }}/"
+            echo "Deployment URL: format('https://{0}.github.io/{1}/dev', github.repository_owner, github.repository)/"
           fi
 
