@@ -83,25 +83,34 @@ jobs:
       - name: Release
         run: npm run release
 
-      # - name: Upload artifact
+      - name: Upload artifact for main
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'  # Only specify the path to the build output
+          destination_dir: ''
+      
+      - name: Upload artifact for dev
+        if: github.ref == 'refs/heads/dev'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'  # Only specify the path to the build output
+          # destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
+          destination_dir: 'dev' 
+
+      # - name: Upload artifact for production
+      #   if: github.ref == 'refs/heads/main'  # Only run this if the branch is main
       #   uses: actions/upload-pages-artifact@v3
       #   with:
-      #     path: './dist'  # Only specify the path to the build output
-      #     destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
+      #     path: './dist'  # Upload production build
+      #     destination_dir: ''
 
-      - name: Upload artifact for production
-        if: github.ref == 'refs/heads/main'  # Only run this if the branch is main
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist'  # Upload production build
-          destination_dir: ''
-
-      - name: Upload artifact for development
-        if: github.ref == 'refs/heads/dev'  # Only run this if the branch is dev
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist/dev'  # Upload dev build
-          destination_dir: 'dev'
+      # - name: Upload artifact for development
+      #   if: github.ref == 'refs/heads/dev'  # Only run this if the branch is dev
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     path: './dist/dev'  # Upload dev build
+      #     destination_dir: 'dev'
 
       - name: Deploy to GitHub Pages
         id: deployment
