@@ -1,3 +1,15 @@
+# v0.1.9 (Fri Feb 21 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Update package.json ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 1
+
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
 # v0.1.7 (Fri Feb 07 2025)
 
 ### Release Notes
