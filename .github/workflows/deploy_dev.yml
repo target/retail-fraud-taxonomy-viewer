@@ -94,10 +94,9 @@ jobs:
         if: github.ref == 'refs/heads/dev'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'  # Only specify the path to the build output
+          path: './dist/dev' # Only specify the path to the build output
           # destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
           destination_dir: 'dev'
-          
 
       # - name: Upload artifact for production
       #   if: github.ref == 'refs/heads/main'  # Only run this if the branch is main
