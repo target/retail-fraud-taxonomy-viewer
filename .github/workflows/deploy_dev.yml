@@ -1,11 +1,10 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy to dev
+name: Deploy to GitHub Pages
 
 on:
-  # Runs on pushes targeting the default branch
+  # Runs on pushes targeting the dev or main branch
   push:
     branches: ['dev']
-
+  
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -26,38 +25,63 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: "https://${{ github.repository_owner }}.github.io/${{ github.repository }}/dev"
+      # Set dynamic URL based on branch (dev -> dev, main -> prod)
+      url: ${{ github.ref == 'refs/heads/dev' && 'https://${{ github.repository_owner }}.github.io/${{ github.repository }}/dev' || 'https://${{ github.repository_owner }}.github.io/${{ github.repository }}' }}
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
+
       - name: Install dependencies
         run: npm ci
-      - name: Build
-        run: npm run build
+
+      # Set the NODE_ENV and BUILD_MODE based on the branch (dev or main)
+      - name: Set build mode and NODE_ENV
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+            echo "Setting NODE_ENV=development"
+            echo "NODE_ENV=development" >> $GITHUB_ENV
+            echo "Setting BUILD_MODE=development"
+            echo "BUILD_MODE=development" >> $GITHUB_ENV
+          elif [[ $GITHUB_REF == 'refs/heads/main' ]]; then
+            echo "Setting NODE_ENV=production"
+            echo "NODE_ENV=production" >> $GITHUB_ENV
+            echo "Setting BUILD_MODE=production"
+            echo "BUILD_MODE=production" >> $GITHUB_ENV
+          fi
+
+      - name: Run predeploy
+        run: npm run predeploy  # This will trigger npm run build with the correct mode
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
       - name: Set up Git user
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+
       - name: Set up GH_TOKEN for release
         run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+
       - name: Release
         run: npm run release
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: './dist'
-          destination_dir: dev
+          destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || (github.ref == 'refs/heads/main' && 'prod' || '') }}
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
-

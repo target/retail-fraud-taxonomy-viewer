@@ -1,9 +1,13 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  base: '/retail-fraud-taxonomy-viewer/dev',
+  build: {
+    outDir: 'dist',
+  },
+  base: process.env.BUILD_MODE === 'development' 
+    ? '/retail-fraud-taxonomy-viewer/dev/' 
+    : '/retail-fraud-taxonomy-viewer/',  // For production, change this as per your URL
   plugins: [react()],
   test: {
     globals: true,
