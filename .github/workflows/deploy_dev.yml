@@ -100,6 +100,7 @@ jobs:
           # destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
           path: './dist'
           destination_dir: 'dev'
+          
 
       # - name: Upload artifact for production
       #   if: github.ref == 'refs/heads/main'  # Only run this if the branch is main
