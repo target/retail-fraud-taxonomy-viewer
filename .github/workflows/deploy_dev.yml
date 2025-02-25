@@ -67,11 +67,11 @@ jobs:
             npm run build:prod
           fi
 
-          # For dev, move the build output into a `dev/` directory
-          if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
-            mkdir -p dist/dev    # Create the dev directory if it doesn't exist
-            mv dist/* dist/dev/  # Move all files from dist to dist/dev/
-          fi
+          # # For dev, move the build output into a `dev/` directory
+          # if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
+          #   mkdir -p dist/dev    # Create the dev directory if it doesn't exist
+          #   mv dist/* dist/dev/  # Move all files from dist to dist/dev/
+          # fi
         env:
           BUILD_MODE: ${{ github.ref == 'refs/heads/dev' && 'development' || 'production' }}
 
@@ -146,6 +146,7 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: 'dist-dev-artifact'  # Deploy dev build to /dev folder
+          destination_dir: 'dev'
 
 
 
