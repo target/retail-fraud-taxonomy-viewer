@@ -102,9 +102,9 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           name: dist-dev-artifact
-          # path: './dist/dev' # Only specify the path to the build output
+          path: './dist/dev' # Only specify the path to the build output
           # destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
-          path: './dist'
+          # path: './dist'
           # destination_dir: 'dev'
           
 
