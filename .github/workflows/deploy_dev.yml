@@ -128,18 +128,34 @@ jobs:
       #     dev_destination_dir: 'dev'  # Deploy to /dev
 
       # Deploy to GitHub Pages (main branch)
-      - name: Deploy to GitHub Pages for production
-        if: github.ref == 'refs/heads/main'
-        uses: actions/deploy-pages@v4
-        with:
-          artifact_name: 'dist-prod-artifact'  # Deploy production build to root
+      # - name: Deploy to GitHub Pages for production
+      #   if: github.ref == 'refs/heads/main'
+      #   uses: actions/deploy-pages@v4
+      #   with:
+      #     artifact_name: 'dist-prod-artifact'  # Deploy production build to root
 
-      # Deploy to GitHub Pages (dev branch)
-      - name: Deploy to GitHub Pages for development
-        if: github.ref == 'refs/heads/dev'
-        uses: actions/deploy-pages@v4
+      # # Deploy to GitHub Pages (dev branch)
+      # - name: Deploy to GitHub Pages for development
+      #   if: github.ref == 'refs/heads/dev'
+      #   uses: actions/deploy-pages@v4
+      #   with:
+      #     artifact_name: 'dist-dev-artifact'  # Deploy dev build to /dev folder
+
+      - name: Deploy to GitHub Pages (main)
+        if: github.ref == 'refs/heads/main'  # Only deploy to main if it's the `main` branch
+        uses: actions/deploy-pages@v3
         with:
-          artifact_name: 'dist-dev-artifact'  # Deploy dev build to /dev folder
+          artifact_name: dist-main-artifact
+          branch: gh-pages  # The branch to deploy to (GitHub Pages branch)
+          target_dir: ''  # Deploy to the root directory
+
+      - name: Deploy to GitHub Pages (dev)
+        if: github.ref == 'refs/heads/dev'  # Only deploy to dev if it's the `dev` branch
+        uses: actions/deploy-pages@v3
+        with:
+          artifact_name: dist-dev-artifact
+          branch: gh-pages  # The branch to deploy to (GitHub Pages branch)
+          target_dir: 'dev'  # Deploy to the `dev` subdirectory
 
       - name: Log deployment URL
         run: |
