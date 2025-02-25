@@ -66,6 +66,12 @@ jobs:
           else
             npm run build:prod
           fi
+
+          # For dev, move the build output into a `dev/` directory
+          if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
+            mkdir -p dist/dev
+            mv dist/* dist/dev/
+          fi
         env:
           BUILD_MODE: ${{ github.ref == 'refs/heads/dev' && 'development' || 'production' }}
 
@@ -89,7 +95,7 @@ jobs:
         with:
           name: dist-prod-artifact
           path: './dist'  # Only specify the path to the build output
-          destination_dir: ''
+          # destination_dir: ''
       
       - name: Upload artifact for dev
         if: github.ref == 'refs/heads/dev'
@@ -99,7 +105,7 @@ jobs:
           # path: './dist/dev' # Only specify the path to the build output
           # destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
           path: './dist'
-          destination_dir: 'dev'
+          # destination_dir: 'dev'
           
 
       # - name: Upload artifact for production
@@ -127,35 +133,21 @@ jobs:
       #     dev_path: './dist/dev'  # Deploy the dev build
       #     dev_destination_dir: 'dev'  # Deploy to /dev
 
-      # Deploy to GitHub Pages (main branch)
-      # - name: Deploy to GitHub Pages for production
-      #   if: github.ref == 'refs/heads/main'
-      #   uses: actions/deploy-pages@v4
-      #   with:
-      #     artifact_name: 'dist-prod-artifact'  # Deploy production build to root
-
-      # # Deploy to GitHub Pages (dev branch)
-      # - name: Deploy to GitHub Pages for development
-      #   if: github.ref == 'refs/heads/dev'
-      #   uses: actions/deploy-pages@v4
-      #   with:
-      #     artifact_name: 'dist-dev-artifact'  # Deploy dev build to /dev folder
-
-      - name: Deploy to GitHub Pages (main)
-        if: github.ref == 'refs/heads/main'  # Only deploy to main if it's the `main` branch
-        uses: actions/deploy-pages@v3
+      #Deploy to GitHub Pages (main branch)
+      - name: Deploy to GitHub Pages for production
+        if: github.ref == 'refs/heads/main'
+        uses: actions/deploy-pages@v4
         with:
-          artifact_name: dist-main-artifact
-          branch: gh-pages  # The branch to deploy to (GitHub Pages branch)
-          target_dir: ''  # Deploy to the root directory
+          artifact_name: 'dist-prod-artifact'  # Deploy production build to root
 
-      - name: Deploy to GitHub Pages (dev)
-        if: github.ref == 'refs/heads/dev'  # Only deploy to dev if it's the `dev` branch
-        uses: actions/deploy-pages@v3
+      # Deploy to GitHub Pages (dev branch)
+      - name: Deploy to GitHub Pages for development
+        if: github.ref == 'refs/heads/dev'
+        uses: actions/deploy-pages@v4
         with:
-          artifact_name: dist-dev-artifact
-          branch: gh-pages  # The branch to deploy to (GitHub Pages branch)
-          target_dir: 'dev'  # Deploy to the `dev` subdirectory
+          artifact_name: 'dist-dev-artifact'  # Deploy dev build to /dev folder
+
+
 
       - name: Log deployment URL
         run: |
