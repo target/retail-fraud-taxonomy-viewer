@@ -94,15 +94,22 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           name: dist-prod-artifact
-          path: './dist'  # Only specify the path to the build output
+          path: 'dist'  # Only specify the path to the build output
           # destination_dir: ''
-      
+
+      # Prepare the artifact for dev branch
+      # - name: Prepare artifact for dev
+      #   if: github.ref == 'refs/heads/dev'
+      #   run: |
+      #     mkdir -p dist/dev    # Ensure the /dev/ directory exists
+      #     mv dist/* dist/dev/  # Move the entire dist contents into dist/dev
+
       - name: Upload artifact for dev
         if: github.ref == 'refs/heads/dev'
         uses: actions/upload-pages-artifact@v3
         with:
           name: dist-dev-artifact
-          path: './dist/dev' # Only specify the path to the build output
+          path: 'dist/dev' # Only specify the path to the build output
           # destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
           # path: './dist'
           # destination_dir: 'dev'
@@ -146,7 +153,7 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: 'dist-dev-artifact'  # Deploy dev build to /dev folder
-          destination_dir: 'dev'
+          # destination_dir: 'dev'
 
 
 
