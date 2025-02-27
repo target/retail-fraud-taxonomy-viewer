@@ -18,25 +18,58 @@ permissions:
 concurrency:
   group: 'pages'
   cancel-in-progress: true
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js (if using a static site generator like Gatsby, Jekyll, etc.)
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Build the project
-      run: npm run build  # Adjust this according to your build process
+      - name: Set build mode based on the branch
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+            echo "Setting NODE_ENV=development"
+            echo "NODE_ENV=development" >> $GITHUB_ENV
+            echo "Setting BUILD_MODE=development"
+            echo "BUILD_MODE=development" >> $GITHUB_ENV
+          else
+            echo "Setting NODE_ENV=production"
+            echo "NODE_ENV=production" >> $GITHUB_ENV
+            echo "Setting BUILD_MODE=production"
+            echo "BUILD_MODE=production" >> $GITHUB_ENV
+          fi
+
+      # - name: Run predeploy
+      #   run: npm run predeploy
+
+      - name: Log BUILD_MODE
+        run: echo "BUILD_MODE=$BUILD_MODE"
+
+      - name: Run predeploy
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+            npm run build:dev
+          else
+            npm run build:prod
+          fi
+
+          # # For dev, move the build output into a `dev/` directory
+          # if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
+          #   mkdir -p dist/dev    # Create the dev directory if it doesn't exist
+          #   mv dist/* dist/dev/  # Move all files from dist to dist/dev/
+          # fi
+        env:
+          BUILD_MODE: ${{ github.ref == 'refs/heads/dev' && 'development' || 'production' }} 
 
     - name: Deploy to GitHub Pages (dev)
       uses: JamesIves/github-pages-deploy-action@v4
