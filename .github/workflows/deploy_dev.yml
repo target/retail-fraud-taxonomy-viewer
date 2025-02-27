@@ -1,9 +1,9 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages (dev)
 
 on:
   push:
-    branches: ['dev', 'main']
-
+    branches:
+      - dev
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -18,150 +18,30 @@ permissions:
 concurrency:
   group: 'pages'
   cancel-in-progress: true
-
-
+  
 jobs:
-  deploy:
-    environment:
-      name: github-pages-dev
-      url: ${{ github.ref == 'refs/heads/dev' && format('https://{0}.github.io/{1}/dev', github.repository_owner, github.event.repository.name) || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+    - name: Setup Node.js (if using a static site generator like Gatsby, Jekyll, etc.)
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
 
-      - name: Install dependencies
-        run: npm ci
+    - name: Install dependencies
+      run: npm install
 
-      - name: Set build mode based on the branch
-        run: |
-          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
-            echo "Setting NODE_ENV=development"
-            echo "NODE_ENV=development" >> $GITHUB_ENV
-            echo "Setting BUILD_MODE=development"
-            echo "BUILD_MODE=development" >> $GITHUB_ENV
-          else
-            echo "Setting NODE_ENV=production"
-            echo "NODE_ENV=production" >> $GITHUB_ENV
-            echo "Setting BUILD_MODE=production"
-            echo "BUILD_MODE=production" >> $GITHUB_ENV
-          fi
+    - name: Build the project
+      run: npm run build  # Adjust this according to your build process
 
-      # - name: Run predeploy
-      #   run: npm run predeploy
-
-      - name: Log BUILD_MODE
-        run: echo "BUILD_MODE=$BUILD_MODE"
-
-      - name: Run predeploy
-        run: |
-          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
-            npm run build:dev
-          else
-            npm run build:prod
-          fi
-
-          # # For dev, move the build output into a `dev/` directory
-          # if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
-          #   mkdir -p dist/dev    # Create the dev directory if it doesn't exist
-          #   mv dist/* dist/dev/  # Move all files from dist to dist/dev/
-          # fi
-        env:
-          BUILD_MODE: ${{ github.ref == 'refs/heads/dev' && 'development' || 'production' }}
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Set up Git user
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-
-      - name: Set up GH_TOKEN for release
-        run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
-
-      - name: Release
-        run: npm run release
-
-      - name: Upload artifact for main
-        if: github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: dist-prod-artifact
-          path: 'dist'  # Only specify the path to the build output
-          # destination_dir: ''
-
-      # Prepare the artifact for dev branch
-      # - name: Prepare artifact for dev
-      #   if: github.ref == 'refs/heads/dev'
-      #   run: |
-      #     mkdir -p dist/dev    # Ensure the /dev/ directory exists
-      #     mv dist/* dist/dev/  # Move the entire dist contents into dist/dev
-
-      - name: Upload artifact for dev
-        if: github.ref == 'refs/heads/dev'
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: dist-dev-artifact
-          path: 'dist/dev' # Only specify the path to the build output
-          # destination_dir: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}
-          # path: './dist'
-          # destination_dir: 'dev'
-          
-
-      # - name: Upload artifact for production
-      #   if: github.ref == 'refs/heads/main'  # Only run this if the branch is main
-      #   uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     path: './dist'  # Upload production build
-      #     destination_dir: ''
-
-      # - name: Upload artifact for development
-      #   if: github.ref == 'refs/heads/dev'  # Only run this if the branch is dev
-      #   uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     path: './dist/dev'  # Upload dev build
-      #     destination_dir: 'dev'
-
-      # - name: Deploy to GitHub Pages
-      #   id: deployment
-      #   uses: actions/deploy-pages@v4
-      #   with:
-      #     # For production deployment (main branch)
-      #     path: './dist'  # If the branch is main, deploy the root build
-      #     destination_dir: ''  # Deploy to the root
-      #     # For dev deployment (dev branch)
-      #     dev_path: './dist/dev'  # Deploy the dev build
-      #     dev_destination_dir: 'dev'  # Deploy to /dev
-
-      #Deploy to GitHub Pages (main branch)
-      - name: Deploy to GitHub Pages for production
-        if: github.ref == 'refs/heads/main'
-        uses: actions/deploy-pages@v4
-        with:
-          artifact_name: 'dist-prod-artifact'  # Deploy production build to root
-
-      # Deploy to GitHub Pages (dev branch)
-      - name: Deploy to GitHub Pages for development
-        if: github.ref == 'refs/heads/dev'
-        uses: actions/deploy-pages@v4
-        with:
-          artifact_name: 'dist-dev-artifact'  # Deploy dev build to /dev folder
-          # destination_dir: 'dev'
-
-
-
-      - name: Log deployment URL
-        run: |
-          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
-            echo "Deployment URL: format('https://{0}.github.io/{1}/dev', github.repository_owner, github.event.repository.name)/dev"
-          else
-            echo "Deployment URL: format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name)/"
-          fi
-
+    - name: Deploy to GitHub Pages (dev)
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages  # The branch that GitHub Pages will use
+        folder: build     # The folder containing the build output (adjust as necessary)
+        target_folder: dev # Subfolder where dev version will be hosted
+        token: ${{ secrets.GITHUB_TOKEN }}  # Token to authenticate GitHub Pages deployment
