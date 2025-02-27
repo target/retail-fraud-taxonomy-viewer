@@ -68,5 +68,5 @@ jobs:
         with:
           branch: gh-pages  # The branch that GitHub Pages will use
           folder: build     # The folder containing the build output (adjust as necessary)
-          target_folder: dev # Subfolder where dev version will be hosted
+          target-folder: dev # Subfolder where dev version will be hosted
           token: ${{ secrets.GITHUB_TOKEN }}  # Token to authenticate GitHub Pages deployment
