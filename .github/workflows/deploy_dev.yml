@@ -61,7 +61,7 @@ jobs:
             npm run build:prod
           fi
 
-      - name: Deploy to GitHub Pages (dev)
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
