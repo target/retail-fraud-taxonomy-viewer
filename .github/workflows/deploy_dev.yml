@@ -63,18 +63,10 @@ jobs:
             npm run build:prod
           fi
 
-          # # For dev, move the build output into a `dev/` directory
-          # if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
-          #   mkdir -p dist/dev    # Create the dev directory if it doesn't exist
-          #   mv dist/* dist/dev/  # Move all files from dist to dist/dev/
-          # fi
-        env:
-          BUILD_MODE: ${{ github.ref == 'refs/heads/dev' && 'development' || 'production' }} 
-
-    - name: Deploy to GitHub Pages (dev)
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        branch: gh-pages  # The branch that GitHub Pages will use
-        folder: build     # The folder containing the build output (adjust as necessary)
-        target_folder: dev # Subfolder where dev version will be hosted
-        token: ${{ secrets.GITHUB_TOKEN }}  # Token to authenticate GitHub Pages deployment
+      - name: Deploy to GitHub Pages (dev)
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages  # The branch that GitHub Pages will use
+          folder: build     # The folder containing the build output (adjust as necessary)
+          target_folder: dev # Subfolder where dev version will be hosted
+          token: ${{ secrets.GITHUB_TOKEN }}  # Token to authenticate GitHub Pages deployment
