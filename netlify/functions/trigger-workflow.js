@@ -31,7 +31,7 @@ exports.handler = async (event, context) => {
     const { filePath, jsonContent } = JSON.parse(event.body);
 
     const githubToken = process.env.GITHUB_TOKEN; // Secret token stored securely in environment variables
-    const githubRepo = 'reponame';  // The GitHub repository name
+    const githubRepo = 'target/retail-fraud-taxonomy-viewer';  // The GitHub repository name
 
     // Trigger GitHub Actions workflow using the GitHub API
     const response = await fetch(`https://api.github.com/repos/${githubRepo}/actions/workflows/netlify_json.yml/dispatches`, {
