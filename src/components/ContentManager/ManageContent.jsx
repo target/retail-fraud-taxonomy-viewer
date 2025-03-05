@@ -273,7 +273,8 @@ const ManageContent = (props) => {
       console.log('dataToSend', JSON.stringify(dataToSend))
 
       // Make a POST request to the serverless function, passing both the file path and content
-      const response = await fetch(`https://target.github.io/retail-fraud-taxonomy-viewer/.netlify/functions/trigger-workflow`, {
+      // const response = await fetch(`https://target.github.io/retail-fraud-taxonomy-viewer/.netlify/functions/trigger-workflow`, {
+        const response = await fetch(`https://retail-fraud-taxonomy-viewer.netlify.app/.netlify/functions/trigger-workflow`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
