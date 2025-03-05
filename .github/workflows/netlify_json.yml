@@ -1,0 +1,37 @@
+name: Update JSON File
+
+on:
+  workflow_dispatch:
+    inputs:
+      file_path:
+        description: 'The path of the JSON file'
+        required: true
+        default: 'data.json'
+      json_content:
+        description: 'The updated content of the JSON file'
+        required: true
+        default: '{}'
+
+jobs:
+  update-file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Update JSON file
+        run: |
+          echo "Updating file at ${{ github.event.inputs.file_path }}"
+
+          # Write the updated JSON content to the file
+          echo "${{ github.event.inputs.json_content }}" > ${{ github.event.inputs.file_path }}
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add ${{ github.event.inputs.file_path }}
+          git commit -m "Update JSON file"
+          git push
+

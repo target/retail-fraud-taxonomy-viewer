@@ -1,0 +1,80 @@
+name: Update Techniques JSON
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch (or another branch you want)
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Check if user is admin
+        id: check_user_role
+        run: |
+          # Use GitHub API to check if the user is part of the 'admin' team
+          USER="${{ github.actor }}"
+          TEAM_SLUG="admin"  # Replace this with the slug of your admin team
+          REPO_OWNER="${{ github.repository_owner }}"
+          
+          # Get the team's membership status for the user
+          MEMBERSHIP=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/orgs/$REPO_OWNER/teams/$TEAM_SLUG/memberships/$USER")
+          
+          # Check membership status
+          if [[ $MEMBERSHIP == *"state\": \"active\"" ]]; then
+            echo "User is an admin, proceeding with direct commit"
+            echo "is_admin=true" >> $GITHUB_ENV
+          else
+            echo "User is not an admin, creating a PR"
+            echo "is_admin=false" >> $GITHUB_ENV
+          fi
+
+      - name: Create a backup of techniques.json
+        run: |
+          # Backup the current techniques.json file before making changes
+          timestamp=$(date +%Y%m%d%H%M%S)
+          cp public/techniques.json public/techniques-backup-${timestamp}.json
+          echo "Backup of techniques.json created as techniques-backup-${timestamp}.json"
+
+      - name: Stage and Commit Changes
+        if: env.is_admin == 'true'
+        run: |
+          git config --global user.email "youremail@example.com"
+          git config --global user.name "Your Name"
+          
+          # Stage the original file and the backup file
+          git add public/techniques.json
+          git add public/techniques-backup-*.json
+          git commit -m "Update techniques.json and create backup"
+          git push origin main
+
+      - name: Create Pull Request
+        if: env.is_admin == 'false'
+        run: |
+          PR_BRANCH="update-techniques-$(date +%Y%m%d%H%M%S)"
+          git checkout -b $PR_BRANCH
+          
+          # Stage, commit, and create a PR with the backup file as well
+          git add public/techniques.json
+          git add public/techniques-backup-*.json
+          git commit -m "Update techniques.json and create backup"
+          
+          # Push the PR branch
+          git push origin $PR_BRANCH
+          
+          # Use GitHub CLI to create the PR
+    

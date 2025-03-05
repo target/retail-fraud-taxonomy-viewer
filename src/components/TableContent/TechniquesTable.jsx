@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { RiExpandLeftRightFill } from 'react-icons/ri';
+import { RiExpandLeftRightFill, RiEdit2Fill } from 'react-icons/ri';
 import {
   fetchTechnique,
   hasSubTechnique,
@@ -22,6 +22,7 @@ const TechniquesTable = ({
   searchFilter,
   searchFilterType,
   isPanelOpen,
+  onEditClick
 }) => {
   const [tableData, setTableData] = useState([]);
   const [addedColumns, setAddedColumns] = useState([]);
@@ -32,6 +33,17 @@ const TechniquesTable = ({
   const [focusedLiIndex, setFocusedLiIndex] = useState(null);
   const focusedLiIndexRef = useRef(null);
   const hasFocused = useRef(false);
+
+    // State for editing a specific technique
+    const [editForm, setEditForm] = useState({
+      code: null,
+      name: '',
+      description: ''
+    });
+  
+    const handleEdit = (technique) => {
+      onEditClick(technique)
+    };
 
   useLayoutEffect(() => {
     // Wait until the table and its td elements are rendered
@@ -150,7 +162,7 @@ const TechniquesTable = ({
       }
       setTableData(result);
     } else {
-      if (filteredDataMap !== null && filteredDataMap.length > 0) {
+      if (filteredDataMap !== null && filteredDataMap?.length > 0) {
         let index = Object.keys(filteredDataMap[0]).findIndex(key => filteredDataMap[0][key] !== '');
         setFocusedCell({ row: 0, col: index })
       }
@@ -192,7 +204,6 @@ const TechniquesTable = ({
               }}
               onClick={(e) => {
                 e.stopPropagation(); // Prevents the event from bubbling up to the <td>
-                // onValueClick(line); // Trigger the onValueClick function
                 handleSubCellClick(rowIndex, colIndex, line, index);
               }}
             >
@@ -611,13 +622,29 @@ const TechniquesTable = ({
                     : NO_FOCUS,
                 outline: 'none',
               }}
-              onClick={() => {
+              onClick={(e) => {
                 if (item[key] !== '') {
+                  e.stopPropagation();
                   handleCellClick(rowIndex, colIndex, item, key);
                 }
               }}
             >
               {item[key]}
+
+              {item[key] &&
+                item[key].length > 0 &&
+                   <div
+                      className="editicon"
+                      aria-label="edit"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // e.preventDefault();
+                        handleEdit(item[key])
+                      }}
+                    >
+                      <RiEdit2Fill/>
+                    </div>
+              }
               {item[key] &&
                 item[key].length > 0 &&
                 hasSubTechnique(item[key]) && (
@@ -768,6 +795,39 @@ const TechniquesTable = ({
         </thead>
         <tbody>{renderRows()}</tbody>
       </table>
+         {/* Edit Form */}
+         {/* {editForm.code !== null && (
+        <div>
+          <h2>Edit Technique</h2>
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label htmlFor="name">Name:</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={editForm.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div>
+              <label htmlFor="description">Description:</label>
+              <textarea
+                id="description"
+                name="description"
+                value={editForm.description}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <button type="submit">Save Changes</button>
+            <button type="button" onClick={() => setEditForm({ code: '', name: '', description: '' })}>
+              Cancel
+            </button>
+          </form>
+        </div>
+      )} */}
     </nav>
   );
 };

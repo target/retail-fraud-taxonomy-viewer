@@ -60,3 +60,17 @@
     transition: background-color 0.3s ease, z-index 0.3s ease;
   }
 
+  .editicon {
+    width: 30px;
+    height: 100%;
+    background-color: rgb(48, 48, 48);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute; 
+    top: 0;
+    right: 25px;
+    z-index: 999;
+    transition: background-color 0.3s ease, z-index 0.3s ease;
+  }
+

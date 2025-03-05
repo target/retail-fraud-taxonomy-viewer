@@ -1,0 +1,105 @@
+.collapsible-section {
+    margin: var(--gap) 0;
+  }
+  
+  .collapsible-content {
+    background-color: #2b2d31;
+    border: 1px solid #ddd;
+    color: white;
+    margin-left: 0;
+    max-width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .key-text {
+    width: 20%; 
+    height:30px;
+    font-size: medium;
+    font-style: normal;
+    margin-bottom: 20px;
+    margin-right: 10px; 
+  }
+
+  .text-area-box {
+    width: 95%;
+    padding: 5px;
+    font-size: large !important;
+    font-style: normal !important;
+    margin-right: 10px;
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .box-section {
+    border: 1px solid white;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .add-key-value-pair {
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  .add-key-value-pair:hover {
+    color: green;
+  }
+
+  .remove-key-value-pair {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    cursor: pointer;
+  }
+  
+  .remove-key-value-pair:hover {   
+    color: red;
+  }
+
+  .add-value {
+    font-size: 25px;
+    cursor: pointer;
+  }
+
+  .add-value:hover {
+    color: green;
+  }
+
+  .remove-value {
+      margin-top: 10px;
+      font-size: 20px;
+      cursor: pointer;
+  }
+
+  .remove-value:hover {   
+    color: red;
+  }
+
+  .remove-value-info {
+    padding-bottom: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.remove-value-info:hover {   
+  color: red;
+}
+  
+.save-button {
+  background-color: #0099cc;
+  height: 40px;
+  width: 100px !important;
+  color: white;
+  margin-left: 10px !important;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px !important;
+}
+  

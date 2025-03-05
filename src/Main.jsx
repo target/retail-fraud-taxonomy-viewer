@@ -3,6 +3,7 @@ import Header from './components/Header/Header';
 import TechniquesTable from './components/TableContent/TechniquesTable';
 import CollapsibleSection from './components/Collapsible/CollapsibleSection';
 import SidePanel from './components/SidePanelSearch/Panel';
+import ManageContent from './components/ContentManager/ManageContent.';
 
 export const Main = () => {
   const [selectedValue, setSelectedValue] = useState(null);
@@ -10,6 +11,8 @@ export const Main = () => {
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState('');
   const [isSidePanelVisible, setIsSidePanelVisible] = useState(false);
+  const [editContent, setEditContent] = useState(null);
+  const [addContent, setAddContent] = useState(null);
 
   const toggleControl = () => {
     handleOpenSidePanel();
@@ -22,6 +25,15 @@ export const Main = () => {
       setSelectedValue(value);
     }
   };
+
+  const handleEditClick = (value) => {
+    setEditContent(value)
+  }
+
+  const handleAddClick = (value) => {
+    setAddContent(value, selectedValue);
+  }
+
   const handleCloseSidePanel = () => {
     setIsSidePanelVisible(false);
   };
@@ -34,24 +46,31 @@ export const Main = () => {
   };
   return (
     <>
-      <Header toggleControl={toggleControl} />
-      <TechniquesTable
+      <Header toggleControl={toggleControl} onAddClick={handleAddClick} />
+      {!addContent && !editContent && (<TechniquesTable
         onValueClick={handleValueClick}
+        onEditClick={handleEditClick}
         searchFilter={filter}
         searchFilterType={filterType}
         isPanelOpen={isSidePanelVisible}
       />
+      )}
       {isSidePanelVisible && (
         <SidePanel
           onFilterChange={handleFilterChange}
           onClose={handleCloseSidePanel}
         />
       )}
-      {selectedValue && (
+      {selectedValue && !addContent && !editContent && (
         <CollapsibleSection
           isPanelOpen={isSidePanelVisible}
           techniqueName={selectedValue}
           key={renderKey}
+        />
+      )}
+      {(addContent || editContent) && (
+        <ManageContent
+          technique={editContent}
         />
       )}
     </>

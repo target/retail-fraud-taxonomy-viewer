@@ -74,7 +74,7 @@ describe('TechniquesTable', () => {
     expect(techniqueRow).toBeInTheDocument();
 
     const expandIcons = await screen.queryAllByLabelText('expand collapse');
-    expect(expandIcons.length).toBeGreaterThan(0);
+    expect(expandIcons?.length).toBeGreaterThan(0);
   });
 
   it('should handle column collapse and remove empty column', async () => {
