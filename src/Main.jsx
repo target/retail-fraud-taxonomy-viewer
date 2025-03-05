@@ -3,7 +3,7 @@ import Header from './components/Header/Header';
 import TechniquesTable from './components/TableContent/TechniquesTable';
 import CollapsibleSection from './components/Collapsible/CollapsibleSection';
 import SidePanel from './components/SidePanelSearch/Panel';
-import ManageContent from './components/ContentManager/ManageContent.';
+import ManageContent from './components/ContentManager/ManageContent';
 
 export const Main = () => {
   const [selectedValue, setSelectedValue] = useState(null);
