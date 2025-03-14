@@ -1,3 +1,15 @@
+# v1.2.6 (Fri Mar 14 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Updated the Table to not display sub-techniques by default ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 1
+
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
 # v1.2.4 (Tue Feb 25 2025)
 
 #### ⚠️ Pushed to `main`
