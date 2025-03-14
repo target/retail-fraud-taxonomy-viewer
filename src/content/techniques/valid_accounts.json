@@ -1,7 +1,7 @@
 {
   "code": "FT1104",
   "name": "Valid Accounts",
-  "parent_technqiue": "",
+  "parent_technique": "",
   "tactics": [
     "Initial Access"
   ],

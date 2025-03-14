@@ -1,7 +1,7 @@
 {
   "code": "FT1102",
   "name": "Gift Card Extortion",
-  "parent_technqiue": "",
+  "parent_technique": "",
   "tactics": [
     "Initial Access",
     "Control"

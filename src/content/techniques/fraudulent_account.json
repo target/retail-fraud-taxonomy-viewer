@@ -1,7 +1,7 @@
 {
   "code": "FT1104.1",
   "name": "Fraudulent Account",
-  "parent_technqiue": "Valid Accounts",
+  "parent_technique": "Valid Accounts",
   "tactics": [
     "Pre-Compromise", "Initial Access"
   ],

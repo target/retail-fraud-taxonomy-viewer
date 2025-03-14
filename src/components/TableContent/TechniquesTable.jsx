@@ -32,6 +32,8 @@ const TechniquesTable = ({
   const [focusedLiIndex, setFocusedLiIndex] = useState(null);
   const focusedLiIndexRef = useRef(null);
   const hasFocused = useRef(false);
+  const [columnsProcessed, setColumnsProcessed] = useState(new Set());
+  const columnsProcessedRef = useRef(new Set(columnsProcessed));
 
   useLayoutEffect(() => {
     // Wait until the table and its td elements are rendered
@@ -82,6 +84,52 @@ const TechniquesTable = ({
     // eslint-disable-next-line
   }, [searchFilter]);
 
+  useEffect(() => {
+    // Update the ref with the latest state combining rowIndex and columnsProcessed
+    columnsProcessed.forEach(cellIdentifier => {
+      columnsProcessedRef.current.add(cellIdentifier); // Add the combination of rowIndex and colIndex to the ref
+    });
+  }, [columnsProcessed]);
+
+  let headers = ''
+  if (tableData && tableData.length > 0)
+    headers = Object.keys(tableData[0]);
+
+  // Function to get the column header based on dynamic colIndex
+  const getColumnHeaderByIndex = (colIndex) => {
+    return headers[colIndex];
+  };
+
+  // Function to process the table data and avoid reprocessing columns
+  useEffect(() => {
+    const processColumns = async () => {
+      for (let rowIndex = 0; rowIndex < tableData?.length; rowIndex++) {
+        const item = tableData[rowIndex];
+
+        for (let colIndex = 0; colIndex < Object.keys(item).length; colIndex++) {
+          const key = Object.keys(item)[colIndex];
+          let headerName = getColumnHeaderByIndex(colIndex);  // Get the header name based on colIndex
+          const isProcessed = columnsProcessedRef.current.has(`${rowIndex}-${headerName}`);
+
+          const hasSubTech = item[key] && item[key].length > 0 && hasSubTechnique(item[key]);
+
+          if (!isProcessed && hasSubTech && searchFilter !== '' && searchFilterType !== SHOW_ALL ) {
+
+            if (item[key])
+              manage_columns(item[key].toLowerCase(), rowIndex, colIndex);
+
+            // Mark this column as processed
+            headerName = getColumnHeaderByIndex(colIndex);
+            setColumnsProcessed(prev => new Set(prev).add(`${rowIndex}-${headerName}`)); // Add to processed set
+            await new Promise(resolve => setTimeout(resolve, 500)); // 500ms delay between columns
+          }
+        }
+      }
+    }
+    // Trigger the process when tableData or addedColumns change
+    processColumns();
+  }, [tableData, columnsProcessed]);
+
   const consolidateData = (data) => {
     // Create an object to store the non-empty values for each column
     const nonEmptyValues = {};
@@ -119,7 +167,11 @@ const TechniquesTable = ({
   };
 
   useEffect(() => {
+    setColumnsProcessed(new Set());
+    columnsProcessedRef.current = new Set();
+
     let filteredKeys = '';
+
     if (filteredDataMap && Object.keys(filteredDataMap).length > 0) {
       filteredKeys = Object.keys(filteredDataMap).map((key) => {
         return key
@@ -150,7 +202,7 @@ const TechniquesTable = ({
       }
       setTableData(result);
     } else {
-      if (filteredDataMap !== null && filteredDataMap.length > 0) {
+      if (filteredDataMap !== null && filteredDataMap?.length > 0) {
         let index = Object.keys(filteredDataMap[0]).findIndex(key => filteredDataMap[0][key] !== '');
         setFocusedCell({ row: 0, col: index })
       }
@@ -158,6 +210,24 @@ const TechniquesTable = ({
     }
     // eslint-disable-next-line
   }, [filteredDataMap]);
+
+  const filterBySubTechniques = (sub_techniques) => {
+    let filteredKeys = []
+
+    if (filteredDataMap && Object.keys(filteredDataMap).length > 0) {
+      filteredKeys = Object.keys(filteredDataMap).map((key) => {
+        return key
+          .split('_')
+          .map((word) => {
+            return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+          })
+          .join(' ');
+      });
+    }
+
+    const result = sub_techniques?.filter(element => filteredKeys.includes(element));
+    return result
+  };
 
   const handle_sub_techniques = (sub_techniques, rowIndex, colIndex) => {
     const stringWithBreaks = (
@@ -340,137 +410,177 @@ const TechniquesTable = ({
 
   // Function to add/remove columns dynamically with toggling behavior
   const manage_columns = (technique, rowIndex, colIndex) => {
-    const newColumnIndex = colIndex + 1;
-    let data_present_in_column = false;
-    let delete_columns = [];
-    let added_columns = [];
-    let operation = '';
 
-    if (addedColumns.includes(newColumnIndex)) {
-      operation = COLLAPSE;
-    } else {
-      operation = EXPAND;
-    }
+    if (technique) {
+      const newColumnIndex = colIndex + 1;
+      let data_present_in_column = false;
+      let delete_columns = [];
+      let added_columns = [];
+      let operation = '';
 
-    let updatedData = tableData.map((row, tableRowIndex) => {
-      const rowKeys = Object.keys(row);
-      const updatedRow = {};
-      let insertedNewColumn = false;
+      if (addedColumns.includes(newColumnIndex)) {
+        operation = COLLAPSE;
+      } else {
+        operation = EXPAND;
+      }
 
-      rowKeys.forEach((key, keyIndex) => {
-        updatedRow[key] = row[key]; // Copy existing row data
+      let updatedData = tableData.map((row, tableRowIndex) => {
+        const rowKeys = Object.keys(row);
+        const updatedRow = {};
+        let insertedNewColumn = false;
 
-        if (operation === COLLAPSE) {
-          if (key.includes(DYNAMIC_COLUMN_PREFIX)) {
-            const key_split = key.split(' ');
-            const existingColumnName = key_split[key_split.length - 1];
+        rowKeys.forEach((key, keyIndex) => {
+          updatedRow[key] = row[key]; // Copy existing row data
 
-            // Already dynamic column is in expanded state
-            if (existingColumnName.endsWith(newColumnIndex.toString())) {
-              const new_column_name = `${DYNAMIC_COLUMN_PREFIX} ${existingColumnName}`;
+          if (operation === COLLAPSE) {
+            if (key.includes(DYNAMIC_COLUMN_PREFIX)) {
+              const key_split = key.split(' ');
+              const existingColumnName = key_split[key_split.length - 1];
 
-              if (tableRowIndex === rowIndex) {
-                if (
-                  updatedRow[new_column_name] !== undefined &&
-                  updatedRow[new_column_name]
-                ) {
-                  updatedRow[new_column_name] = '';
-                  data_present_in_column = false;
-                } else {
-                  const techniqueName = fetchTechnique(technique);
-                  updatedRow[new_column_name] = handle_sub_techniques(
-                    techniqueName['sub_techniques'],
-                    rowIndex,
-                    colIndex,
-                  );
-                  data_present_in_column = true;
+              // Already dynamic column is in expanded state
+              if (existingColumnName.endsWith(newColumnIndex.toString())) {
+                const new_column_name = `${DYNAMIC_COLUMN_PREFIX} ${existingColumnName}`;
+
+                if (tableRowIndex === rowIndex) {
+                  if (
+                    updatedRow[new_column_name] !== undefined &&
+                    updatedRow[new_column_name]
+                  ) {
+                    updatedRow[new_column_name] = '';
+                    data_present_in_column = false;
+                  } else {
+                    const techniqueName = fetchTechnique(technique);
+                    let sub_tech = []
+                    if (searchFilterType === '' || searchFilterType === SHOW_ALL) {
+                      sub_tech = techniqueName['sub_techniques']
+                    } else {
+                      sub_tech = filterBySubTechniques(techniqueName['sub_techniques'])
+                    }
+
+                    if (sub_tech && sub_tech.length > 0) {
+                      updatedRow[new_column_name] = handle_sub_techniques(
+                        sub_tech,
+                        rowIndex,
+                        colIndex
+                      );
+                      data_present_in_column = true;
+                    }
+                    
+                  }
+                }
+                if (tableRowIndex === tableData.length - 1) {
+                  // Delete the entire column if it does not have any value in any of the rows
+                  if (!data_present_in_column) {
+                    delete_columns.push(new_column_name);
+                  }
                 }
               }
-              if (tableRowIndex === tableData.length - 1) {
-                // Delete the entire column if it does not have any value in any of the rows
-                if (!data_present_in_column) {
-                  delete_columns.push(new_column_name);
-                }
-              }
-            }
-          }
-        } else {
-          // operation == add
-          if (key.includes(DYNAMIC_COLUMN_PREFIX)) {
-            const key_split = key.split(' ');
-            const existingColumnName = key_split[key_split.length - 1];
-
-            if (existingColumnName.endsWith(newColumnIndex.toString())) {
-              const rowNumber = parseInt(
-                existingColumnName.toString().substring(0, 1),
-              );
-
-              const new_column_name = `${DYNAMIC_COLUMN_PREFIX} ${rowIndex}-${newColumnIndex}`;
-
-              if (keyIndex === rowNumber) {
-                updatedRow[new_column_name] = updatedRow[existingColumnName];
-                delete updatedRow[existingColumnName];
-              }
-              if (tableRowIndex === rowIndex) {
-                const techniqueName = fetchTechnique(technique);
-                updatedRow[new_column_name] = handle_sub_techniques(
-                  techniqueName['sub_techniques'],
-                  rowIndex,
-                  colIndex,
-                );
-              }
-              added_columns.push(new_column_name);
             }
           } else {
-            if (keyIndex === colIndex && !insertedNewColumn) {
-              const columnName = `${DYNAMIC_COLUMN_PREFIX} ${rowIndex}-${newColumnIndex}`;
-              const key_split = columnName.split(' ');
-              const rowColumnNumber = key_split[key_split.length - 1];
-              updatedRow[columnName] = '';
+            // operation == add
+            if (key.includes(DYNAMIC_COLUMN_PREFIX)) {
+              const key_split = key.split(' ');
+              const existingColumnName = key_split[key_split.length - 1];
 
-              if (
-                keyIndex === colIndex &&
-                rowIndex === tableRowIndex &&
-                !insertedNewColumn
-              ) {
-                const techniqueName = fetchTechnique(technique);
-                updatedRow[columnName] = handle_sub_techniques(
-                  techniqueName['sub_techniques'],
-                  rowIndex,
-                  colIndex,
+              if (existingColumnName.endsWith(newColumnIndex.toString())) {
+                const rowNumber = parseInt(
+                  existingColumnName.toString().substring(0, 1),
                 );
-                insertedNewColumn = true;
-                added_columns.push(
-                  `${DYNAMIC_COLUMN_PREFIX} ${rowColumnNumber}`,
-                );
+
+                const new_column_name = `${DYNAMIC_COLUMN_PREFIX} ${rowIndex}-${newColumnIndex}`;
+
+                if (keyIndex === rowNumber) {
+                  updatedRow[new_column_name] = updatedRow[existingColumnName];
+                  delete updatedRow[existingColumnName];
+                }
+                if (tableRowIndex === rowIndex) {
+                  const techniqueName = fetchTechnique(technique);
+                  let sub_tech = []
+                  if (searchFilterType === '' || searchFilterType === SHOW_ALL) {
+                    sub_tech = techniqueName['sub_techniques']
+                  } else {
+                    sub_tech = filterBySubTechniques(techniqueName['sub_techniques'])
+                  }
+
+                  if (sub_tech && sub_tech.length > 0) {
+                    updatedRow[new_column_name] = handle_sub_techniques(
+                      sub_tech,
+                      rowIndex,
+                      colIndex
+                    );
+                    added_columns.push(new_column_name);
+                  }
+                }
+              }
+            } else {
+              if (keyIndex === colIndex && !insertedNewColumn) {
+                const columnName = `${DYNAMIC_COLUMN_PREFIX} ${rowIndex}-${newColumnIndex}`;
+                const key_split = columnName.split(' ');
+                const rowColumnNumber = key_split[key_split.length - 1];
+                updatedRow[columnName] = '';
+
+                if (
+                  keyIndex === colIndex &&
+                  rowIndex === tableRowIndex &&
+                  !insertedNewColumn
+                ) {
+                  const techniqueName = fetchTechnique(technique);
+                  let sub_tech = []
+                  if (searchFilterType === '' || searchFilterType === SHOW_ALL) {
+                    sub_tech = techniqueName['sub_techniques']
+                  } else {
+                    sub_tech = filterBySubTechniques(techniqueName['sub_techniques'])
+                  }
+
+                  if (sub_tech && sub_tech.length > 0) {
+                    updatedRow[columnName] = handle_sub_techniques(
+                      sub_tech,
+                      rowIndex,
+                      colIndex
+                    );
+                    insertedNewColumn = true;
+                    added_columns.push(
+                      `${DYNAMIC_COLUMN_PREFIX} ${rowColumnNumber}`,
+                    );
+                  } else {
+                    delete_columns.push(columnName);
+                  }
+                }
               }
             }
+            setTableData(updatedRow);
           }
-          setTableData(updatedRow);
-        }
+        });
+        return updatedRow;
       });
-      return updatedRow;
-    });
 
-    if (operation === COLLAPSE) {
-      if (delete_columns.length > 0) {
-        handle_dynamic_column(
-          delete_columns,
-          updatedData,
-          operation,
-          newColumnIndex,
-        );
+      if (operation === COLLAPSE) {
+        if (delete_columns.length > 0) {
+          handle_dynamic_column(
+            delete_columns,
+            updatedData,
+            operation,
+            newColumnIndex,
+          );
+        } else {
+          setTableData(updatedData);
+        }
       } else {
-        setTableData(updatedData);
-      }
-    } else {
-      if (added_columns.length > 0) {
-        handle_dynamic_column(
-          added_columns,
-          updatedData,
-          operation,
-          newColumnIndex,
-        );
+        if (added_columns.length > 0) {
+          handle_dynamic_column(
+            added_columns,
+            updatedData,
+            operation,
+            newColumnIndex,
+          );
+        } else {
+          handle_dynamic_column(
+            delete_columns,
+            updatedData,
+            COLLAPSE,
+            newColumnIndex,
+          );
+        }
       }
     }
   };

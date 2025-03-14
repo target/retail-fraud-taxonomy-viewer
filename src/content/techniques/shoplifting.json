@@ -1,7 +1,7 @@
 {
   "code": "FT1101",
   "name": "Shoplifting",
-  "parent_technqiue": "",
+  "parent_technique": "",
   "tactics": [
     "Initial Access"
   ],

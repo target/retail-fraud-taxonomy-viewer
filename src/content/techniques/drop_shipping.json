@@ -1,7 +1,7 @@
 {
   "code": "FT1301.1",
   "name": "Resale",
-  "parent_technqiue": "Resale",
+  "parent_technique": "Resale",
   "tactics": [
     "Monetization"
   ],

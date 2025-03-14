@@ -1,7 +1,7 @@
 {
     "code": "FT1103.1",
     "name": "Application",
-    "parent_technqiue": "Check Gift Card Balance",
+    "parent_technique": "Check Gift Card Balance",
     "tactics": [
       "Initial Access"
     ],

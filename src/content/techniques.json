@@ -1,14 +1,14 @@
  [
     { "pre_compromise": "Reconnaissance", "intial_access": "Shoplifting", "control":"Gift Card Extortion", "monetization": "Resale"},
-    { "pre_compromise": "Social Engineering","intial_access": "Social Engineering","control":"Valid Accounts", "monetization": "Drop shipping" },
-    { "pre_compromise": "Fake Pages","intial_access": "Gift Card Extortion", "control":"Fraudulent Account", "monetization": "Unwitting Buyer" },
-    { "pre_compromise": "Acquire Database","intial_access": "Check Gift Card Balance", "control":"Fraudulent Account Update", "monetization": "Checkout" },
-    { "pre_compromise": "Gift Card Number Generation","intial_access": "Application", "control":"Gift Card Return", "monetization": "Point of Sale" },
-    { "pre_compromise": "Password Reset","intial_access": "Phone Verification", "control":"Gift Card Merging", "monetization": "Guest Services" },
-    { "pre_compromise": "Proxy Abuse","intial_access": "In-Store Gift Card Verification", "control":"Gift Card Tampering", "monetization": "Online Or Web Mobile" },
-    { "pre_compromise": "","intial_access": "Valid Accounts", "control":"Gift Card Redemption", "monetization": "" },
-    { "pre_compromise": "","intial_access": "Fraudulent Account", "control":"Loyalty Points Abuse", "monetization": "" },
-    { "pre_compromise": "","intial_access": "Fraudulent Account Update", "control":"", "monetization": "" },
-    { "pre_compromise": "","intial_access": "Password Reset", "control":"", "monetization": "" },
-    { "pre_compromise": "","intial_access": "Credential Stuffing", "control":"", "monetization": "" }
+    { "pre_compromise": "Social Engineering","intial_access": "Social Engineering","control":"Valid Accounts", "monetization": "Checkout" },
+    { "pre_compromise": "Fake Pages","intial_access": "Gift Card Extortion", "control":"Gift Card Return", "monetization": "" },
+    { "pre_compromise": "Acquire Database","intial_access": "Check Gift Card Balance", "control":"Gift Card Merging", "monetization": "" },
+    { "pre_compromise": "Gift Card Number Generation","intial_access": "Valid Accounts", "control":"Gift Card Tampering", "monetization": "" },
+    { "pre_compromise": "Password Reset","intial_access": "Password Reset", "control":"Gift Card Redemption", "monetization": "" },
+    { "pre_compromise": "Proxy Abuse","intial_access": "Credential Stuffing", "control":"Loyalty Points Abuse", "monetization": "" },
+    { "pre_compromise": "","intial_access": "", "control":"", "monetization": "" },
+    { "pre_compromise": "","intial_access": "", "control":"", "monetization": "" },
+    { "pre_compromise": "","intial_access": "", "control":"", "monetization": "" },
+    { "pre_compromise": "","intial_access": "", "control":"", "monetization": "" },
+    { "pre_compromise": "","intial_access": "", "control":"", "monetization": "" }
   ]

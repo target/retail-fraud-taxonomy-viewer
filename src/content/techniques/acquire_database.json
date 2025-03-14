@@ -1,7 +1,7 @@
 {
   "code": "FT1004",
   "name": "Acquire Database",
-  "parent_technqiue": "",
+  "parent_technique": "",
   "tactics": ["Pre-Compromise"],
   "schemes": [
     "Gift Card Fraud",

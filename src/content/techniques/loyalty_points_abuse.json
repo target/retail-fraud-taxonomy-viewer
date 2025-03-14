@@ -1,7 +1,7 @@
 {
     "code": "FT1205",
     "name": "Loyalty Points Abuse",
-    "parent_technqiue": "",
+    "parent_technique": "",
     "tactics": [
       "Control"
     ],

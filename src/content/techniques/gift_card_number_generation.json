@@ -1,7 +1,7 @@
 {
   "code": "FT1005",
   "name": "Gift Card Number Generation",
-  "parent_technqiue": "",
+  "parent_technique": "",
   "tactics": ["Pre-Compromise"],
   "schemes": [
     "Gift Card Fraud"

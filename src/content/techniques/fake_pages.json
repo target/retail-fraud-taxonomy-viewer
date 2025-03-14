@@ -1,7 +1,7 @@
 {
   "code": "FT1003",
   "name": "Fake Pages",
-  "parent_technqiue": "",
+  "parent_technique": "",
   "tactics": ["Pre-Compromise"],
   "schemes": [
     "Gift Card Fraud",

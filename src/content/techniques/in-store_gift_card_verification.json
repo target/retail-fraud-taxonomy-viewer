@@ -1,7 +1,7 @@
 {
     "code": "FT1103.3",
     "name": "In-Store Gift Card Verification",
-    "parent_technqiue": "Check Gift Card Balance",
+    "parent_technique": "Check Gift Card Balance",
     "tactics": [
       "Initial Access"
     ],

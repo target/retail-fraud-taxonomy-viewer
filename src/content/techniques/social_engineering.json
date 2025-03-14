@@ -1,7 +1,7 @@
 {
   "code": "FT1002",
   "name": "Social Engineering",
-  "parent_technqiue": "",
+  "parent_technique": "",
   "tactics": ["Pre-Compromise"],
   "schemes": [
     "Gift Card Fraud",

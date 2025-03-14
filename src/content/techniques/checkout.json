@@ -1,7 +1,7 @@
 {
   "code": "FT1303",
   "name": "Checkout",
-  "parent_technqiue": "",
+  "parent_technique": "",
   "tactics": ["Monetization"],
   "schemes": [
     "Gift Card Fraud",

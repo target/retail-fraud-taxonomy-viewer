@@ -51,7 +51,7 @@ describe('Panel', () => {
   it('should call onFilterChange with correct arguments when a mitigation button is hovered over', () => {
     render(<Panel onFilterChange={onFilterChange} onClose={onClose} />);
 
-    fireEvent.mouseEnter(screen.getByText('Mitigation 1'));
+    fireEvent.click(screen.getByText('Mitigation 1'));
 
     expect(onFilterChange).toHaveBeenCalledWith('Mitigation 1', 'mitigation');
   });
@@ -59,7 +59,7 @@ describe('Panel', () => {
   it('should call onFilterChange with correct arguments when a scheme button is hovered over', () => {
     render(<Panel onFilterChange={onFilterChange} onClose={onClose} />);
 
-    fireEvent.mouseEnter(screen.getByText('Scheme 1'));
+    fireEvent.click(screen.getByText('Scheme 1'));
 
     expect(onFilterChange).toHaveBeenCalledWith('Scheme 1', 'schemes');
   });
@@ -67,7 +67,7 @@ describe('Panel', () => {
   it('should call onFilterChange with "Show All" when "Show All" button is hovered over', () => {
     render(<Panel onFilterChange={onFilterChange} onClose={onClose} />);
 
-    fireEvent.mouseEnter(screen.getByText('Show All'));
+    fireEvent.click(screen.getByText('Show All'));
 
     expect(onFilterChange).toHaveBeenCalledWith('Show All', 'Show All');
   });
