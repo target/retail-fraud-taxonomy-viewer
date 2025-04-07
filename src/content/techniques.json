@@ -1,9 +1,9 @@
  [
-    { "pre_compromise": "Reconnaissance", "intial_access": "Shoplifting", "control":"Gift Card Extortion", "monetization": "Resale"},
-    { "pre_compromise": "Social Engineering","intial_access": "Social Engineering","control":"Valid Accounts", "monetization": "Checkout" },
-    { "pre_compromise": "Fake Pages","intial_access": "Gift Card Extortion", "control":"Gift Card Return", "monetization": "" },
-    { "pre_compromise": "Acquire Database","intial_access": "Check Gift Card Balance", "control":"Gift Card Merging", "monetization": "" },
-    { "pre_compromise": "Gift Card Number Generation","intial_access": "Valid Accounts", "control":"Gift Card Tampering", "monetization": "" },
-    { "pre_compromise": "Password Reset","intial_access": "Password Reset", "control":"Gift Card Redemption", "monetization": "" },
-    { "pre_compromise": "Proxy Abuse","intial_access": "Credential Stuffing", "control":"Loyalty Points Abuse", "monetization": "" }
+    { "pre_compromise": "Reconnaissance", "initial_access": "Shoplifting", "control":"Gift Card Extortion", "monetization": "Resale"},
+    { "pre_compromise": "Social Engineering","initial_access": "Social Engineering","control":"Valid Accounts", "monetization": "Checkout" },
+    { "pre_compromise": "Fake Pages","initial_access": "Gift Card Extortion", "control":"Gift Card Return", "monetization": "" },
+    { "pre_compromise": "Acquire Database","initial_access": "Check Gift Card Balance", "control":"Gift Card Merging", "monetization": "" },
+    { "pre_compromise": "Gift Card Number Generation","initial_access": "Valid Accounts", "control":"Gift Card Tampering", "monetization": "" },
+    { "pre_compromise": "Password Reset","initial_access": "Password Reset", "control":"Gift Card Redemption", "monetization": "" },
+    { "pre_compromise": "Proxy Abuse","initial_access": "Credential Stuffing", "control":"Loyalty Points Abuse", "monetization": "" }
   ]
