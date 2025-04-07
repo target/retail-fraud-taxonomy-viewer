@@ -9,27 +9,33 @@
   "sub_techniques": [],
   "details": [
     {
-      "technique_description": [
+      "section_header": "Technique Description",
+      "section_details": [
         {
-          "description": [
+          "section_sub_header": "Description",
+          "section_info": [
             "Actors abuse legitimate or illegal proxy services that act as an intermediary for requests from clients seeking resources from other servers, effectively masking the fraudster’s IP address or other network attributes. Some examples of this are use of commercial VPN services, proxies through hosting providers, residential proxies, compromised machines such as botnets and malware infected hosts, and TOR services."
           ]
         }
       ]
     },
     {
-      "mitigation": [
+      "section_header": "Mitigation",
+      "section_details": [
         {
-          "behavioral_prevention": [
+          "section_sub_header": "Behavioral Prevention",
+          "section_info": [
             "Block traffic from known proxies, TOR exit nodes and infected machines."
           ]
         }
       ]
     },
     {
-      "detection": [
+      "section_header": "Detection",
+      "section_details": [
         {
-          "network_traffic_attributes": [
+          "section_sub_header": "Network Traffic Attributes",
+          "section_info": [
             "Aggregate IP addresses to identify the common carriers / autonomous system numbers.",
             "Establish normal and abnormal behavior for traffic originating from those networks."
           ]

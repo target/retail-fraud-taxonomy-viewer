@@ -12,9 +12,11 @@
   "sub_techniques": [],
   "details": [
     {
-      "technique_description": [
+      "section_header": "Technique Description",
+      "section_details": [
         {
-          "description": [
+          "section_sub_header": "Description",
+          "section_info": [
             "The fraudster uses a legitimate resource to create an account for malicious usage. These accounts may be used for reconnaissance and to probe the defenses of the victim’s applications.",
             "One example of this is if a fraudster creates an account with fake information. Using this as a foothold the fraudster may gather information on the application itself such as naming convention, loyalty points and other information that may be used to monetize the account."
           ]
@@ -22,34 +24,41 @@
       ]
     },
     {
-      "mitigation": [
+      "section_header": "Mitigation",
+      "section_details": [
         {
-          "multi-factor_authentication": [
+          "section_sub_header": "Multi-Factor Authentication",
+          "section_info": [
             "Before permitting account changes, use multiple forms of authentication such as username and password paired with a one-time passcode before permitting access.",
-            "If relevant, send confirmatory message to the original contact fields (eg, original email address, phone number, street address)."
+            "If relevant, send confirmatory message to the original contact fields (eg., original email address, phone number, street address)."
           ]
         }
       ]
     },
     {
-      "detection": [
+      "section_header": "Detection",
+      "section_details": [
         {
-          "network_traffic_address_attributes": [
+          "section_sub_header": "Network Traffic Attributes",
+          "section_info": [
             "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
           ]
         },
         {
-          "time-based_attributes": [
+          "section_sub_header": "Time-Based Attributes",
+          "section_info": [
             "Based on the location of your operations, monitor for activities that occur during off hours."
           ]
         },
         {
-          "device_attributes": [
+          "section_sub_header": "Device Attributes",
+          "section_info": [
             "Monitor device factors such as device type, user agent string, operating system, cookies."
           ]
         },
         {
-          "velocity_attributes ": [
+          "section_sub_header": "Velocity Attributes",
+          "section_info": [
             "Monitor for accounts that are created quickly in succession from the same location or with similar features."
           ]
         }

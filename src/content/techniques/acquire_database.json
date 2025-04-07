@@ -10,9 +10,11 @@
   "sub_techniques": [],
   "details": [
     {
-      "technique_description": [
+      "section_header": "Technique Description",
+      "section_details": [
         {
-          "description": [
+          "section_sub_header": "Description",
+          "section_info": [
             "Fraudster will, through legitimate or illegal means, acquire databases that may be used for future operations. These databases may range from legitimate marketing information sold by reputable companies to data stolen from victims.",
             "Some examples of databases that can be acquired to support operations are account databases, marketing information, gift card numbers and personally identifiable information (PII)."
           ]
@@ -20,18 +22,22 @@
       ]
     },
     {
-      "mitigation": [
+      "section_header": "Mitigation",
+      "section_details": [
         {
-          "password_policy": [
+          "section_sub_header": "Password Policy",
+          "section_info": [
             "Encourage using strong passwords with sufficient length and complexity. Discourage reusing passwords."
           ]
         }
       ]
     },
     {
-      "detection": [
+      "section_header": "Detection",
+      "section_details": [
         {
-          "online_identities": [
+          "section_sub_header": "Online Identities",
+          "section_info": [
             "Subscribe to breach databases and monitor logins for usage of known or publicly compromised credentials."
           ]
         }

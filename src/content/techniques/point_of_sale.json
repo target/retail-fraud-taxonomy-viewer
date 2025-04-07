@@ -10,47 +10,59 @@
   "sub_techniques": [],
   "details": [
     {
-      "technique_description": [
+      "section_header": "Technique Description",
+      "section_details": [
         {
-          "description": [
+          "section_sub_header": "Description",
+          "section_info": [
             "The fraudster uses the checkout in-store to convert illicit resources into liquid funds."
           ]
         }
       ]
     },
     {
-      "mitigation": [
+      "section_header": "Mitigation",
+      "section_details": [
         {
-          "access_code_required": [
+          "section_sub_header": "Access Code Required",
+          "section_info": [
             "Require an access code that is separate from the gift card before refunding gift card value."
           ]
         },
         {
-          "behavior_prevention": [
+          "section_sub_header": "Behavior Prevention",
+          "section_info": [
             "Identify potentially fraudulent returns and do not refund money if fraud is detected."
           ]
         },
         {
-          "restocking_fees": [
+          "section_sub_header": "Restocking Fees",
+          "section_info": [
             "Require a fee for potentially fraudulent returns."
           ]
         },
         {
-          "delayed_reimbursement": [
+          "section_sub_header": "Delayed Reimbursement",
+          "section_info": [
             "Postpone refund by a predetermined amount of time for items that are commonly related to fraud."
           ]
         }
       ]
     },
     {
-      "detection": [
+      "section_header": "Detection",
+      "section_details": [
         {
-          "transaction_data ": [
+          "section_sub_header": "Transaction data",
+          "section_info": [
             "Monitor and record product serial number of items that are commonly related to fraud."
           ]
         },
         {
-          "velocity_attributes": ["Monitor returns for total amount and total value of items returned."]
+          "section_sub_header": "Velocity Attributes",
+          "section_info": [
+            "Monitor returns for total amount and total value of items returned."
+          ]
         }
       ]
     }

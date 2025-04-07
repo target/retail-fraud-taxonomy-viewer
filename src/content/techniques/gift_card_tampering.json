@@ -11,9 +11,11 @@
   "sub_techniques": [],
   "details": [
     {
-      "technique_description": [
+      "section_header": "Technique Description",
+      "section_details": [
         {
-          "description": [
+          "section_sub_header": "Description",
+          "section_info": [
             "Fraudster takes physical possession of an unactivated gift card and takes the information that allows them to control the gift card when it is funded and activated.",
             "An example is if a fraudster steals gift cards from a store. They copy down the pertinent information needed to control the gift card and verify funds such as gift card number and security PIN. The fraudster then repackages the gift card and returns it to the store. When a victim purchases the gift card and loads value, the fraudster can spend the funds on the gift card without the victim’s awareness."
           ]
@@ -21,38 +23,46 @@
       ]
     },
     {
-      "mitigation": [
+      "section_header": "Mitigation",
+      "section_details": [
         {
-          "primary_gift_card_lock-in": [
+          "section_sub_header": "Primary Gift Card Lock-In",
+          "section_info": [
             "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
           ]
         },
         {
-          "login_required": [
-            "For gift cards, require an account before permitting purchase of or transfer."
+          "section_sub_header": "Login Required",
+          "section_info": [
+            "At physical locations, keep all company, store or corporate-related documents, manuals or communication in a non-public or secure area not visible to non-employees."
           ]
         },
         {
-          "gift_card_location": [
+          "section_sub_header": "Gift Card Location",
+          "section_info": [
             "Store gift cards behind checkout counter to limit theft."
           ]
         },
         {
-          "video_surveillance_system": [
+          "section_sub_header": "Video Surveillance System",
+          "section_info": [
             "For in-store gift card displays, consider the placement of a video security camera (CCTV) to monitor the area. Utilize signage to inform customers of CCTV use."
           ]
         }
       ]
     },
     {
-      "detection": [
+      "section_header": "Detection",
+      "section_details": [
         {
-          "security_guard": [
+          "section_sub_header": "Security Guard",
+          "section_info": [
             "At physical locations, use security guards and/or other store employees to identify instances of fraudsters stealing gift cards and/or returning tampered gift cards."
           ]
         },
         {
-          "video_surveillance_systems": [
+          "section_sub_header": "Video Surveillance Systems",
+          "section_info": [
             "At physical locations, use video surveillance to identify instances of fraudsters stealing gift cards and/or returning tampered gift cards."
           ]
         }

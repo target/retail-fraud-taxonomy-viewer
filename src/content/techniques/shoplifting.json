@@ -11,9 +11,11 @@
   "sub_techniques": [],
   "details": [
     {
-      "technique_description": [
+      "section_header": "Technique Description",
+      "section_details": [
         {
-          "description": [
+          "section_sub_header": "Description",
+          "section_info": [
             "Taking items from a store without paying for them. Shoplifting can range from concealing items in personal clothing or bags to swapping price tags to make items appear cheaper. Items shoplifted to support fraud are typically high value, small in size and easy to resell.",
             "Examples of commonly stolen items to support fraud are gift cards, electronics and luxury goods."
           ]
@@ -21,38 +23,46 @@
       ]
     },
     {
-      "mitigation": [
+      "section_header": "Mitigation",
+      "section_details": [
         {
-          "bag_control": [
+          "section_sub_header": "Bag Control",
+          "section_info": [
             "Control the size and type of bags that are permitted inside the store."
           ]
         },
         {
-          "structured_loss_prevention_program": [
-            "Implement a structured loss prevention program involving physical security, policies, procedures, resources and systems to prevent, deter and identify merchandise or gift card loss."
+          "section_sub_header": "Structured Loss Prevention Program",
+          "section_info": [
+            "Implement a structured loss prevention program involving physical security, policies, procedures, resources and systems to prevent, deter and identify merchandise or gift card loss. "
           ]
         },
         {
-          "anti-theft_prevention": [
+          "section_sub_header": "Anti-Theft Prevention",
+          "section_info": [
             "Additional physical protection of products from theft such as locked shelving, containers and vending machines, and storing items behind checkout counter."
           ]
         }
       ]
     },
     {
-      "detection": [
+      "section_header": "Detection",
+      "section_details": [
         {
-          "anti-theft_security_tags": [
+          "section_sub_header": "Anti-Theft Security Tags ",
+          "section_info": [
             "Attach a device to items that will cause an alarm if removed from the store without authorization."
           ]
         },
         {
-          "security_guards": [
+          "section_sub_header": "Security Guards",
+          "section_info": [
             "At physical locations, use security guards to identify and deter shoplifting."
           ]
         },
         {
-          "video_surveillance_systems": [
+          "section_sub_header": "Video Surveillance Systems",
+          "section_info": [
             "Monitor video feeds for suspicious activity around high-value items."
           ]
         }

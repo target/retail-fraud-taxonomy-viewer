@@ -38,11 +38,11 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
   useEffect(() => {
     if (details) {
       const initialOpenSections = details.reduce((acc, item) => {
-        Object.keys(item).forEach((key) => {
-          acc[key] = true;
-        });
+          acc[item.section_header] = true;
         return acc;
-      }, {});
+      }, 
+      
+      {});
       setOpenSections(initialOpenSections);
     }
   }, [details]);
@@ -62,59 +62,53 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
   const show_details = (details, type) => {
     return (
       details &&
-      details.map((item, index) => (
-        <section className="collapsible-section" key={index}>
-          {Object.entries(item).map(([key, value], subIndex) => {
-            let isOpen = type === 'details' ? openSections[key] : openReference;
-            return (
-              <div key={subIndex}>
-                <div>
-                  <div
-                    className={`Collapsible__trigger ${isPanelOpen ? 'shrink' : ''} ${isOpen ? 'open' : ''}`}
-                    onClick={() => {
-                      type === 'details'
-                        ? handleToggle(key)
-                        : setOpenReferences(!openReference);
-                    }}
-                    data-testid="header"
-                  >
-                    <h4>{formatData(key)}</h4>
-                    {isOpen ? (
-                      <FaChevronUp className="collapse-icon" />
-                    ) : (
-                      <FaChevronDown className="collapse-icon" />
-                    )}
-                  </div>
-                  {isOpen && (
-                    <div
-                      className={`collapsible-details ${isPanelOpen ? 'shrink' : ''}`}
-                    >
-                      {type === 'details'
-                        ? display_details(value)
-                        : display_references(value)}
-                    </div>
-                  )}
-                </div>
+      details.map((item, index) => {
+        const isOpen = type === 'details' ? openSections[item.section_header] : openReference;
+    
+        return (
+          <section className="collapsible-section" key={index}>
+            <div>
+              <div
+                className={`Collapsible__trigger ${isPanelOpen ? 'shrink' : ''} ${isOpen ? 'open' : ''}`}
+                onClick={() => {
+                  type === 'details'
+                    ? handleToggle(item.section_header)
+                    : setOpenReferences(!openReference);
+                }}
+                data-testid="header"
+              >
+               <h4>{type === 'details' ? item.section_header : 'References'}</h4>
+                {isOpen ? (
+                  <FaChevronUp className="collapse-icon" />
+                ) : (
+                  <FaChevronDown className="collapse-icon" />
+                )}
               </div>
-            );
-          })}
-        </section>
-      ))
+    
+              {isOpen && (
+                <div className={`collapsible-details ${isPanelOpen ? 'shrink' : ''}`}>
+                  {type === 'details'
+                    ? display_details(item.section_details)
+                    : display_references(details[0].references)}
+                </div>
+              )}
+            </div>
+          </section>
+        );
+      })
     );
-  };
+  }    
 
   const display_details = (tdetails) => {
     const urlRegex =
       /https?:\/\/(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+(?:\/[a-zA-Z0-9-_.~!*'();:@&=+$,/?#[\]]*)*|(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+(?:\/[a-zA-Z0-9-_.~!*'();:@&=+$,/?#[\]]*)*/g;
-
     if (tdetails) {
       return tdetails.map((item, index) => (
         <div key={index}>
-          {Object.entries(item).map(([key, value], subIndex) => (
-            <div key={subIndex}>
-              <h4>{formatData(key)}</h4>
+            <div key={index+1}>
+              <h4>{item.section_sub_header}</h4>
               <ul className="collapsible-details-list">
-                {value.map((line, lineIndex) => {
+                {item.section_info.map((line, lineIndex) => {
                   const matches = [...line.matchAll(urlRegex)];
                   if (matches.length > 0) {
                     let lastIndex = 0;
@@ -151,7 +145,6 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
                 })}
               </ul>
             </div>
-          ))}
         </div>
       ));
     } else {

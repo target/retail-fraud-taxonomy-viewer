@@ -5,10 +5,5 @@
     { "pre_compromise": "Acquire Database","intial_access": "Check Gift Card Balance", "control":"Gift Card Merging", "monetization": "" },
     { "pre_compromise": "Gift Card Number Generation","intial_access": "Valid Accounts", "control":"Gift Card Tampering", "monetization": "" },
     { "pre_compromise": "Password Reset","intial_access": "Password Reset", "control":"Gift Card Redemption", "monetization": "" },
-    { "pre_compromise": "Proxy Abuse","intial_access": "Credential Stuffing", "control":"Loyalty Points Abuse", "monetization": "" },
-    { "pre_compromise": "","intial_access": "", "control":"", "monetization": "" },
-    { "pre_compromise": "","intial_access": "", "control":"", "monetization": "" },
-    { "pre_compromise": "","intial_access": "", "control":"", "monetization": "" },
-    { "pre_compromise": "","intial_access": "", "control":"", "monetization": "" },
-    { "pre_compromise": "","intial_access": "", "control":"", "monetization": "" }
+    { "pre_compromise": "Proxy Abuse","intial_access": "Credential Stuffing", "control":"Loyalty Points Abuse", "monetization": "" }
   ]

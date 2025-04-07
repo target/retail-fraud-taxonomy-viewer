@@ -11,9 +11,11 @@
   "sub_techniques": [],
   "details": [
     {
-      "technique_description": [
+      "section_header": "Technique Description",
+      "section_details": [
         {
-          "description": [
+          "section_sub_header": "Description",
+          "section_info": [
             "The fraudster obtains a gift card through illegitimate or illicit means and purchases an item.",
             "One example of this is if a fraudster uses a fraudulently obtained gift card to purchase a high-value easy-to-sell item such as jewelry or electronics. The fraudster then can monetize these items through various strategies such as resale or drop shipping."
           ]
@@ -21,23 +23,28 @@
       ]
     },
     {
-      "mitigation": [
+      "section_header": "Mitigation",
+      "section_details": [
         {
-          "primary_gift_card_lock-in": [
+          "section_sub_header": "Primary Gift Card Lock-In",
+          "section_info": [
             "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
           ]
         },
         {
-          "login_required": [
+          "section_sub_header": "Login Required",
+          "section_info": [
             "For gift cards, require an account before permitting purchase of or transfer."
           ]
         }
       ]
     },
     {
-      "detection": [
+      "section_header": "Detection",
+      "section_details": [
         {
-          "transaction_data": [
+          "section_sub_header": "Transaction Data",
+          "section_info": [
             "Identify suspicious purchases of commonly resold items with potentially illicitly obtained gift cards."
           ]
         }

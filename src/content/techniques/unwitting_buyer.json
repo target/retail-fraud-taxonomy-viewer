@@ -12,32 +12,39 @@
   "sub_techniques": [],
   "details": [
     {
-      "technique_description": [
+      "section_header": "Technique Description",
+      "section_details": [
         {
-          "description": [
+          "section_sub_header": "Description",
+          "section_info": [
             "The fraudster sells the illicitly obtained goods or resources to an unwitting buyer."
           ]
         }
       ]
     },
     {
-      "mitigation": [
+      "section_header": "Mitigation",
+      "section_details": [
         {
-          "primary_gift_card_lock-in": [
+          "section_sub_header": "Primary Gift Card Lock-In",
+          "section_info": [
             "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
           ]
         },
         {
-          "login_required": [
+          "section_sub_header": "Login Required",
+          "section_info": [
             "For gift cards, require an account before permitting purchase of or transfer."
           ]
         }
       ]
     },
     {
-      "detection": [
+      "section_header": "Detection",
+      "section_details": [
         {
-          "market_resale_data": [
+          "section_sub_header": "Market Resale Data",
+          "section_info": [
             "Monitor for anomalous sales of serialized items and gift cards in third-party locations and other repositories."
           ]
         }

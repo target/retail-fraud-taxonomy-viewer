@@ -11,9 +11,11 @@
   "sub_techniques": [],
   "details": [
     {
-      "technique_description": [
+      "section_header": "Technique Description",
+      "section_details": [
         {
-          "description": [
+          "section_sub_header": "Description",
+          "section_info": [
             "The fraudster will use a third party to ship directly to a customer.",
             "For example, to obfuscate the legitimacy of the gift card, the fraudster will store gift cards with a third-party partner who will list and manage their gift cards. A buyer will purchase the gift card from the third party. The buyer will receive illegally obtained gift cards."
           ]
@@ -21,23 +23,28 @@
       ]
     },
     {
-      "mitigation": [
+      "section_header": "Mitigation",
+      "section_details": [
         {
-          "primary_gift_card_lock-in": [
+          "section_sub_header": "Primary Gift Card Lock-In",
+          "section_info": [
             "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
           ]
         },
         {
-          "login_required": [
+          "section_sub_header": "Login Required",
+          "section_info": [
             "For gift cards, require an account before permitting purchase of or transfer."
           ]
         }
       ]
     },
     {
-      "detection": [
+      "section_header": "Detection",
+      "section_details": [
         {
-          "transaction_data": [
+          "section_sub_header": "Transaction data",
+          "section_info": [
             "Monitor for anomalous purchases of easily monetized items such as electronics and luxury goods."
           ]
         }
