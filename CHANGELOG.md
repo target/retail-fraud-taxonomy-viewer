@@ -1,3 +1,16 @@
+# v1.2.8 (Mon Apr 07 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of https://github.com/target/retail-fraud-taxonomy-viewer ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Updated the typo ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 1
+
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
 # v1.2.7 (Mon Apr 07 2025)
 
 #### ⚠️ Pushed to `main`
