@@ -1,3 +1,15 @@
+# v1.2.9 (Fri Apr 11 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Updated the JSON schema ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 1
+
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
 # v1.2.8 (Mon Apr 07 2025)
 
 #### ⚠️ Pushed to `main`
