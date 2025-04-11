@@ -35,11 +35,7 @@ export const filterDataMap = (selectedIcon, filterType) => {
   } else if (filterType === MITIGATION) {
     return Object.keys(dataMap).reduce((filteredMap, key) => {
       if (
-        dataMap[key].details.some(
-          (detail) =>
-            detail.mitigation &&
-            detail.mitigation.some((mit) => selectedIcon in mit),
-        )
+        dataMap[key].mitigation.some((mit) => mit.type.includes(selectedIcon))
       ) {
         filteredMap[key] = dataMap[key];
       }
@@ -92,14 +88,8 @@ export const fetchAllMitigations = () => {
   const allMitigationKeys = new Set();
 
   Object.keys(dataMap).forEach((key) => {
-    dataMap[key].details.forEach((detail) => {
-      if (Array.isArray(detail.mitigation)) {
-        detail.mitigation.forEach((mitigationItem) => {
-          Object.keys(mitigationItem).forEach((mitigationKey) => {
-            allMitigationKeys.add(mitigationKey);
-          });
-        });
-      }
+    dataMap[key].mitigation.forEach((mitigationItem) => {
+      allMitigationKeys.add(mitigationItem.type);
     });
   });
 
