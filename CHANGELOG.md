@@ -1,3 +1,16 @@
+# v1.2.10 (Fri Apr 11 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Merge branch 'main' of https://github.com/target/retail-fraud-taxonomy-viewer ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Fixed the Filter by feature ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 1
+
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
 # v1.2.9 (Fri Apr 11 2025)
 
 #### ⚠️ Pushed to `main`
