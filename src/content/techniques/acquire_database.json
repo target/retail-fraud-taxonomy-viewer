@@ -2,64 +2,46 @@
   "code": "FT1004",
   "name": "Acquire Database",
   "parent_technique": "",
-  "tactics": ["Pre-Compromise"],
+  "tactics": [
+    "Pre-Compromise"
+  ],
   "schemes": [
     "Gift Card Fraud",
     "Account Take Over"
   ],
   "sub_techniques": [],
-  "details": [
+  "technique_description": [
+    "Fraudster will, through legitimate or illegal means, acquire databases that may be used for future operations. These databases may range from legitimate marketing information sold by reputable companies to data stolen from victims.",
+    "Some examples of databases that can be acquired to support operations are account databases, marketing information, gift card numbers and personally identifiable information (PII)."
+  ],
+  "mitigation": [
     {
-      "section_header": "Technique Description",
-      "section_details": [
-        {
-          "section_sub_header": "Description",
-          "section_info": [
-            "Fraudster will, through legitimate or illegal means, acquire databases that may be used for future operations. These databases may range from legitimate marketing information sold by reputable companies to data stolen from victims.",
-            "Some examples of databases that can be acquired to support operations are account databases, marketing information, gift card numbers and personally identifiable information (PII)."
-          ]
-        }
-      ]
-    },
-    {
-      "section_header": "Mitigation",
-      "section_details": [
-        {
-          "section_sub_header": "Password Policy",
-          "section_info": [
-            "Encourage using strong passwords with sufficient length and complexity. Discourage reusing passwords."
-          ]
-        }
-      ]
-    },
-    {
-      "section_header": "Detection",
-      "section_details": [
-        {
-          "section_sub_header": "Online Identities",
-          "section_info": [
-            "Subscribe to breach databases and monitor logins for usage of known or publicly compromised credentials."
-          ]
-        }
+      "type": "Password Policy",
+      "details": [
+        "Encourage using strong passwords with sufficient length and complexity. Discourage reusing passwords."
       ]
     }
   ],
-  "sources": [
+  "detection": [
     {
-      "references": [
-        {
-          "name": "MITRE ATT&CK",
-          "link":"https://attack.mitre.org/techniques/T1650/"
-        },
-        {
-          "name": "Top 10 Digital Commerce Account Risks & How to Mitigate Them by Gunnar Peterson",
-          "link":"https://www.forter.com/blog/rh-isac-account-risk-mitigation/"
-        },
-        {
-          "name": "Authentication and Access to Financial Institution Services and Systems",
-          "link":"https://www.ffiec.gov/guidance/Authentication-and-Access-to-Financial-Institution-Services-and-Systems.pdf"
-        }
+      "type": "Online Identities",
+      "details": [
+        "Subscribe to breach databases and monitor logins for usage of known or publicly compromised credentials."
       ]
+    }
+  ],
+  "references": [
+    {
+      "name": "MITRE ATT&CK",
+      "source": "https://attack.mitre.org/techniques/T1650/"
+    },
+    {
+      "name": "Top 10 Digital Commerce Account Risks & How to Mitigate Them by Gunnar Peterson",
+      "source": "https://www.forter.com/blog/rh-isac-account-risk-mitigation/"
+    },
+    {
+      "name": "Authentication and Access to Financial Institution Services and Systems",
+      "source": "https://www.ffiec.gov/guidance/Authentication-and-Access-to-Financial-Institution-Services-and-Systems.pdf"
     }
   ]
 }

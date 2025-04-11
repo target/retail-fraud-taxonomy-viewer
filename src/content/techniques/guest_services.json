@@ -1,88 +1,68 @@
 {
-  "code": "FT1303.2",
-  "name": "Guest Services",
-  "parent_technique": "Checkout",
-  "tactics": [
-    "Monetization"
-  ],
-  "schemes": [
-    "Gift Card Fraud",
-    "Account Take Over"
-  ],
-  "sub_techniques": [],
-  "details": [
-    {
-      "section_header": "Technique Description",
-      "section_details": [
+    "code": "FT1303.2",
+    "name": "Guest Services",
+    "parent_technique": "Checkout",
+    "tactics": [
+        "Monetization"
+    ],
+    "schemes": [
+        "Gift Card Fraud",
+        "Account Take Over"
+    ],
+    "sub_techniques": [],
+    "technique_description": [
+        "The fraudster uses the guest services in-store to convert illicit resources into liquid funds."
+    ],
+    "mitigation": [
         {
-          "section_sub_header": "Description",
-          "section_info": [
-            "The fraudster uses the guest services in-store to convert illicit resources into liquid funds."
-          ]
+            "type": "Access Code Required",
+            "details": [
+                "Require an access code that is separate from the gift card before refunding gift card value."
+            ]
+        },
+        {
+            "type": "Behavior Prevention",
+            "details": [
+                "Identify potentially fraudulent returns and do not refund money if fraud is detected."
+            ]
+        },
+        {
+            "type": "Restocking Fees",
+            "details": [
+                "Require a fee for potentially fraudulent returns."
+            ]
+        },
+        {
+            "type": "Delayed Reimbursement",
+            "details": [
+                "Postpone refund by a predetermined amount of time for items that are commonly related to fraud."
+            ]
+        },
+        {
+            "type": "Training and Awareness",
+            "details": [
+                "Train customer service representatives to identify potential fraud situations and deny refund."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Mitigation",
-      "section_details": [
+    ],
+    "detection": [
         {
-          "section_sub_header": "Access Code Required",
-          "section_info": [
-            "Require an access code that is separate from the gift card before refunding gift card value."
-          ]
+            "type": "Transaction data",
+            "details": [
+                "Monitor and record product serial number of items that are commonly related to fraud."
+            ]
         },
         {
-          "section_sub_header": "Behavior Prevention",
-          "section_info": [
-            "Identify potentially fraudulent returns and do not refund money if fraud is detected."
-          ]
-        },
-        {
-          "section_sub_header": "Restocking Fees",
-          "section_info": [
-            "Require a fee for potentially fraudulent returns."
-          ]
-        },
-        {
-          "section_sub_header": "Delayed Reimbursement",
-          "section_info": [
-            "Postpone refund by a predetermined amount of time for items that are commonly related to fraud."
-          ]
-        },
-        {
-          "section_sub_header": "Training and Awareness",
-          "section_info": [
-            "Train customer service representatives to identify potential fraud situations and deny refund."
-          ]
+            "type": "Velocity Attributes",
+            "details": [
+                "Monitor returns for total amount and total value of items returned."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Detection",
-      "section_details": [
+    ],
+    "references": [
         {
-          "section_sub_header": "Transaction data",
-          "section_info": [
-            "Monitor and record product serial number of items that are commonly related to fraud."
-          ]
-        },
-        {
-          "section_sub_header": "Velocity Attributes",
-          "section_info": [
-            "Monitor returns for total amount and total value of items returned."
-          ]
+            "name": "Industry Partner Collaboration",
+            "source": ""
         }
-      ]
-    }
-  ],
-  "sources": [
-    {
-      "references": [
-        {
-          "name": "Industry Partner Collaboration",
-          "link": ""
-        }
-      ]
-    }
-  ]
+    ]
 }

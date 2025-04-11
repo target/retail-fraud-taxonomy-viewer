@@ -61,12 +61,12 @@ export const hasSubTechnique = (technique) => {
 
 export const fetchTechniqueDetails = (technique) => {
   const techData = fetchTechnique(technique);
-  return techData && techData.details;
+  return techData
 };
 
 export const fetchTechniqueReferences = (technique) => {
   const techData = fetchTechnique(technique);
-  return techData && techData.sources;
+  return techData && techData.references;
 };
 
 export const formatData = (inputData) => {

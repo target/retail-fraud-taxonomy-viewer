@@ -1,76 +1,56 @@
 {
-  "code": "FT1202",
-  "name": "Gift Card Merging",
-  "parent_technique": "",
-  "tactics": [
-    "Control"
-  ],
-  "schemes": [
-    "Gift Card Fraud"
-  ],
-  "sub_techniques": [],
-  "details": [
-    {
-      "section_header": "Technique Description",
-      "section_details": [
+    "code": "FT1202",
+    "name": "Gift Card Merging",
+    "parent_technique": "",
+    "tactics": [
+        "Control"
+    ],
+    "schemes": [
+        "Gift Card Fraud"
+    ],
+    "sub_techniques": [],
+    "technique_description": [
+        "The fraudster obtains a gift card through legitimate means. Using a retailer-provided method they transfer value from an illicitly obtained gift card to legitimate gift cards.",
+        "For example, a fraudster purchases a legitimate gift card with a value of $5. They illicitly obtain multiple gift cards with values of $100 and $150. Using a legitimate retailer feature they combine gift cards. The values of the illicitly obtained gift cards are added to the legitimate one. The fraudster added $250 to their $5 gift card. They now have $255 on their legitimate gift card."
+    ],
+    "mitigation": [
         {
-          "section_sub_header": "Description",
-          "section_info": [
-            "The fraudster obtains a gift card through legitimate means. Using a retailer-provided method they transfer value from an illicitly obtained gift card to legitimate gift cards.",
-            "For example, a fraudster purchases a legitimate gift card with a value of $5. They illicitly obtain multiple gift cards with values of $100 and $150. Using a legitimate retailer feature they combine gift cards. The values of the illicitly obtained gift cards are added to the legitimate one. The fraudster added $250 to their $5 gift card. They now have $255 on their legitimate gift card."
-          ]
-        }
-      ]
-    },
-    {
-      "section_header": "Mitigation",
-      "section_details": [
-        {
-          "section_sub_header": "Behavior Prevention",
-          "section_info": [
-            "Do not permit merging of gift cards."
-          ]
+            "type": "Behavior Prevention",
+            "details": [
+                "Do not permit merging of gift cards."
+            ]
         },
         {
-          "section_sub_header": "Login Required",
-          "section_info": [
-            "Require authentication before permitting transfer of gift card value."
-          ]
+            "type": "Login Required",
+            "details": [
+                "Require authentication before permitting transfer of gift card value."
+            ]
         },
         {
-          "section_sub_header": "Access Code Required",
-          "section_info": [
-            "Require an access code before permitting transfer of gift card value."
-          ]
+            "type": "Access Code Required",
+            "details": [
+                "Require an access code before permitting transfer of gift card value."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Detection",
-      "section_details": [
+    ],
+    "detection": [
         {
-          "section_sub_header": "Transaction Data",
-          "section_info": [
-            "Identify suspicious transfer of value from gift cards to other gift cards."
-          ]
+            "type": "Transaction Data",
+            "details": [
+                "Identify suspicious transfer of value from gift cards to other gift cards."
+            ]
         },
         {
-          "section_sub_header": "Velocity Attributes",
-          "section_info": [
-            "Identify suspicious transfers from many gift cards to one gift card, for example, if 20 gift cards with value of $5 are added to a single gift card."
-          ]
+            "type": "Velocity Attributes",
+            "details": [
+                "Identify suspicious transfers from many gift cards to one gift card, for example, if 20 gift cards with value of $5 are added to a single gift card."
+            ]
         }
-      ]
-    }
-  ],
-  "sources": [
-    {
-      "references": [
+    ],
+    "references": [
         {
-          "name": "Industry Partner Collaboration",
-          "link": ""
+            "name": "Industry Partner Collaboration",
+            "source": ""
         }
-      ]
-    }
-  ]
+    ]
 }

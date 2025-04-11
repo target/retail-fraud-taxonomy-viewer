@@ -1,56 +1,38 @@
 {
-  "code": "FT1007",
-  "name": "Proxy Abuse",
-  "parent_technique": "",
-  "tactics": ["Pre-Compromise"],
-  "schemes": [
-    "Account Take Over"
-  ],
-  "sub_techniques": [],
-  "details": [
-    {
-      "section_header": "Technique Description",
-      "section_details": [
+    "code": "FT1007",
+    "name": "Proxy Abuse",
+    "parent_technique": "",
+    "tactics": [
+        "Pre-Compromise"
+    ],
+    "schemes": [
+        "Account Take Over"
+    ],
+    "sub_techniques": [],
+    "technique_description": [
+        "Actors abuse legitimate or illegal proxy services that act as an intermediary for requests from clients seeking resources from other servers, effectively masking the fraudster\u2019s IP address or other network attributes. Some examples of this are use of commercial VPN services, proxies through hosting providers, residential proxies, compromised machines such as botnets and malware infected hosts, and TOR services."
+    ],
+    "mitigation": [
         {
-          "section_sub_header": "Description",
-          "section_info": [
-            "Actors abuse legitimate or illegal proxy services that act as an intermediary for requests from clients seeking resources from other servers, effectively masking the fraudster’s IP address or other network attributes. Some examples of this are use of commercial VPN services, proxies through hosting providers, residential proxies, compromised machines such as botnets and malware infected hosts, and TOR services."
-          ]
+            "type": "Behavioral Prevention",
+            "details": [
+                "Block traffic from known proxies, TOR exit nodes and infected machines."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Mitigation",
-      "section_details": [
+    ],
+    "detection": [
         {
-          "section_sub_header": "Behavioral Prevention",
-          "section_info": [
-            "Block traffic from known proxies, TOR exit nodes and infected machines."
-          ]
+            "type": "Network Traffic Attributes",
+            "details": [
+                "Aggregate IP addresses to identify the common carriers / autonomous system numbers.",
+                "Establish normal and abnormal behavior for traffic originating from those networks."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Detection",
-      "section_details": [
+    ],
+    "references": [
         {
-          "section_sub_header": "Network Traffic Attributes",
-          "section_info": [
-            "Aggregate IP addresses to identify the common carriers / autonomous system numbers.",
-            "Establish normal and abnormal behavior for traffic originating from those networks."
-          ]
+            "name": "MITRE ATT&CK",
+            "source": "https://attack.mitre.org/techniques/T1090/"
         }
-      ]
-    }
-  ],
-  "sources": [
-    {
-      "references": [
-        {
-          "name": "MITRE ATT&CK",
-          "link":"https://attack.mitre.org/techniques/T1090/"
-        }
-      ]
-    }
-  ]
+    ]
 }

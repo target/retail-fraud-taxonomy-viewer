@@ -1,82 +1,62 @@
 {
-  "code": "FT1303.3",
-  "name": "Online Or Web Mobile",
-  "parent_technique": "Checkout",
-  "tactics": [
-    "Monetization"
-  ],
-  "schemes": [
-    "Gift Card Fraud",
-    "Account Take Over"
-  ],
-  "sub_techniques": [],
-  "details": [
-    {
-      "section_header": "Technique Description",
-      "section_details": [
+    "code": "FT1303.3",
+    "name": "Online Or Web Mobile",
+    "parent_technique": "Checkout",
+    "tactics": [
+        "Monetization"
+    ],
+    "schemes": [
+        "Gift Card Fraud",
+        "Account Take Over"
+    ],
+    "sub_techniques": [],
+    "technique_description": [
+        "The fraudster uses digital resources to convert illicit resources into liquid funds."
+    ],
+    "mitigation": [
         {
-          "section_sub_header": "Description",
-          "section_info": [
-            "The fraudster uses digital resources to convert illicit resources into liquid funds."
-          ]
+            "type": "Online Location Data",
+            "details": [
+                "Some physical locations should not be able to return items. Some locations may also be the source of repeated fraud attempts. Prevent the ability to return items for funds based on locations."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Mitigation",
-      "section_details": [
+    ],
+    "detection": [
         {
-          "section_sub_header": "Online Location Data",
-          "section_info": [
-            "Some physical locations should not be able to return items. Some locations may also be the source of repeated fraud attempts. Prevent the ability to return items for funds based on locations."
-          ]
-        }
-      ]
-    },
-    {
-      "section_header": "Detection",
-      "section_details": [
-        {
-          "section_sub_header": "Transaction data",
-          "section_info": [
-            "Monitor and record product serial number of items that are commonly related to fraud."
-          ]
+            "type": "Transaction data",
+            "details": [
+                "Monitor and record product serial number of items that are commonly related to fraud."
+            ]
         },
         {
-          "section_sub_header": "Network Traffic Attributes",
-          "section_info": [
-            "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
-          ]
+            "type": "Network Traffic Attributes",
+            "details": [
+                "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
+            ]
         },
         {
-          "section_sub_header": "Time-Based Attributes",
-          "section_info": [
-            "Based on the location of your operations, monitor for activities that occur during off hours."
-          ]
+            "type": "Time-Based Attributes",
+            "details": [
+                "Based on the location of your operations, monitor for activities that occur during off hours."
+            ]
         },
         {
-          "section_sub_header": "Device Attributes",
-          "section_info": [
-            "Monitor device factors such as device type, user agent string, operating system, cookies."
-          ]
+            "type": "Device Attributes",
+            "details": [
+                "Monitor device factors such as device type, user agent string, operating system, cookies."
+            ]
         },
         {
-          "section_sub_header": "Velocity Attributes",
-          "section_info": [
-            "Monitor for number of requests based on a predetermined number of requests over a set amount of time."
-          ]
+            "type": "Velocity Attributes",
+            "details": [
+                "Monitor for number of requests based on a predetermined number of requests over a set amount of time."
+            ]
         }
-      ]
-    }
-  ],
-  "sources": [
-    {
-      "references": [
+    ],
+    "references": [
         {
-          "name": "Industry Partner Collaboration",
-          "link": ""
+            "name": "Industry Partner Collaboration",
+            "source": ""
         }
-      ]
-    }
-  ]
+    ]
 }

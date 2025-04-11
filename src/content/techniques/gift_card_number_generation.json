@@ -1,55 +1,37 @@
 {
-  "code": "FT1005",
-  "name": "Gift Card Number Generation",
-  "parent_technique": "",
-  "tactics": ["Pre-Compromise"],
-  "schemes": [
-    "Gift Card Fraud"
-  ],
-  "sub_techniques": [],
-  "details": [
-    {
-      "section_header": "Technique Description",
-      "section_details": [
+    "code": "FT1005",
+    "name": "Gift Card Number Generation",
+    "parent_technique": "",
+    "tactics": [
+        "Pre-Compromise"
+    ],
+    "schemes": [
+        "Gift Card Fraud"
+    ],
+    "sub_techniques": [],
+    "technique_description": [
+        "Fraudster uses an algorithm or brute force to generate gift card numbers that can potentially be legitimate. This can be conducted by predicting or acquiring the algorithm used to generate gift card numbers and creating them. This can be used with Check Gift Card Balance to identify legitimate gift cards with funds for future use."
+    ],
+    "mitigation": [
         {
-          "section_sub_header": "Description",
-          "section_info": [
-            "Fraudster uses an algorithm or brute force to generate gift card numbers that can potentially be legitimate. This can be conducted by predicting or acquiring the algorithm used to generate gift card numbers and creating them. This can be used with Check Gift Card Balance to identify legitimate gift cards with funds for future use."
-          ]
+            "type": "Brute Force Resistant Gift Card Numbers ",
+            "details": [
+                "Generate long and complicated gift card numbers that are resistant to prediction. "
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Mitigation",
-      "section_details": [
+    ],
+    "detection": [
         {
-          "section_sub_header": "Brute Force Resistant Gift Card Numbers ",
-          "section_info": [
-            "Generate long and complicated gift card numbers that are resistant to prediction. "
-          ]
+            "type": "Info",
+            "details": [
+                "This technique cannot be easily detected by organizational controls due to it occurring outside of the organization\u2019s scope."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Detection",
-      "section_details": [
+    ],
+    "references": [
         {
-          "section_sub_header": "Info",
-          "section_info": [
-            "This technique cannot be easily detected by organizational controls due to it occurring outside of the organization’s scope."
-          ]
+            "name": "Industry Partner Collaboration",
+            "source": ""
         }
-      ]
-    }
-  ],
-  "sources": [
-    {
-      "references": [
-        {
-          "name": "Industry Partner Collaboration",
-          "link": ""
-        }
-      ]
-    }
-  ]
+    ]
 }

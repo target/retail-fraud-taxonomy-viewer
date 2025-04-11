@@ -1,85 +1,66 @@
 {
-  "code": "FT1104.2",
-  "name": "Fraudulent Account Update",
-  "parent_technique": "Valid Accounts",
-  "tactics": [
-    "Pre-Compromise", "Initial Access"
-  ],
-  "schemes": [
-    "Gift Card Fraud",
-    "Account Take Over"
-  ],
-  "sub_techniques": [],
-  "details": [
-    {
-      "section_header": "Technique Description",
-      "section_details": [
+    "code": "FT1104.2",
+    "name": "Fraudulent Account Update",
+    "parent_technique": "Valid Accounts",
+    "tactics": [
+        "Pre-Compromise",
+        "Initial Access"
+    ],
+    "schemes": [
+        "Gift Card Fraud",
+        "Account Take Over"
+    ],
+    "sub_techniques": [],
+    "technique_description": [
+        "The fraudster uses and makes changes to an account without the knowledge of the account holder.",
+        "One example of this is if a fraudster convinces a helpdesk to update the phone number of a legitimate account to one they control. The fraudster can then use this to reset the password or otherwise authenticate to control the victim\u2019s account."
+    ],
+    "mitigation": [
         {
-          "section_sub_header": "Description",
-          "section_info": [
-            "The fraudster uses and makes changes to an account without the knowledge of the account holder.",
-            "One example of this is if a fraudster convinces a helpdesk to update the phone number of a legitimate account to one they control. The fraudster can then use this to reset the password or otherwise authenticate to control the victim’s account."
-          ]
+            "type": "Multi-Factor Authentication",
+            "details": [
+                "Use multiple forms of authentication such as username and password paired with a one-time passcode before permitting access.",
+                "Require identity verification upon detection of access requests that are significantly different than what is expected for the individual.",
+                "Send confirmatory message to the original contact fields (eg. original email address, phone number, street address)."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Mitigation",
-      "section_details": [
+    ],
+    "detection": [
         {
-          "section_sub_header": "Multi-Factor Authentication",
-          "section_info": [
-            "Use multiple forms of authentication such as username and password paired with a one-time passcode before permitting access.",
-            "Require identity verification upon detection of access requests that are significantly different than what is expected for the individual.",
-            "Send confirmatory message to the original contact fields (eg. original email address, phone number, street address)."
-          ]
-        }
-      ]
-    },
-    {
-      "section_header": "Detection",
-      "section_details": [
-        {
-          "section_sub_header": "Network Traffic Attributes",
-          "section_info": [
-            "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
-          ]
+            "type": "Network Traffic Attributes",
+            "details": [
+                "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
+            ]
         },
         {
-          "section_sub_header": "Time-Based Attributes",
-          "section_info": [
-            "Based on the location of your operations, monitor for activities that occur during off hours."
-          ]
+            "type": "Time-Based Attributes",
+            "details": [
+                "Based on the location of your operations, monitor for activities that occur during off hours."
+            ]
         },
         {
-          "section_sub_header": "Device Attributes",
-          "section_info": [
-            "Monitor device factors such as device type, user agent string, operating system, cookies."
-          ]
+            "type": "Device Attributes",
+            "details": [
+                "Monitor device factors such as device type, user agent string, operating system, cookies."
+            ]
         },
         {
-          "section_sub_header": "Velocity Attributes",
-          "section_info": [
-            "Monitor for accounts that are created quickly in succession from the same location or with similar features."
-          ]
+            "type": "Velocity Attributes",
+            "details": [
+                "Monitor for accounts that are created quickly in succession from the same location or with similar features."
+            ]
         },
         {
-          "section_sub_header": "Online Identities",
-          "section_info": [
-            "Monitor for account creations with suspicious names that do not appear legitimate. Some examples are ABCD, AAA, QAZ, etc."
-          ]
+            "type": "Online Identities",
+            "details": [
+                "Monitor for account creations with suspicious names that do not appear legitimate. Some examples are ABCD, AAA, QAZ, etc."
+            ]
         }
-      ]
-    }
-  ],
-  "sources": [
-    {
-      "references": [
+    ],
+    "references": [
         {
-          "name": "Top 10 Digital Commerce Account Risks & How to Mitigate Them by Gunnar Peterson",
-          "link":"https://www.forter.com/blog/rh-isac-account-risk-mitigation/"
+            "name": "Top 10 Digital Commerce Account Risks & How to Mitigate Them by Gunnar Peterson",
+            "source": "https://www.forter.com/blog/rh-isac-account-risk-mitigation/"
         }
-      ]
-    }
-  ]
+    ]
 }

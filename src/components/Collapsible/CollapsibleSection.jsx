@@ -13,13 +13,14 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
   const [isVisible, setIsVisible] = useState(true);
   const [details, setDetails] = useState(null);
   const [references, setReferences] = useState(null);
-  const [openSections, setOpenSections] = useState({});
+  const [openSections, setOpenSections] = useState({ 'Description': true, 'Mitigation': true, 'Detection': true, 'References': true });
   const [openReference, setOpenReferences] = useState(true);
 
   useEffect(() => {
     setTechnique(techniqueName);
     setIsVisible(true);
     setOpenReferences(true);
+
   }, [techniqueName]);
 
   useEffect(() => {
@@ -35,18 +36,6 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
     }
   }, [technique]);
 
-  useEffect(() => {
-    if (details) {
-      const initialOpenSections = details.reduce((acc, item) => {
-          acc[item.section_header] = true;
-        return acc;
-      }, 
-      
-      {});
-      setOpenSections(initialOpenSections);
-    }
-  }, [details]);
-
   const handleToggle = (sectionKey) => {
     setOpenSections((prevState) => ({
       ...prevState,
@@ -59,45 +48,40 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
     setIsVisible(false);
   };
 
-  const show_details = (details, type) => {
+  const show_details = (details, section_header, type) => {
+    const isOpen = type === 'details' ? openSections[section_header] : openReference;
+
     return (
-      details &&
-      details.map((item, index) => {
-        const isOpen = type === 'details' ? openSections[item.section_header] : openReference;
-    
-        return (
-          <section className="collapsible-section" key={index}>
-            <div>
-              <div
-                className={`Collapsible__trigger ${isPanelOpen ? 'shrink' : ''} ${isOpen ? 'open' : ''}`}
-                onClick={() => {
-                  type === 'details'
-                    ? handleToggle(item.section_header)
-                    : setOpenReferences(!openReference);
-                }}
-                data-testid="header"
-              >
-               <h4>{type === 'details' ? item.section_header : 'References'}</h4>
-                {isOpen ? (
-                  <FaChevronUp className="collapse-icon" />
-                ) : (
-                  <FaChevronDown className="collapse-icon" />
-                )}
-              </div>
-    
-              {isOpen && (
-                <div className={`collapsible-details ${isPanelOpen ? 'shrink' : ''}`}>
-                  {type === 'details'
-                    ? display_details(item.section_details)
-                    : display_references(details[0].references)}
-                </div>
-              )}
+      <section className="collapsible-section">
+        <div>
+          <div
+            className={`Collapsible__trigger ${isPanelOpen ? 'shrink' : ''} ${isOpen ? 'open' : ''}`}
+            onClick={() => {
+              type === 'details'
+                ? handleToggle(section_header)
+                : setOpenReferences(!openReference);
+            }}
+            data-testid="header"
+          >
+            <h4>{type === 'details' ? section_header : 'References'}</h4>
+            {isOpen ? (
+              <FaChevronUp className="collapse-icon" />
+            ) : (
+              <FaChevronDown className="collapse-icon" />
+            )}
+          </div>
+
+          {isOpen && (
+            <div className={`collapsible-details ${isPanelOpen ? 'shrink' : ''}`}>
+              {type === 'details'
+                ? display_details(details)
+                : display_references(references)}
             </div>
-          </section>
-        );
-      })
+          )}
+        </div>
+      </section>
     );
-  }    
+  }
 
   const display_details = (tdetails) => {
     const urlRegex =
@@ -105,46 +89,46 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
     if (tdetails) {
       return tdetails.map((item, index) => (
         <div key={index}>
-            <div key={index+1}>
-              <h4>{item.section_sub_header}</h4>
-              <ul className="collapsible-details-list">
-                {item.section_info.map((line, lineIndex) => {
-                  const matches = [...line.matchAll(urlRegex)];
-                  if (matches.length > 0) {
-                    let lastIndex = 0;
-                    let parts = [];
-                    matches.forEach((match, i) => {
-                      const url = match[0];
-                      const start = match.index;
-                      if (start > lastIndex) {
-                        parts.push(line.slice(lastIndex, start));
-                      }
-                      const urlToRender = url.startsWith('http')
-                        ? url
-                        : `https://${url}`;
-                      parts.push(
-                        <a
-                          href={urlToRender}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{ color: '#0099cc' }}
-                          key={`url-${i}`}
-                        >
-                          {url}
-                        </a>,
-                      );
-                      lastIndex = start + url.length;
-                    });
-                    if (lastIndex < line.length) {
-                      parts.push(line.slice(lastIndex));
+          <div key={index + 1}>
+            <h4>{item?.type ? item.type : 'Description'}</h4>
+            <ul className="collapsible-details-list">
+              {(item?.details == null ? item : item.details)?.map((line, lineIndex) => {
+                const matches = [...line.matchAll(urlRegex)];
+                if (matches.length > 0) {
+                  let lastIndex = 0;
+                  let parts = [];
+                  matches.forEach((match, i) => {
+                    const url = match[0];
+                    const start = match.index;
+                    if (start > lastIndex) {
+                      parts.push(line.slice(lastIndex, start));
                     }
-                    return <li key={lineIndex}>{parts}</li>;
-                  } else {
-                    return <li key={lineIndex}>{line}</li>;
+                    const urlToRender = url.startsWith('http')
+                      ? url
+                      : `https://${url}`;
+                    parts.push(
+                      <a
+                        href={urlToRender}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: '#0099cc' }}
+                        key={`url-${i}`}
+                      >
+                        {url}
+                      </a>,
+                    );
+                    lastIndex = start + url.length;
+                  });
+                  if (lastIndex < line.length) {
+                    parts.push(line.slice(lastIndex));
                   }
-                })}
-              </ul>
-            </div>
+                  return <li key={lineIndex}>{parts}</li>;
+                } else {
+                  return <li key={lineIndex}>{line}</li>;
+                }
+              })}
+            </ul>
+          </div>
         </div>
       ));
     } else {
@@ -159,10 +143,10 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
           {treferences.map((item, index) => {
             return (
               <li key={index}>
-                {item['link'] && item['link'].length > 0 ? (
+                {item['source'] && item['source'].length > 0 ? (
                   <a
                     style={{ color: '#0099cc' }}
-                    href={item['link']}
+                    href={item['source']}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -197,8 +181,10 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
           <IoMdCloseCircle />
         </button>
       </h2>
-      {show_details(details, 'details')}
-      {show_details(references, 'references')}
+      {show_details([details?.technique_description], 'Description', 'details')}
+      {show_details(details?.mitigation, 'Mitigation', 'details')}
+      {show_details(details?.detection, 'Detection', 'details')}
+      {show_details(references, 'References', references)}
     </main>
   );
 };

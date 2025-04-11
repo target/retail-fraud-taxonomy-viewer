@@ -1,63 +1,45 @@
 {
-  "code": "FT1003",
-  "name": "Fake Pages",
-  "parent_technique": "",
-  "tactics": ["Pre-Compromise"],
-  "schemes": [
-    "Gift Card Fraud",
-    "Account Take Over"
-  ],
-  "sub_techniques": [],
-  "details": [
-    {
-      "section_header": "Technique Description",
-      "section_details": [
+    "code": "FT1003",
+    "name": "Fake Pages",
+    "parent_technique": "",
+    "tactics": [
+        "Pre-Compromise"
+    ],
+    "schemes": [
+        "Gift Card Fraud",
+        "Account Take Over"
+    ],
+    "sub_techniques": [],
+    "technique_description": [
+        "The fraudster creates a web page that may mimic a legitimate website to fool victims into divulging information. This website may visually appear to be legitimate or have a URL that is like the legitimate website.",
+        "One example of this is to register a domain that looks or sounds like a legitimate website. If www.legitimatewebsite.com was the target, the fraudster may register a website similar to www.legitimatewebsite.io or www.legitwebsite.com. Using this, along with similar visual elements, the fraudsters can fool victims into divulging information such as account name and password."
+    ],
+    "mitigation": [
         {
-          "section_sub_header": "Description",
-          "section_info": [
-            "The fraudster creates a web page that may mimic a legitimate website to fool victims into divulging information. This website may visually appear to be legitimate or have a URL that is like the legitimate website.",
-            "One example of this is to register a domain that looks or sounds like a legitimate website. If www.legitimatewebsite.com was the target, the fraudster may register a website similar to www.legitimatewebsite.io or www.legitwebsite.com. Using this, along with similar visual elements, the fraudsters can fool victims into divulging information such as account name and password."
-          ]
-        }
-      ]
-    },
-    {
-      "section_header": "Mitigation",
-      "section_details": [
-        {
-          "section_sub_header": "Website Takedown Requests",
-          "section_info": [
-            "When a fake page is identified file a takedown request with the Website Host and DNS Registrar."
-          ]
+            "type": "Website Takedown Requests",
+            "details": [
+                "When a fake page is identified file a takedown request with the Website Host and DNS Registrar."
+            ]
         },
         {
-          "section_sub_header": "DNS Registration",
-          "section_info": [
-            "Identify potential URLs that may be mistaken for the legitimate website and register them so they cannot be used by fraudsters."
-          ]
+            "type": "DNS Registration",
+            "details": [
+                "Identify potential URLs that may be mistaken for the legitimate website and register them so they cannot be used by fraudsters."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Detection",
-      "section_details": [
+    ],
+    "detection": [
         {
-          "section_sub_header": "Network Traffic Attributes",
-          "section_info": [
-            "Monitor domain registration, certificate transparency logs and phishing sites to identify sites established with your branding but designed to fool your customers into divulging information."
-          ]
+            "type": "Network Traffic Attributes",
+            "details": [
+                "Monitor domain registration, certificate transparency logs and phishing sites to identify sites established with your branding but designed to fool your customers into divulging information."
+            ]
         }
-      ]
-    }
-  ],
-  "sources": [
-    {
-      "references": [
+    ],
+    "references": [
         {
-          "name": "Industry Partner Collaboration",
-          "link": ""
+            "name": "Industry Partner Collaboration",
+            "source": ""
         }
-      ]
-    }
-  ]
+    ]
 }

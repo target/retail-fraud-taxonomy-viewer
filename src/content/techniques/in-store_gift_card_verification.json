@@ -3,55 +3,35 @@
     "name": "In-Store Gift Card Verification",
     "parent_technique": "Check Gift Card Balance",
     "tactics": [
-      "Initial Access"
+        "Initial Access"
     ],
     "schemes": [
-      "Gift Card Fraud"
+        "Gift Card Fraud"
     ],
     "sub_techniques": [],
-    "details": [
-      {
-        "section_header": "Technique Description",
-        "section_details": [
-          {
-            "section_sub_header": "Description",
-            "section_info": [
-              "The fraudster uses legitimate functions inside a bricks-and-mortar store to verify status of gift cards. The fraudster may use kiosks, checkout or customer service to verify legitimacy of a gift card."
+    "technique_description": [
+        "The fraudster uses legitimate functions inside a bricks-and-mortar store to verify status of gift cards. The fraudster may use kiosks, checkout or customer service to verify legitimacy of a gift card."
+    ],
+    "mitigation": [
+        {
+            "type": "Access Code Required",
+            "details": [
+                "Require an access code that is separate from the gift card number before revealing the status and funds on the gift cards."
             ]
-          }
-        ]
-      },
-      {
-        "section_header": "Mitigation",
-        "section_details": [
-          {
-            "section_sub_header": "Access Code Required",
-            "section_info": [
-              "Require an access code that is separate from the gift card number before revealing the status and funds on the gift cards."
+        }
+    ],
+    "detection": [
+        {
+            "type": "Velocity Attributes",
+            "details": [
+                "Monitor for gift cards a person is attempting to verify."
             ]
-          }
-        ]
-      },
-      {
-        "section_header": "Detection",
-        "section_details": [
-          {
-            "section_sub_header": "Velocity Attributes",
-            "section_info": [
-              "Monitor for gift cards a person is attempting to verify."
-            ]
-          }
-        ]
-      }
-    ],  
-    "sources": [
-      {
-        "references": [
-          {
+        }
+    ],
+    "references": [
+        {
             "name": "Industry Partner Collaboration",
-            "link": ""
-          }
-        ]
-      }
+            "source": ""
+        }
     ]
-  }
+}

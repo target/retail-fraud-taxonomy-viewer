@@ -1,58 +1,38 @@
 {
-  "code": "FT1201",
-  "name": "Gift Card Return",
-  "parent_technique": "",
-  "tactics": [
-    "Control"
-  ],
-  "schemes": [
-    "Gift Card Fraud"
-  ],
-  "sub_techniques": [],
-  "details": [
-    {
-      "section_header": "Technique Description",
-      "section_details": [
+    "code": "FT1201",
+    "name": "Gift Card Return",
+    "parent_technique": "",
+    "tactics": [
+        "Control"
+    ],
+    "schemes": [
+        "Gift Card Fraud"
+    ],
+    "sub_techniques": [],
+    "technique_description": [
+        "The fraudster converts an illicitly acquired or invalid gift card into a legitimate gift card.",
+        "For example, a fraudster illicitly obtains a gift card. Through social engineering or taking advantage of a retailer\u2019s legitimate system, they transfer the value from the illicitly obtained gift card to a new gift card that the fraudster legitimately owns."
+    ],
+    "mitigation": [
         {
-          "section_sub_header": "Description",
-          "section_info": [
-            "The fraudster converts an illicitly acquired or invalid gift card into a legitimate gift card.",
-            "For example, a fraudster illicitly obtains a gift card. Through social engineering or taking advantage of a retailer’s legitimate system, they transfer the value from the illicitly obtained gift card to a new gift card that the fraudster legitimately owns."
-          ]
+            "type": "Return Limits",
+            "details": [
+                "Do not exchange gift cards over a pre-determined value."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Mitigation",
-      "section_details": [
+    ],
+    "detection": [
         {
-          "section_sub_header": "Return Limits",
-          "section_info": [
-            "Do not exchange gift cards over a pre-determined value."
-          ]
+            "type": "Transaction Data",
+            "details": [
+                "Identify suspicious purchases and returns by gift card numbers."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Detection",
-      "section_details": [
+    ],
+    "references": [
         {
-          "section_sub_header": "Transaction Data",
-          "section_info": [
-            "Identify suspicious purchases and returns by gift card numbers."
-          ]
+            "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
+            "source": "https://www.acams.org/en/media/document/29436"
         }
-      ]
-    }
-  ],
-  "sources": [
-    {
-      "references": [
-        {
-          "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
-          "link": "https://www.acams.org/en/media/document/29436"
-        }
-      ]
-    }
-  ]
+    ]
 }

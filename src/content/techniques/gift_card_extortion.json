@@ -1,90 +1,70 @@
 {
-  "code": "FT1102",
-  "name": "Gift Card Extortion",
-  "parent_technique": "",
-  "tactics": [
-    "Initial Access",
-    "Control"
-  ],
-  "schemes": [
-    "Gift Card Fraud"
-  ],
-  "sub_techniques": [],
-  "details": [
-    {
-      "section_header": "Technique Description",
-      "section_details": [
+    "code": "FT1102",
+    "name": "Gift Card Extortion",
+    "parent_technique": "",
+    "tactics": [
+        "Initial Access",
+        "Control"
+    ],
+    "schemes": [
+        "Gift Card Fraud"
+    ],
+    "sub_techniques": [],
+    "technique_description": [
+        "The fraudster obtains gift cards through coercion of a victim. This can involve many forms, including threats of violence, property damage, harm to reputation or unwarranted government action, unlike robbery or theft where property is taken without consent.",
+        "A fraudster may pretend to be a representative of the government to coerce a victim through a fear response. They may convince a victim that they must purchase gift cards with their own funds and turn the gift card over to the fraudster.",
+        "Another common extortion scam is a fraudster pretending to be a relative of a victim who is being held against their will, whether by criminals or a foreign government. They then convince the victim to purchase gift cards as restitution or a bribe to release their family member.",
+        "Fraudsters will also prey on retail organizations, using these tactics against employees, coercing or convincing them to purchase gift cards without taking payment, resulting in register shortage"
+    ],
+    "mitigation": [
         {
-          "section_sub_header": "Description",
-          "section_info": [
-            "The fraudster obtains gift cards through coercion of a victim. This can involve many forms, including threats of violence, property damage, harm to reputation or unwarranted government action, unlike robbery or theft where property is taken without consent.",
-            "A fraudster may pretend to be a representative of the government to coerce a victim through a fear response. They may convince a victim that they must purchase gift cards with their own funds and turn the gift card over to the fraudster.",
-            "Another common extortion scam is a fraudster pretending to be a relative of a victim who is being held against their will, whether by criminals or a foreign government. They then convince the victim to purchase gift cards as restitution or a bribe to release their family member.",
-            "Fraudsters will also prey on retail organizations, using these tactics against employees, coercing or convincing them to purchase gift cards without taking payment, resulting in register shortage"
-          ]
+            "type": "Primary Gift Card Lock-In",
+            "details": [
+                "When a gift card is purchased, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
+            ]
+        },
+        {
+            "type": "Login Required",
+            "details": [
+                "Require an account before permitting purchase of or transfer of a gift card."
+            ]
+        },
+        {
+            "type": "Gift Card Purchase Limit",
+            "details": [
+                "Enforce limits of quantity and/or the value that may be purchased by an interaction or person."
+            ]
+        },
+        {
+            "type": "Training and Awareness",
+            "details": [
+                "Consumer fraud awareness and education campaigns, signage, pop-ups and other forms of communication.",
+                "Employee education and awareness to ensure proper payment has been received for gift card transactions."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Mitigation",
-      "section_details": [
+    ],
+    "detection": [
         {
-          "section_sub_header": "Primary Gift Card Lock-In",
-          "section_info": [
-            "When a gift card is purchased, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
-          ]
+            "type": "Velocity Attributes",
+            "details": [
+                "Monitor for the purchase of gift cards by value and quantity from an individual by a predetermined value and/or time frame."
+            ]
         },
         {
-          "section_sub_header": "Login Required",
-          "section_info": [
-            "Require an account before permitting purchase of or transfer of a gift card."
-          ]
-        },
-        {
-          "section_sub_header": "Gift Card Purchase Limit",
-          "section_info": [
-            "Enforce limits of quantity and/or the value that may be purchased by an interaction or person."
-          ]
-        },
-        {
-          "section_sub_header": "Training and Awareness",
-          "section_info": [
-            "Consumer fraud awareness and education campaigns, signage, pop-ups and other forms of communication.",
-            "Employee education and awareness to ensure proper payment has been received for gift card transactions."
-          ]
+            "type": "Behavioral Attributes",
+            "details": [
+                "Monitor for out-of-character purchases of an individual and their lifestyle."
+            ]
         }
-      ]
-    },
-    {
-      "section_header": "Detection",
-      "section_details": [
+    ],
+    "references": [
         {
-          "section_sub_header": "Velocity Attributes",
-          "section_info": [
-            "Monitor for the purchase of gift cards by value and quantity from an individual by a predetermined value and/or time frame."
-          ]
+            "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
+            "source": "https://www.acams.org/en/media/document/29436"
         },
         {
-          "section_sub_header": "Behavioral Attributes",
-          "section_info": [
-            "Monitor for out-of-character purchases of an individual and their lifestyle."
-          ]
+            "name": "Avoiding and Reporting Gift Card Scams",
+            "source": "https://consumer.ftc.gov/articles/avoiding-and-reporting-gift-card-scams#commonscams"
         }
-      ]
-    }
-  ],
-  "sources": [
-    {
-      "references": [
-        {
-          "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
-          "link": "https://www.acams.org/en/media/document/29436"
-        },
-        {
-          "name": "Avoiding and Reporting Gift Card Scams",
-          "link": "https://consumer.ftc.gov/articles/avoiding-and-reporting-gift-card-scams#commonscams"
-        }
-      ]
-    }
-  ]
+    ]
 }
