@@ -8,7 +8,7 @@ import {
   formatData,
 } from '../../utils/dataMap';
 
-const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
+const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent }) => {
   const [technique, setTechnique] = useState(techniqueName);
   const [isVisible, setIsVisible] = useState(true);
   const [details, setDetails] = useState(null);
@@ -24,7 +24,7 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
   }, [techniqueName]);
 
   useEffect(() => {
-    if (technique) {
+    if (technique && !importContent) {
       const fetchDetails = async () => {
         const fetchedDetails = await fetchTechniqueDetails(technique);
         const fetchedReferences = await fetchTechniqueReferences(technique);
@@ -35,6 +35,20 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
       fetchDetails();
     }
   }, [technique]);
+
+  useEffect(() => {
+    
+    if (importContent) {
+      const result = importContent.techniques.filter(tq => tq.name === technique);
+      console.log('result', result)
+
+      if(result && result.length > 0){
+        console.log('setting details')
+        setDetails(result[0]);
+        setReferences(result[0].references);
+      }
+    }
+  }, [importContent]);
 
   const handleToggle = (sectionKey) => {
     setOpenSections((prevState) => ({

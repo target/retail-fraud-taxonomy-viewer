@@ -3,6 +3,7 @@ import Header from './components/Header/Header';
 import TechniquesTable from './components/TableContent/TechniquesTable';
 import CollapsibleSection from './components/Collapsible/CollapsibleSection';
 import SidePanel from './components/SidePanelSearch/Panel';
+import ManageContent from './components/ContentManager/ManageContent';
 
 export const Main = () => {
   const [selectedValue, setSelectedValue] = useState(null);
@@ -10,6 +11,11 @@ export const Main = () => {
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState('');
   const [isSidePanelVisible, setIsSidePanelVisible] = useState(false);
+  const [editContent, setEditContent] = useState(null);
+  const [addContent, setAddContent] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [importContent, setImportContent] = useState(null);
+  const [viewCustomContent, setViewCustomContent] = useState(false);
 
   const toggleControl = () => {
     handleOpenSidePanel();
@@ -22,6 +28,19 @@ export const Main = () => {
       setSelectedValue(value);
     }
   };
+
+  const handleEditClick = (value) => {
+    setEditContent(value)
+  }
+
+  const handleAddClick = (value) => {
+    setAddContent(value, selectedValue);
+  }
+
+  const handleImportClick = (value) => {
+    setImportContent(value);
+  }
+
   const handleCloseSidePanel = () => {
     setIsSidePanelVisible(false);
   };
@@ -32,26 +51,48 @@ export const Main = () => {
     setFilter(filterValue);
     setFilterType(filterType);
   };
+
+  const handleEditModeChange = (editStatus) => {
+    setEditMode(editStatus);
+  };
+
+  const handleViewCustomContent = (viewCustomContentMode) => {
+    setViewCustomContent(viewCustomContentMode);
+  };
+
   return (
     <>
-      <Header toggleControl={toggleControl} />
-      <TechniquesTable
+      <Header toggleControl={toggleControl} onAddClick={handleAddClick} onEditMode={handleEditModeChange} onImportClick={handleImportClick} onViewCustomContent={handleViewCustomContent}/>
+      {!addContent && !editContent && (<TechniquesTable
         onValueClick={handleValueClick}
+        onEditClick={handleEditClick}
+        onImportClick={handleImportClick}
         searchFilter={filter}
         searchFilterType={filterType}
         isPanelOpen={isSidePanelVisible}
+        editStatus={editMode}
+        // importStatus={importMode}
+        importContent={importContent}
+        viewCustomMode={viewCustomContent}
       />
+      )}
       {isSidePanelVisible && (
         <SidePanel
           onFilterChange={handleFilterChange}
           onClose={handleCloseSidePanel}
         />
       )}
-      {selectedValue && (
+      {selectedValue && !addContent && !editContent && (
         <CollapsibleSection
           isPanelOpen={isSidePanelVisible}
           techniqueName={selectedValue}
           key={renderKey}
+          importContent={importContent}
+        />
+      )}
+      {(addContent || editContent) && (
+        <ManageContent
+          technique={editContent}
         />
       )}
     </>

@@ -1,6 +1,6 @@
 {
     "code": "FT1001",
-    "name": "Reconnaissance",
+    "name": "Reconnaissance1",
     "parent_technique": "",
     "tactics": [
         "Pre-Compromise"

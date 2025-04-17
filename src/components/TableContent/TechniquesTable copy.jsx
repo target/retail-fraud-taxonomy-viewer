@@ -23,10 +23,7 @@ const TechniquesTable = ({
   searchFilterType,
   isPanelOpen,
   onEditClick,
-  onImportClick,
-  editStatus,
-  importContent,
-  viewCustomMode
+  editStatus
 }) => {
   const [tableData, setTableData] = useState([]);
   const [addedColumns, setAddedColumns] = useState([]);
@@ -42,10 +39,6 @@ const TechniquesTable = ({
 
   const handleEdit = (technique) => {
     onEditClick(technique)
-  };
-
-  const handleImport = (technique) => {
-    onImportClick(technique)
   };
 
   useLayoutEffect(() => {
@@ -88,32 +81,7 @@ const TechniquesTable = ({
   }, [allTechniques]);
 
   useEffect(() => {
-    console.log('importContent.technique_table', importContent)
-    if(importContent) {
-      localStorage.setItem('technique_table', JSON.stringify(importContent.technique_table))
-      localStorage.setItem('techniques', JSON.stringify(importContent.techniques))
-      setTableData(importContent.technique_table);
-    } 
-  }, [importContent]);
-
-  useEffect(() => {
-    console.log('importContent.technique_table', importContent)
-    if(viewCustomMode) {
-      localStorage.setItem('technique_table', JSON.stringify(importContent.technique_table))
-      localStorage.setItem('techniques', JSON.stringify(importContent.techniques))
-       
-       setTableData(importContent.technique_table);
-    } else {
-      setTableData(allTechniques);
-      setAddedColumns([])
-    }
-  }, [ viewCustomMode]);
-
-
-
-
-  useEffect(() => {
-    if (!viewCustomMode) {
+    if (!editStatus) {
       setTableData(allTechniques);
       setAddedColumns([])
       // console.log
@@ -121,15 +89,10 @@ const TechniquesTable = ({
       //   const fetchedTechniques = await fetchAllTechniques();
       //   setAllTechniques(fetchedTechniques);
       //   setTableData(fetchedTechniques);
-      } else {
-        localStorage.setItem('technique_table', JSON.stringify(importContent.technique_table))
-        localStorage.setItem('techniques', JSON.stringify(importContent.techniques))
-         
-         setTableData(importContent.technique_table);
-      }
+      // };
   
       // fetchTechniques();
-    // }
+    }
   }, [editStatus]);
 
   useEffect(() => {

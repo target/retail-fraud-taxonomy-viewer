@@ -8,13 +8,19 @@ const contentFiles = import.meta.glob('../content/techniques/*.json', {
   eager: true,
 });
 
-const dataMap = Object.keys(contentFiles).reduce((map, filePath) => {
+export const dataMap = Object.keys(contentFiles).reduce((map, filePath) => {
   const key = filePath
     .replace('../content/techniques/', '')
     .replace('.json', '');
   map[key] = contentFiles[filePath];
   return map;
 }, {});
+
+export const dataArray = Object.keys(contentFiles).reduce((arr, filePath) => {
+  const content = contentFiles[filePath]['default'];
+  arr.push(content);
+  return arr;
+}, []);
 
 export const fetchAllTechniques = () => {
   return techniques;
