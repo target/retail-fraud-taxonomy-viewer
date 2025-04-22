@@ -97,22 +97,23 @@ const TechniquesTable = ({
   }, [importContent]);
 
   useEffect(() => {
-    console.log('importContent.technique_table', importContent)
+    console.log('inside viewCustomMode', viewCustomMode)
     if(viewCustomMode) {
-      localStorage.setItem('technique_table', JSON.stringify(importContent.technique_table))
-      localStorage.setItem('techniques', JSON.stringify(importContent.techniques))
+      // localStorage.setItem('technique_table', JSON.stringify(importContent.technique_table))
+      // localStorage.setItem('techniques', JSON.stringify(importContent.techniques))
        
-       setTableData(importContent.technique_table);
+       setTableData(JSON.parse(localStorage.getItem("technique_table")))
     } else {
       setTableData(allTechniques);
       setAddedColumns([])
     }
-  }, [ viewCustomMode]);
-
-
+  }, [viewCustomMode]);
 
 
   useEffect(() => {
+
+    console.log('viewCustomMode', viewCustomMode)
+    console.log('importContent', importContent)
     if (!viewCustomMode) {
       setTableData(allTechniques);
       setAddedColumns([])
@@ -122,10 +123,15 @@ const TechniquesTable = ({
       //   setAllTechniques(fetchedTechniques);
       //   setTableData(fetchedTechniques);
       } else {
+        console.log('else', importContent)
+
+        if(importContent) {
         localStorage.setItem('technique_table', JSON.stringify(importContent.technique_table))
         localStorage.setItem('techniques', JSON.stringify(importContent.techniques))
-         
          setTableData(importContent.technique_table);
+        } else {
+          setTableData(JSON.parse(localStorage.getItem("technique_table")))
+        }
       }
   
       // fetchTechniques();

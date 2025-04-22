@@ -36,7 +36,29 @@ const ManageContent = (props) => {
   useEffect(() => {
     if (props.technique) {
       const fetchDetails = async () => {
-        const techniqueInfo = await fetchTechnique(props.technique)
+        let techniqueInfo = {}
+
+        // console.log()
+
+       
+        if(!props.importContent){
+
+        techniqueInfo = await fetchTechnique(props.technique)
+        } else {
+          console.log('props.importContent------------------', props.importContent.techniques)
+          techniqueInfo = props.importContent.techniques.find(item =>
+            item.name === props.technique
+          );
+          console.log('techniqueInfo', techniqueInfo)
+        }
+
+        if(props.viewCustomMode){
+          console.log('inside viewCustomMode------------')
+          techniqueInfo = JSON.parse(localStorage.getItem('techniques')).find(item =>
+            item.name === props.technique
+          );
+        }
+
         
         if(techniqueInfo){
             setCode(techniqueInfo.code)
@@ -65,8 +87,14 @@ const ManageContent = (props) => {
       const fetchTechniques = async () => {
         const fetchedTechniques = await fetchAllTechniques();
         setAllTechniques(fetchedTechniques);
+
+
+        console.log('checking -----------', props.importContent, props.viewCustomMode)
+
+        if(!props.importContent && !props.viewCustomMode && !localStorage.getItem('technique_table')) {
         localStorage.setItem('technique_table', JSON.stringify(fetchedTechniques))
         localStorage.setItem('techniques', JSON.stringify(dataArray))
+        }
       };
   
       fetchTechniques();
@@ -301,6 +329,8 @@ const ManageContent = (props) => {
     //   filePath = "src/content/techniques/" + techniqueName.toLowerCase().split(' ').join('_') + ".json"
     // }
 
+    console.log('techniqueName', techniqueName)
+
     let jsonContent = formatJSON()
 
     // localStorage.setItem(techniqueName, JSON.stringify(jsonContent));
@@ -308,9 +338,17 @@ const ManageContent = (props) => {
     let dataMapStorage = localStorage.getItem("techniques")
     dataMapStorage = dataMapStorage ? JSON.parse(dataMapStorage) : {};
 
-    dataMapStorage[techniqueName.toLowerCase()] = jsonContent;
+    const updatedDataMapStorage = dataMapStorage.map(item => {
+      if (item.name.toLowerCase() === techniqueName.toLowerCase()) {
+        return {
+          ...item,
+          ...jsonContent
+        };
+      }
+      return item;
+    });
 
-    localStorage.setItem('techniques', JSON.stringify(dataMapStorage));
+    localStorage.setItem('techniques', JSON.stringify(updatedDataMapStorage));
 
     let jsonBody = {'technique_table': JSON.parse(localStorage.getItem("technique_table")), 'techniques': JSON.parse(localStorage.getItem("techniques"))}
 
@@ -381,7 +419,7 @@ const ManageContent = (props) => {
                     Name:
                   </label>
                   <input type="text" id="name" placeholder="Enter Name" className='key-text' value={techniqueName}
-                        onChange={(e) => setTechniqueName(e.target.value)} />
+                        onChange={(e) => setTechniqueName(e.target.value)} disabled />
                 </div>
                 <div>
                   <label htmlFor="name" style={{ color: 'white', marginRight: '5px' }}>

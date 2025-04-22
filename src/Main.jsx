@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/Header/Header';
 import TechniquesTable from './components/TableContent/TechniquesTable';
 import CollapsibleSection from './components/Collapsible/CollapsibleSection';
@@ -16,6 +16,12 @@ export const Main = () => {
   const [editMode, setEditMode] = useState(false);
   const [importContent, setImportContent] = useState(null);
   const [viewCustomContent, setViewCustomContent] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('technique_table')) {
+      setViewCustomContent(true)
+    }
+  }, []);
 
   const toggleControl = () => {
     handleOpenSidePanel();
@@ -39,6 +45,7 @@ export const Main = () => {
 
   const handleImportClick = (value) => {
     setImportContent(value);
+    setViewCustomContent(true)
   }
 
   const handleCloseSidePanel = () => {
@@ -93,6 +100,8 @@ export const Main = () => {
       {(addContent || editContent) && (
         <ManageContent
           technique={editContent}
+          importContent={importContent}
+          viewCustomMode={viewCustomContent}
         />
       )}
     </>
