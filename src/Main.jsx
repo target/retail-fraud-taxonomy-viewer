@@ -43,6 +43,11 @@ export const Main = () => {
     setAddContent(value, selectedValue);
   }
 
+  const handleBackClick = (value) => {
+    setAddContent(null);
+    setEditContent(null);
+  }
+
   const handleImportClick = (value) => {
     setImportContent(value);
     setViewCustomContent(true)
@@ -69,7 +74,7 @@ export const Main = () => {
 
   return (
     <>
-      <Header toggleControl={toggleControl} onAddClick={handleAddClick} onEditMode={handleEditModeChange} onImportClick={handleImportClick} onViewCustomContent={handleViewCustomContent}/>
+      <Header toggleControl={toggleControl} onAddClick={handleAddClick} onEditMode={handleEditModeChange} onImportClick={handleImportClick} onViewCustomContent={handleViewCustomContent} editStatus={editMode} editContent={editContent} onBackClick={handleBackClick}/>
       {!addContent && !editContent && (<TechniquesTable
         onValueClick={handleValueClick}
         onEditClick={handleEditClick}

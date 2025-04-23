@@ -1,9 +1,9 @@
 import './Header.css';
 import NRFLogo from '../.././content/assets/nrf-logo.svg';
 import React, { useState, useEffect, useRef } from 'react';
-import { RiAddCircleLine, RiImportLine } from 'react-icons/ri';
+import { RiAddCircleLine, RiImportLine, RiArrowLeftLine} from 'react-icons/ri';
 
-const Header = ({ toggleControl, onAddClick, onEditMode, onImportClick, onViewCustomContent }) => {
+const Header = ({ toggleControl, onAddClick, onEditMode, onImportClick, onViewCustomContent, editStatus , editContent, onBackClick}) => {
   const [isToggled, setIsToggled] = useState(false);
   const fileInputRef = useRef();
   const [fileData, setFileData] = useState(null);
@@ -28,6 +28,10 @@ const Header = ({ toggleControl, onAddClick, onEditMode, onImportClick, onViewCu
 
   const handleButtonClick = () => {
     onAddClick('add')
+  };
+
+  const handleBackButtonClick = () => {
+    onBackClick('back')
   };
 
   const handleImportClick = () => {
@@ -69,6 +73,8 @@ const Header = ({ toggleControl, onAddClick, onEditMode, onImportClick, onViewCu
         src={NRFLogo}
       />
       <span>Dev Build</span>
+      {/* {!editStatus && ( */}
+      {!editContent && (
       <div className="header-controls">
         <button className="header-button" onClick={() => handleButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
           <RiAddCircleLine style={{ fontSize: '20px', marginRight: '5px' }} /> Add Technique
@@ -151,6 +157,15 @@ const Header = ({ toggleControl, onAddClick, onEditMode, onImportClick, onViewCu
           Filter By
         </button>
       </div>
+      )}
+
+    {editContent && (
+      <div className="header-controls">
+        <button className="header-button" onClick={() => handleBackButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
+          <RiArrowLeftLine style={{ fontSize: '20px', marginRight: '5px' }} /> Back
+        </button>
+        </div>
+      )}
     </header>
   );
 };
