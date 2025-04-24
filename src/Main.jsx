@@ -22,19 +22,17 @@ export const Main = () => {
     setViewCustomContent(false);
   }, []);
 
-  // Avoid setting too many states in handleBackClick
   const handleBackClick = useCallback(() => {
     setAddContent(null);
     setEditContent(null);
-    setViewCustomContent(false); // Only update this flag
+    setViewCustomContent(false);
     setEditMode(false)
-    setShouldRenderTechniques(true); // Ensure this triggers the table rerender only once
+    setShouldRenderTechniques(true);
   }, []);
 
-  // Memoize other handlers to avoid unnecessary re-renders
   const handleValueClick = useCallback((value) => {
     if (value === selectedValue) {
-      setRenderKey(prevKey => prevKey + 1); // Trigger a re-render
+      setRenderKey(prevKey => prevKey + 1);
     } else {
       setSelectedValue(value);
     }
@@ -50,7 +48,7 @@ export const Main = () => {
 
   const handleImportClick = useCallback((value) => {
     setImportContent(value);
-    setViewCustomContent(true); // Ensure this is updated only once
+    setViewCustomContent(true);
   }, []);
 
   const handleCloseSidePanel = useCallback(() => {

@@ -1,0 +1,70 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - dev1
+      - main
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  actions: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Set build mode based on the branch
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+            echo "Setting NODE_ENV=development"
+            echo "NODE_ENV=development" >> $GITHUB_ENV
+            echo "Setting BUILD_MODE=development"
+            echo "BUILD_MODE=development" >> $GITHUB_ENV
+          else
+            echo "Setting NODE_ENV=production"
+            echo "NODE_ENV=production" >> $GITHUB_ENV
+            echo "Setting BUILD_MODE=production"
+            echo "BUILD_MODE=production" >> $GITHUB_ENV
+          fi
+
+      - name: Log BUILD_MODE
+        run: echo "BUILD_MODE=$BUILD_MODE"
+
+      - name: Run predeploy
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+            npm run build:dev
+          else
+            npm run build:prod
+          fi
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: ${{ github.ref == 'refs/heads/dev' && 'dist/dev' || 'dist' }}  # Deploy from dist/dev for dev branch, dist for main (prod)
+          target-folder: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}  # Deploy to /dev for dev branch, root for main
+          token: ${{ secrets.GITHUB_TOKEN }}

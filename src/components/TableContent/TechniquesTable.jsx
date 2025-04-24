@@ -23,17 +23,12 @@ const TechniquesTable = ({
   searchFilterType,
   isPanelOpen,
   onEditClick,
-  onImportClick,
   editStatus,
   importContent,
   viewCustomMode
 }) => {
-  console.log('props', editStatus, importContent, viewCustomMode);
-  // const [tableData, setTableData] = useState([]);
   const [tableData, setTableData] = useState(() => {
-    // Initialize state from localStorage or default to an empty array
     const savedData = localStorage.getItem('technique_table');
-    console.log('savedData', savedData)
     return savedData ? JSON.parse(savedData) : [];
   });
   const [addedColumns, setAddedColumns] = useState([]);
@@ -51,11 +46,7 @@ const TechniquesTable = ({
     onEditClick(technique);
   };
 
-  const handleImport = (technique) => {
-    onImportClick(technique);
-  };
-
-    // Focus the first cell after mount
+  // Focus the first cell after mount
   useLayoutEffect(() => {
     const checkAndFocus = () => {
       if (hasFocused.current) return;
@@ -74,26 +65,22 @@ const TechniquesTable = ({
     };
   }, []);
 
-  // 🔁 First mount effect
   useEffect(() => {
-    console.log('🔁 First mount effect');
     if (viewCustomMode) {
       const local = localStorage.getItem("technique_table");
       if (local) {
         try {
           const parsed = JSON.parse(local);
-          console.log("📦 Initial custom content from localStorage", parsed);
           if (Array.isArray(parsed)) {
             setTableData(parsed);
           }
         } catch (e) {
-          console.error("❌ Error parsing localStorage on mount", e);
+          console.error("Error parsing localStorage on mount", e);
         }
       }
     } else {
       const fetchTechniques = async () => {
         const fetchedTechniques = await fetchAllTechniques();
-        console.log("🌐 Fetched NRF techniques", fetchedTechniques);
         setAllTechniques(fetchedTechniques);
         setTableData(fetchedTechniques);
       };
@@ -101,48 +88,37 @@ const TechniquesTable = ({
     }
   }, []);
 
-  // 📥 Handle importContent updates
+  // Handle importContent updates
   useEffect(() => {
     if (importContent?.technique_table) {
-      console.log('📥 importContent updated', importContent);
       localStorage.setItem('technique_table', JSON.stringify(importContent.technique_table));
       localStorage.setItem('techniques', JSON.stringify(importContent.techniques));
       setTableData(importContent.technique_table);
     }
   }, [importContent]);
 
-  // 👁️ Handle viewCustomMode toggles
+  // Handle viewCustomMode toggles
   useEffect(() => {
-    console.log('👁️ viewCustomMode changed:', viewCustomMode);
     if (viewCustomMode) {
       const local = localStorage.getItem("technique_table");
       try {
         const parsed = local ? JSON.parse(local) : [];
-        console.log("📦 Switched to custom content", parsed);
         if (Array.isArray(parsed)) {
           setTableData(parsed);
         }
       } catch (e) {
-        console.error("❌ Error loading custom content from localStorage", e);
+        console.error("Error loading custom content from localStorage", e);
       }
     } else {
-      console.log("🔄 Switched to NRF techniques", allTechniques);
       setTableData(allTechniques);
     }
   }, [viewCustomMode]);
 
-  // ✏️ Track allTechniques updates separately (in case of NRF reset)
   useEffect(() => {
     if (!viewCustomMode) {
-      console.log('📋 NRF data updated');
       setTableData(allTechniques);
     }
   }, [allTechniques]);
-
-  // Optional: Track edit status changes
-  // useEffect(() => {
-  //   console.log('✏️ Handling edit status change');
-  // }, [editStatus]);
 
   useEffect(() => {
     setAddedColumns([]);
@@ -789,7 +765,6 @@ const TechniquesTable = ({
   }, [focusedLiIndex]);
 
   const renderRows = () => {
-    console.log('tableData', tableData)
     return (
       tableData &&
       tableData.map((item, rowIndex) => (
