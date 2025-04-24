@@ -61,10 +61,20 @@ jobs:
             npm run build:prod
           fi
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy dev1 to GitHub Pages
+        if: github.ref == 'refs/heads/dev1'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: ${{ github.ref == 'refs/heads/dev1' && 'dist/dev' || 'dist' }}  # Deploy from dist/dev for dev branch, dist for main (prod)
-          target-folder: ${{ github.ref == 'refs/heads/dev1' && 'dev1' || '' }}  # Deploy to /dev for dev branch, root for main
+          folder: dist/dev
+          target-folder: dev1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy main to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist
+          target-folder: ''
           token: ${{ secrets.GITHUB_TOKEN }}
