@@ -123,6 +123,8 @@ export const Main = () => {
           technique={editContent}
           importContent={importContent}
           viewCustomMode={viewCustomContent}
+          onViewCustomContent={handleViewCustomContent}
+          onBackClick={handleBackClick}
         />
       )}
     </>

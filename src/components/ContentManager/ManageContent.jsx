@@ -300,6 +300,11 @@ const ManageContent = (props) => {
     downloadJSON(jsonBody);
   };
 
+  const handleCancelClick = () => {
+    props.onViewCustomContent(false);
+    props.onBackClick('back');
+  };
+
   return (
     <div>
       {/* Collapsible Technique Section */}
@@ -508,7 +513,7 @@ const ManageContent = (props) => {
         </div>
       </section>
       <button className="save-button" type="submit" onClick={handleSubmit}>Submit</button>
-      <button className="save-button" type="cancel" onClick={handleSubmit}>Cancel</button>
+      <button className="save-button" type="cancel" onClick={handleCancelClick}>Cancel</button>
     </div>
   );
 };

@@ -13,17 +13,15 @@ const Header = ({
   editContent,
   onBackClick
 }) => {
-  const [isToggled, setIsToggled] = useState(false);
+
+  const [isToggled, setIsToggled] = useState(editStatus);
   const fileInputRef = useRef();
   const [fileData, setFileData] = useState(null);
   const [viewCustomContent, setViewCustomContent] = useState(false);
 
-  // useEffect(() => {
-  //   const localData = localStorage.getItem('technique_table');
-  //   if (localData) {
-  //     setViewCustomContent(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    setIsToggled(editStatus)
+  }, [editStatus]);
 
   const handleToggle = () => {
     const newValue = !isToggled;
