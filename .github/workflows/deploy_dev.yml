@@ -38,7 +38,7 @@ jobs:
 
       - name: Set build mode based on the branch
         run: |
-          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+          if [[ $GITHUB_REF == 'refs/heads/dev1' ]]; then
             echo "Setting NODE_ENV=development"
             echo "NODE_ENV=development" >> $GITHUB_ENV
             echo "Setting BUILD_MODE=development"
@@ -55,7 +55,7 @@ jobs:
 
       - name: Run predeploy
         run: |
-          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+          if [[ $GITHUB_REF == 'refs/heads/dev1' ]]; then
             npm run build:dev
           else
             npm run build:prod
@@ -65,6 +65,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: ${{ github.ref == 'refs/heads/dev' && 'dist/dev' || 'dist' }}  # Deploy from dist/dev for dev branch, dist for main (prod)
-          target-folder: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}  # Deploy to /dev for dev branch, root for main
+          folder: ${{ github.ref == 'refs/heads/dev1' && 'dist/dev' || 'dist' }}  # Deploy from dist/dev for dev branch, dist for main (prod)
+          target-folder: ${{ github.ref == 'refs/heads/dev1' && 'dev' || '' }}  # Deploy to /dev for dev branch, root for main
           token: ${{ secrets.GITHUB_TOKEN }}
