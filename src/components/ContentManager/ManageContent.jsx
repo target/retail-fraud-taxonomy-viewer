@@ -13,14 +13,12 @@ const ManageContent = (props) => {
     sub_techniques: [{ value: '' }],
   });
 
-  // State for key-value pairs for all sections
   const [keyValuePairs, setKeyValuePairs] = useState({
     mitigation: [{ key: '', values: [''] }],
     detection: [{ key: '', values: [''] }],
     references: [{ key: '', values: [''] }],
   });
 
-  // State for toggling collapsible sections
   const [openSections, setOpenSections] = useState({
     technique: true,
     mitigation: true,
@@ -28,81 +26,64 @@ const ManageContent = (props) => {
     references: true,
   });
 
-  const [techniqueName, setTechniqueName] = useState(props.technique || '')
+  const [techniqueName, setTechniqueName] = useState(props.technique || '');
   const [allTechniques, setAllTechniques] = useState([]);
-  const [code, setCode] = useState('')
-  const [parentTechnique, setParentTechnique] = useState('')
+  const [code, setCode] = useState('');
+  const [parentTechnique, setParentTechnique] = useState('');
 
   useEffect(() => {
     if (props.technique) {
       const fetchDetails = async () => {
-        let techniqueInfo = {}
+        let techniqueInfo = {};
 
-        // console.log()
-
-       
-        if(!props.importContent){
-
-        techniqueInfo = await fetchTechnique(props.technique)
-        } else {
-          console.log('props.importContent------------------', props.importContent.techniques)
-          techniqueInfo = props.importContent.techniques.find(item =>
-            item.name === props.technique
-          );
-          console.log('techniqueInfo', techniqueInfo)
-        }
-
-        if(props.viewCustomMode){
-          console.log('inside viewCustomMode------------')
+        if (props.viewCustomMode) {
           techniqueInfo = JSON.parse(localStorage.getItem('techniques')).find(item =>
             item.name === props.technique
           );
+        } else {
+          techniqueInfo = await fetchTechnique(props.technique);
         }
 
-        
-        if(techniqueInfo){
-            setCode(techniqueInfo.code)
-            setTechniqueName(techniqueInfo.name)
-            setParentTechnique(techniqueInfo.parent_technique)
+        if (techniqueInfo) {
+          setCode(techniqueInfo.code);
+          setTechniqueName(techniqueInfo.name);
+          setParentTechnique(techniqueInfo.parent_technique);
 
-            setFields({ description: transformData(techniqueInfo.technique_description|| ['']),
-            tactics: transformData(techniqueInfo.tactics.length == 0 ? [''] : techniqueInfo.tactics),
-            schemes: transformData(techniqueInfo.schemes.length == 0 ? [''] : techniqueInfo.schemes),
-            sub_techniques: transformData(techniqueInfo.sub_techniques.length == 0 ? [''] : techniqueInfo.sub_techniques),
-            })
+          setFields({
+            description: transformData(techniqueInfo.technique_description || ['']),
+            tactics: transformData(techniqueInfo.tactics.length === 0 ? [''] : techniqueInfo.tactics),
+            schemes: transformData(techniqueInfo.schemes.length === 0 ? [''] : techniqueInfo.schemes),
+            sub_techniques: transformData(techniqueInfo.sub_techniques.length === 0 ? [''] : techniqueInfo.sub_techniques),
+          });
 
-            setKeyValuePairs({
-              mitigation: transformKeyValue(techniqueInfo.mitigation),
-              detection: transformKeyValue(techniqueInfo.detection),
-              references: transformReference(techniqueInfo.references),
-            })
-          }        
+          setKeyValuePairs({
+            mitigation: transformKeyValue(techniqueInfo.mitigation),
+            detection: transformKeyValue(techniqueInfo.detection),
+            references: transformReference(techniqueInfo.references),
+          });
+        }
       };
 
       fetchDetails();
     }
   }, [props.technique]);
 
-    useEffect(() => {
-      const fetchTechniques = async () => {
-        const fetchedTechniques = await fetchAllTechniques();
-        setAllTechniques(fetchedTechniques);
+  // Fetch all techniques on component mount
+  useEffect(() => {
+    const fetchTechniques = async () => {
+      const fetchedTechniques = await fetchAllTechniques();
+      setAllTechniques(fetchedTechniques);
 
+      if (!props.importContent && !props.viewCustomMode && !localStorage.getItem('technique_table')) {
+        localStorage.setItem('technique_table', JSON.stringify(fetchedTechniques));
+        localStorage.setItem('techniques', JSON.stringify(dataArray));
+      }
+    };
 
-        console.log('checking -----------', props.importContent, props.viewCustomMode)
+    fetchTechniques();
+  }, []);
 
-        if(!props.importContent && !props.viewCustomMode && !localStorage.getItem('technique_table')) {
-        localStorage.setItem('technique_table', JSON.stringify(fetchedTechniques))
-        localStorage.setItem('techniques', JSON.stringify(dataArray))
-        }
-      };
-  
-      fetchTechniques();
-
-      
-    }, []);
-
-  // Handle adding a new field
+  // Handle adding/removing fields, toggling sections, etc.
   const addField = (fieldName) => {
     setFields((prevFields) => ({
       ...prevFields,
@@ -110,7 +91,6 @@ const ManageContent = (props) => {
     }));
   };
 
-  // Handle removing a field
   const removeField = (fieldName, index) => {
     setFields((prevFields) => ({
       ...prevFields,
@@ -118,7 +98,6 @@ const ManageContent = (props) => {
     }));
   };
 
-  // Handle input change for each field
   const handleFieldChange = (fieldName, index, event) => {
     setFields((prevFields) => ({
       ...prevFields,
@@ -128,14 +107,14 @@ const ManageContent = (props) => {
     }));
   };
 
-  // Handle toggling collapsible section
   const handleToggle = (section) => {
     setOpenSections((prev) => ({
       ...prev,
       [section]: !prev[section],
     }));
   };
-  // Handle adding new key-value pair
+
+  // Add key-value pair
   const addKeyValuePair = (type) => {
     setKeyValuePairs((prev) => ({
       ...prev,
@@ -143,7 +122,7 @@ const ManageContent = (props) => {
     }));
   };
 
-  // Handle removing key-value pair
+  // Remove key-value pair
   const removeKeyValuePair = (type, index) => {
     setKeyValuePairs((prev) => ({
       ...prev,
@@ -151,151 +130,127 @@ const ManageContent = (props) => {
     }));
   };
 
-  // Handle change in key input
-  const handleKeyChange = (type, index, event) => {
-    const newKeyValuePairs = [...keyValuePairs[type]];
-    newKeyValuePairs[index].key = event.target.value;
-    setKeyValuePairs((prev) => ({
-      ...prev,
-      [type]: newKeyValuePairs,
-    }));
-  };
-
-  // Handle change in value input
-  const handleValueChange = (type, keyIndex, valueIndex, event) => {
-    const newKeyValuePairs = [...keyValuePairs[type]];
-    newKeyValuePairs[keyIndex].values[valueIndex] = event.target.value;
-    setKeyValuePairs((prev) => ({
-      ...prev,
-      [type]: newKeyValuePairs,
-    }));
-  };
-
-  // Handle adding new value to key-value pair
-  const addValueField = (type, keyIndex) => {
-    const newKeyValuePairs = [...keyValuePairs[type]];
-    newKeyValuePairs[keyIndex].values.push('');
-    setKeyValuePairs((prev) => ({
-      ...prev,
-      [type]: newKeyValuePairs,
-    }));
-  };
-
-  // Handle removing a value from a key-value pair
-  const removeValueField = (type, keyIndex, valueIndex) => {
-    const newKeyValuePairs = [...keyValuePairs[type]];
-    newKeyValuePairs[keyIndex].values = newKeyValuePairs[keyIndex].values.filter((_, i) => i !== valueIndex);
-    setKeyValuePairs((prev) => ({
-      ...prev,
-      [type]: newKeyValuePairs,
-    }));
+  const handleKeyValueChange = (type, index, field, event) => {
+    const updatedPairs = keyValuePairs[type].map((pair, i) =>
+      i === index
+        ? {
+            ...pair,
+            [field]: event.target.value,
+          }
+        : pair
+    );
+    setKeyValuePairs({
+      ...keyValuePairs,
+      [type]: updatedPairs,
+    });
   };
 
   // Function for rendering key-value pairs
-  const addKeyValue = (type) => {
-    return (
-      <div style={{ marginBottom: '20px' }}>
-        {keyValuePairs[type]?.map((pair, keyIndex) => (
-          <div
-            key={keyIndex}
-            className='box-section'
-          >
-            {/* Remove Key-Value Pair Button */}
-            <RiDeleteBinLine
-              className='remove-key-value-pair'
-              onClick={() => removeKeyValuePair(type, keyIndex)}
-            />
-
-            {/* Key Input */}
-            <div style={{ display: 'flex', marginBottom: '10px' }}>
-              <label htmlFor={`key-${keyIndex}`} style={{ color: 'white' }}>
-                {type === 'references' ? 'Source:' : 'Type: '}
-              </label>
-              <input
-                type="text"
-                id={`key-${keyIndex}`}
-                value={pair.key}
-                onChange={(e) => handleKeyChange(type, keyIndex, e)}
-                placeholder={type === 'references' ? `Source ${keyIndex + 1}` : `Type ${keyIndex + 1}`}
-                className='key-text'
+    const addKeyValue = (type) => {
+      return (
+        <div style={{ marginBottom: '20px' }}>
+          {keyValuePairs[type]?.map((pair, keyIndex) => (
+            <div
+              key={keyIndex}
+              className='box-section'
+            >
+              {/* Remove Key-Value Pair Button */}
+              <RiDeleteBinLine
+                className='remove-key-value-pair'
+                onClick={() => removeKeyValuePair(type, keyIndex)}
+              />
+  
+              {/* Key Input */}
+              <div style={{ display: 'flex', marginBottom: '10px' }}>
+                <label htmlFor={`key-${keyIndex}`} style={{ color: 'white' }}>
+                  {type === 'references' ? 'Source:' : 'Type: '}
+                </label>
+                <input
+                  type="text"
+                  id={`key-${keyIndex}`}
+                  value={pair.key}
+                  onChange={(e) => handleKeyChange(type, keyIndex, e)}
+                  placeholder={type === 'references' ? `Source ${keyIndex + 1}` : `Type ${keyIndex + 1}`}
+                  className='key-text'
+                />
+              </div>
+  
+              {/* Value Inputs */}
+              <div style={{ marginBottom: '10px' }}>
+                {pair?.values?.map((value, valueIndex) => (
+                  <div key={valueIndex} style={{ display: 'flex', marginBottom: '10px' }}>
+                    <label htmlFor={`value-${valueIndex}`} style={{ color: 'white' }}>
+                      Info:
+                    </label>
+                    <textarea
+                      type="text"
+                      id={`value-${valueIndex}`}
+                      value={value}
+                      onChange={(e) => handleValueChange(type, keyIndex, valueIndex, e)}
+                      placeholder={`Info ${valueIndex + 1}`}
+                      className='text-area-box'
+                    />
+  
+                    {/* Remove Value Button */}
+                    {pair?.values?.length > 1 && (
+                      <RiDeleteBinLine
+                        className='remove-value'
+                        onClick={() => removeValueField(type, keyIndex, valueIndex)}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+  
+              {/* Add Value Button */}
+              <RiAddCircleLine
+                className='add-value'
+                onClick={() => addValueField(type, keyIndex)}
               />
             </div>
+          ))}
+  
+          {/* Add Key-Value Pair Button */}
+          <RiAddCircleLine
+            className='add-key-value-pair'
+            onClick={() => addKeyValuePair(type)}
+          />
+        </div>
+      );
+    };
 
-            {/* Value Inputs */}
-            <div style={{ marginBottom: '10px' }}>
-              {pair?.values?.map((value, valueIndex) => (
-                <div key={valueIndex} style={{ display: 'flex', marginBottom: '10px' }}>
-                  <label htmlFor={`value-${valueIndex}`} style={{ color: 'white' }}>
-                    Info:
-                  </label>
-                  <textarea
-                    type="text"
-                    id={`value-${valueIndex}`}
-                    value={value}
-                    onChange={(e) => handleValueChange(type, keyIndex, valueIndex, e)}
-                    placeholder={`Info ${valueIndex + 1}`}
-                    className='text-area-box'
-                  />
-
-                  {/* Remove Value Button */}
-                  {pair?.values?.length > 1 && (
-                    <RiDeleteBinLine
-                      className='remove-value'
-                      onClick={() => removeValueField(type, keyIndex, valueIndex)}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Add Value Button */}
-            <RiAddCircleLine
-              className='add-value'
-              onClick={() => addValueField(type, keyIndex)}
-            />
-          </div>
-        ))}
-
-        {/* Add Key-Value Pair Button */}
-        <RiAddCircleLine
-          className='add-key-value-pair'
-          onClick={() => addKeyValuePair(type)}
-        />
-      </div>
-    );
-  };
-
+  // Format the data to be saved
   const formatJSON = () => {
     let requestBody = {
-      "code": code,
-      "name": techniqueName,
-      "parent_technique": parentTechnique,
-      "tactics": formatFields(fields.tactics),
-      "schemes": formatFields(fields.schemes),
-      "sub_techniques": formatFields(fields.sub_techniques),
-      "details": [
+      code,
+      name: techniqueName,
+      parent_technique: parentTechnique,
+      tactics: formatFields(fields.tactics),
+      schemes: formatFields(fields.schemes),
+      sub_techniques: formatFields(fields.sub_techniques),
+      details: [
         {
-          "technique_description": [
+          technique_description: [
             {
-              "description": formatFields(fields.description)
-            }
-          ]
+              description: formatFields(fields.description),
+            },
+          ],
         },
         {
-          "mitigation": formatDetails(keyValuePairs.mitigation)
+          mitigation: formatDetails(keyValuePairs.mitigation),
         },
         {
-          "detection": formatDetails(keyValuePairs.detection)
-        }
+          detection: formatDetails(keyValuePairs.detection),
+        },
       ],
-      "sources": [
+      sources: [
         {
-          "references": formatReferences(keyValuePairs.references)
-        }
-      ]
-    }
-    return requestBody
-  }
+          references: formatReferences(keyValuePairs.references),
+        },
+      ],
+    };
+    return requestBody;
+  };
 
   const downloadJSON = (data) => {
     const now = new Date();
@@ -303,46 +258,33 @@ const ManageContent = (props) => {
       .replace(/T/, '_')
       .replace(/:/g, '-')
       .replace(/\..+/, '');
-  
-    const baseName = 'techniques'
+    const baseName = 'techniques';
     const filename = `${baseName}_${timestamp}.json`;
-
     const jsonStr = JSON.stringify(data, null, 2); // pretty print with 2 spaces
 
-    const blob = new Blob([jsonStr], { type: "application/json" });
+    const blob = new Blob([jsonStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-  
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = url;
     link.download = filename;
-  
+
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  
+
     URL.revokeObjectURL(url);
   };
 
   const handleSubmit = async () => {
+    let jsonContent = formatJSON();
+    let dataMapStorage = localStorage.getItem('techniques');
+    dataMapStorage = dataMapStorage ? JSON.parse(dataMapStorage) : [];
 
-    // if(techniqueName && techniqueName?.length > 0){
-    //   filePath = "src/content/techniques/" + techniqueName.toLowerCase().split(' ').join('_') + ".json"
-    // }
-
-    console.log('techniqueName', techniqueName)
-
-    let jsonContent = formatJSON()
-
-    // localStorage.setItem(techniqueName, JSON.stringify(jsonContent));
-
-    let dataMapStorage = localStorage.getItem("techniques")
-    dataMapStorage = dataMapStorage ? JSON.parse(dataMapStorage) : {};
-
-    const updatedDataMapStorage = dataMapStorage.map(item => {
+    const updatedDataMapStorage = dataMapStorage.map((item) => {
       if (item.name.toLowerCase() === techniqueName.toLowerCase()) {
         return {
           ...item,
-          ...jsonContent
+          ...jsonContent,
         };
       }
       return item;
@@ -350,48 +292,12 @@ const ManageContent = (props) => {
 
     localStorage.setItem('techniques', JSON.stringify(updatedDataMapStorage));
 
-    let jsonBody = {'technique_table': JSON.parse(localStorage.getItem("technique_table")), 'techniques': JSON.parse(localStorage.getItem("techniques"))}
+    let jsonBody = {
+      technique_table: JSON.parse(localStorage.getItem('technique_table')),
+      techniques: JSON.parse(localStorage.getItem('techniques')),
+    };
 
-    downloadJSON(jsonBody)
-  }
-
-  const handleSave = async () => {
-    try {
-      let filePath = ''
-
-      if(techniqueName && techniqueName?.length > 0){
-        filePath = "src/content/techniques/" + techniqueName.toLowerCase().split(' ').join('_') + ".json"
-      }
-
-      let jsonContent = formatJSON()
-      const dataToSend = {
-        filePath: filePath,
-        jsonContent: jsonContent
-      };
-
-      console.log('dataToSend', JSON.stringify(dataToSend))
-
-      // Make a POST request to the serverless function, passing both the file path and content
-      // const response = await fetch(`https://target.github.io/retail-fraud-taxonomy-viewer/.netlify/functions/trigger-workflow`, {
-        const response = await fetch(`https://retail-fraud-taxonomy-viewer.netlify.app/.netlify/functions/trigger-workflow`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend),
-      });
-
-      const data = await response.json();
-
-      if (data.status === "success") {
-        alert("GitHub workflow triggered successfully!");
-      } else {
-        alert("Failed to trigger workflow");
-      }
-    } catch (error) {
-      console.error("Error triggering workflow:", error);
-      alert("An error occurred while triggering the workflow.");
-    }
+    downloadJSON(jsonBody);
   };
 
   return (
@@ -602,7 +508,7 @@ const ManageContent = (props) => {
         </div>
       </section>
       <button className="save-button" type="submit" onClick={handleSubmit}>Submit</button>
-      <button className="save-button" type="cancel" onClick={handleSave}>Cancel</button>
+      <button className="save-button" type="cancel" onClick={handleSubmit}>Cancel</button>
     </div>
   );
 };
