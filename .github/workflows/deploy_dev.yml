@@ -3,8 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - dev1
       - main
+      - dev1
   workflow_dispatch:
 
 permissions:
@@ -17,11 +17,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Node.js
@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Set build mode
+      - name: Set build environment
         run: |
           if [[ $GITHUB_REF == 'refs/heads/dev1' ]]; then
             echo "NODE_ENV=development" >> $GITHUB_ENV
@@ -42,7 +42,7 @@ jobs:
             echo "BUILD_MODE=production" >> $GITHUB_ENV
           fi
 
-      - name: Build
+      - name: Build project
         run: |
           if [[ $GITHUB_REF == 'refs/heads/dev1' ]]; then
             npm run build:dev
@@ -50,18 +50,27 @@ jobs:
             npm run build:prod
           fi
 
-      - name: Deploy dev1
+      - name: Show built files
+        run: |
+          echo "Build output:"
+          ls -R dist/
+
+      - name: Deploy dev1 to /dev1/
         if: github.ref == 'refs/heads/dev1'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages-dev1
+          branch: gh-pages
           folder: dist/dev
+          target-folder: dev1
           token: ${{ secrets.GITHUB_TOKEN }}
+          clean: false
 
-      - name: Deploy main
+      - name: Deploy main to root
         if: github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: dist
+          target-folder: ''
           token: ${{ secrets.GITHUB_TOKEN }}
+          clean: false
