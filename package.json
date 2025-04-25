@@ -10,8 +10,9 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build",
-    "predeploy": "npm run build",
+    "build": "vite build --mode $BUILD_MODE",
+    "build:prod": "vite build --mode production",
+    "build:dev": "vite build --mode development",
     "deploy": "gh-pages -d dist",
     "release": "auto shipit --message 'Update CHANGELOG.md'",
     "test": "vitest",
