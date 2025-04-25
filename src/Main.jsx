@@ -83,6 +83,7 @@ export const Main = () => {
         editStatus={editMode}
         editContent={editContent}
         onBackClick={handleBackClick}
+        addContent={addContent}
       />
 
       {shouldRenderTechniques && !addContent && !editContent && (

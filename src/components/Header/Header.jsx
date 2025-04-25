@@ -11,7 +11,8 @@ const Header = ({
   onViewCustomContent,
   editStatus,
   editContent,
-  onBackClick
+  onBackClick,
+  addContent
 }) => {
 
   const [isToggled, setIsToggled] = useState(editStatus);
@@ -37,6 +38,7 @@ const Header = ({
 
   const handleButtonClick = () => {
     onAddClick('add');
+    editContent = true
   };
 
   const handleBackButtonClick = () => {
@@ -75,7 +77,7 @@ const Header = ({
       <img width="250" height="50" className="logo" alt="NRF Logo" src={NRFLogo} />
       <span>Dev Build</span>
 
-      {!editContent && (
+      {!editContent && !addContent && (
             <div className="header-controls">
               <button className="header-button" onClick={() => handleButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
                 <RiAddCircleLine style={{ fontSize: '20px', marginRight: '5px' }} /> Add Technique
@@ -161,7 +163,7 @@ const Header = ({
             </div>
             )}
       
-          {editContent && (
+          {(editContent || addContent)&& (
             <div className="header-controls">
               <button className="header-button" onClick={() => handleBackButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
                 <RiArrowLeftLine style={{ fontSize: '20px', marginRight: '5px' }} /> Back

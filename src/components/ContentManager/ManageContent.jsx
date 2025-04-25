@@ -330,7 +330,7 @@ const ManageContent = (props) => {
                     Name:
                   </label>
                   <input type="text" id="name" placeholder="Enter Name" className='key-text' value={techniqueName}
-                        onChange={(e) => setTechniqueName(e.target.value)} disabled />
+                        onChange={(e) => setTechniqueName(e.target.value)}  disabled={props.technique !== null}  />
                 </div>
                 <div>
                   <label htmlFor="name" style={{ color: 'white', marginRight: '5px' }}>
