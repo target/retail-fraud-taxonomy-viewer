@@ -15,7 +15,6 @@ export const Main = () => {
     handleOpenSidePanel();
   };
 
-  //Handle ValueClick
   const handleValueClick = (value) => {
     if (value === selectedValue) {
       setRenderKey((prevKey) => prevKey + 1);
