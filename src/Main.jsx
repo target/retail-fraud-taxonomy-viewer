@@ -22,7 +22,6 @@ export const Main = () => {
     setViewCustomContent(false);
   }, []);
 
-  //Handle Back click
   const handleBackClick = useCallback(() => {
     setAddContent(null);
     setEditContent(null);
