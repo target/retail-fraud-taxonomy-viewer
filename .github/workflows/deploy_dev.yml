@@ -65,6 +65,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: ${{ github.ref == 'refs/heads/dev1' && 'dist/dev1' || 'dist' }}  # Deploy from dist/dev for dev branch, dist for main (prod)
+          folder: ${{ github.ref == 'refs/heads/dev1' && 'dist/dev' || 'dist' }}  # Deploy from dist/dev for dev branch, dist for main (prod)
           target-folder: ${{ github.ref == 'refs/heads/dev1' && 'dev1' || '' }}  # Deploy to /dev for dev branch, root for main
           token: ${{ secrets.GITHUB_TOKEN }}
