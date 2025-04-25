@@ -68,4 +68,4 @@ jobs:
           folder: ${{ github.ref == 'refs/heads/dev' && 'dist/dev' || 'dist' }}  # Deploy from dist/dev for dev branch, dist for main (prod)
           target-folder: ${{ github.ref == 'refs/heads/dev' && 'dev' || '' }}  # Deploy to /dev for dev branch, root for main
           token: ${{ secrets.GITHUB_TOKEN }}
-          clean: false
+          force: false
