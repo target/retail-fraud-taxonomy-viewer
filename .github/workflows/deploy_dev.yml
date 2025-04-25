@@ -46,7 +46,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/dev  # Ensure this matches your dev1 build output
+          folder: dist/dev1  # Ensure this matches your dev1 build output
           target-folder: dev1  # Deploy to /dev1 folder
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: false  # Don't overwrite root or /dev1 folder
