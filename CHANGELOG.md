@@ -1,3 +1,15 @@
+# v1.5.6 (Fri Apr 25 2025)
+
+#### ⚠️ Pushed to `main`
+
+- Update package.json ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 1
+
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
 # v1.5.4 (Fri Apr 25 2025)
 
 #### ⚠️ Pushed to `main`
