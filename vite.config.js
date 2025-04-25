@@ -6,7 +6,7 @@ export default defineConfig({
     outDir: process.env.BUILD_MODE === 'development' ? 'dist/dev1' : 'dist', // If development, output to dist/dev
   },
   base: process.env.BUILD_MODE === 'development'
-    ? '/retail-fraud-taxonomy-viewer/dev/'
+    ? '/retail-fraud-taxonomy-viewer/dev1/'
     : '/retail-fraud-taxonomy-viewer/',  // Adjust base for dev and prod
   plugins: [react()],
   test: {
