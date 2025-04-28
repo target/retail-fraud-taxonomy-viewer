@@ -1,7 +1,8 @@
 import './Header.css';
 import NRFLogo from '../../content/assets/nrf-logo.svg';
 import React, { useState, useEffect, useRef } from 'react';
-import { RiAddCircleLine, RiImportLine, RiArrowLeftLine } from 'react-icons/ri';
+import { RiAddCircleLine, RiImportLine, RiArrowLeftLine, RiExportFill, RiExportLine } from 'react-icons/ri';
+import { handleExport } from '../ContentManager/ManageContentUtils';
 
 const Header = ({
   toggleControl,
@@ -48,6 +49,8 @@ const Header = ({
     onBackClick('back');
   };
 
+
+
   const handleImportClick = () => {
     fileInputRef.current.click();
   };
@@ -78,29 +81,62 @@ const Header = ({
       <span>Dev Build</span>
 
       {!editContent && !addContent && (
-            <div className="header-controls">
-              <button className="header-button" onClick={() => handleButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
-                <RiAddCircleLine style={{ fontSize: '20px', marginRight: '5px' }} /> Add Technique
-              </button>
-              <button className="header-button" onClick={() => handleImportClick()} style={{ display: 'flex', alignItems: 'center' }}>
-                <RiImportLine style={{ fontSize: '20px', marginRight: '5px' }} /> Import Data
-              </button>
-      
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: "none" }}
-                onChange={handleFileChange}
+        <div className="header-controls">
+          <button className="header-button" onClick={() => handleButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
+            <RiAddCircleLine style={{ fontSize: '20px', marginRight: '5px' }} /> Add Technique
+          </button>
+          <button className="header-button" onClick={() => handleImportClick()} style={{ display: 'flex', alignItems: 'center' }}>
+            <RiImportLine style={{ fontSize: '20px', marginRight: '5px' }} /> Import Data
+          </button>
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
+
+          <div onClick={handleToggle} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+            {/* Custom Toggle Slider */}
+            <div
+              style={{
+                width: '50px',
+                height: '25px',
+                borderRadius: '25px',
+                backgroundColor: isToggled ? 'green' : '#ccc',
+                position: 'relative',
+                transition: 'background-color 0.3s ease',
+              }}
+            >
+              {/* Circle inside the toggle */}
+              <div
+                style={{
+                  width: '20px',
+                  height: '20px',
+                  borderRadius: '50%',
+                  backgroundColor: 'white',
+                  position: 'absolute',
+                  top: '2px',
+                  left: isToggled ? 'calc(100% - 22px)' : '2px',
+                  transition: 'left 0.3s ease',  // Smooth transition for the toggle circle
+                }}
               />
-      
-              <div onClick={handleToggle} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+            </div>
+            <span style={{ marginLeft: '10px' }}>{isToggled ? 'EDIT ON' : 'EDIT OFF'}</span>
+          </div>
+          {(localStorage.getItem('technique_table') || fileData) && (
+            <>
+              <div
+                onClick={handleViewContent}
+                style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+              >
                 {/* Custom Toggle Slider */}
                 <div
                   style={{
                     width: '50px',
                     height: '25px',
                     borderRadius: '25px',
-                    backgroundColor: isToggled ? 'green' : '#ccc',
+                    backgroundColor: viewCustomContent ? 'green' : '#ccc',
                     position: 'relative',
                     transition: 'background-color 0.3s ease',
                   }}
@@ -114,63 +150,49 @@ const Header = ({
                       backgroundColor: 'white',
                       position: 'absolute',
                       top: '2px',
-                      left: isToggled ? 'calc(100% - 22px)' : '2px',
-                      transition: 'left 0.3s ease',  // Smooth transition for the toggle circle
+                      left: viewCustomContent ? 'calc(100% - 22px)' : '2px',
+                      transition: 'left 0.3s ease',
                     }}
                   />
                 </div>
-                <span style={{ marginLeft: '10px' }}>{isToggled ? 'EDIT ON' : 'EDIT OFF'}</span>
-      
-      
+                <span style={{ marginLeft: '10px' }}>
+                  {viewCustomContent ? 'Custom Content' : 'NRF Content'}
+                </span>
               </div>
-              {(localStorage.getItem('technique_table') || fileData) && (
-              // {/* {fileData && ( */}
-                <div onClick={handleViewContent} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  {/* Custom Toggle Slider */}
-                  <div
-                    style={{
-                      width: '50px',
-                      height: '25px',
-                      borderRadius: '25px',
-                      backgroundColor: viewCustomContent ? 'green' : '#ccc',
-                      position: 'relative',
-                      transition: 'background-color 0.3s ease',
-                    }}
-                  >
-                    {/* Circle inside the toggle */}
-                    <div
-                      style={{
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '50%',
-                        backgroundColor: 'white',
-                        position: 'absolute',
-                        top: '2px',
-                        left: viewCustomContent ? 'calc(100% - 22px)' : '2px',
-                        transition: 'left 0.3s ease',  // Smooth transition for the toggle circle
-                      }}
-                    />
-                  </div>
-                  <span style={{ marginLeft: '10px' }}>{viewCustomContent ? 'Custom Content' : 'NRF Content'}</span>
-                </div>
-              )}
-              <button
-                className="header-button"
-                onClick={() => toggleControl('selection')}
-              >
-                Filter By
-              </button>
-            </div>
-            )}
-      
-          {(editContent || addContent)&& (
-            <div className="header-controls">
-              <button className="header-button" onClick={() => handleBackButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
-                <RiArrowLeftLine style={{ fontSize: '20px', marginRight: '5px' }} /> Back
-              </button>
+
+              <div className="header-controls">
+                <button
+                  className="header-button"
+                  onClick={handleExport}
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <RiExportLine style={{ fontSize: '20px', marginRight: '5px' }} /> Export Custom Data
+                </button>
               </div>
-            )}
-          </header>
+            </>
+          )}
+
+          <button
+            className="header-button"
+            onClick={() => toggleControl('selection')}
+          >
+            Filter By
+          </button>
+        </div>
+
+      )}
+
+      {(editContent || addContent) && (
+        <div className="header-controls">
+          <button className="header-button" onClick={() => handleBackButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
+            <RiArrowLeftLine style={{ fontSize: '20px', marginRight: '5px' }} /> Back
+          </button>
+          <button className="header-button" onClick={() => handleBackButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
+            <RiExportLine style={{ fontSize: '20px', marginRight: '5px' }} /> Export Custom Content
+          </button>
+        </div>
+      )}
+    </header>
   );
 };
 

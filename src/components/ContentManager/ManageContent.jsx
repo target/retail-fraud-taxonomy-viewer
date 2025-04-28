@@ -4,6 +4,7 @@ import './ManageContent.css';
 import { fetchAllTechniques, fetchTechnique, dataMap, dataArray } from '../../utils/dataMap';
 import { transformData, transformKeyValue, transformReference, formatDetails, formatFields, formatReferences } from './ManageContentUtils';
 import { RiAddCircleLine, RiDeleteBinLine } from 'react-icons/ri';
+import { Alert } from '../Alert/Alert'
 
 const ManageContent = (props) => {
   const [fields, setFields] = useState({
@@ -30,6 +31,11 @@ const ManageContent = (props) => {
   const [allTechniques, setAllTechniques] = useState([]);
   const [code, setCode] = useState('');
   const [parentTechnique, setParentTechnique] = useState('');
+
+  const [alertVal, setAlertVal] = useState('')
+  const [showFailAlert, setShowFailAlert] = useState(false)
+  const [alertHeading, setAlertHeading] = useState('')
+  const [requestSubmit, setResponseSubmit] = useState(false)
 
   useEffect(() => {
     if (props.technique) {
@@ -252,31 +258,9 @@ const ManageContent = (props) => {
     return requestBody;
   };
 
-  const downloadJSON = (data) => {
-    const now = new Date();
-    const timestamp = now.toISOString()
-      .replace(/T/, '_')
-      .replace(/:/g, '-')
-      .replace(/\..+/, '');
-    const baseName = 'techniques';
-    const filename = `${baseName}_${timestamp}.json`;
-    const jsonStr = JSON.stringify(data, null, 2); // pretty print with 2 spaces
-
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    URL.revokeObjectURL(url);
-  };
-
   const handleSubmit = async () => {
-    let jsonContent = formatJSON();
+    try {
+      let jsonContent = formatJSON();
     let dataMapStorage = localStorage.getItem('techniques');
     dataMapStorage = dataMapStorage ? JSON.parse(dataMapStorage) : [];
 
@@ -292,12 +276,20 @@ const ManageContent = (props) => {
 
     localStorage.setItem('techniques', JSON.stringify(updatedDataMapStorage));
 
-    let jsonBody = {
-      technique_table: JSON.parse(localStorage.getItem('technique_table')),
-      techniques: JSON.parse(localStorage.getItem('techniques')),
-    };
-
-    downloadJSON(jsonBody);
+    setResponseSubmit(true)
+    setAlertVal('Data saved successfully')
+    setTimeout(() => {
+      setResponseSubmit(false)
+      handleCancelClick()
+    }, 2000)
+    } catch (error) {
+      setAlertHeading(error)
+      setShowFailAlert(true)
+      setAlertVal('Data save failed')
+      setTimeout(() => {
+        setShowFailAlert(false)
+      }, 2000)
+    }
   };
 
   const handleCancelClick = () => {
@@ -310,6 +302,20 @@ const ManageContent = (props) => {
       {/* Collapsible Technique Section */}
       <section className="collapsible-section">
         <div>
+        {showFailAlert && (
+            <Alert
+              classStyle="alert-fail"
+              heading={alertHeading}
+              value={alertVal}
+            />
+          )}
+          {requestSubmit && (
+            <Alert
+              classStyle="alert-success"
+              heading={alertHeading}
+              value={alertVal}
+            />
+          )}
           <div
             className={`Collapsible__trigger ${openSections.technique ? 'open' : ''}`}
             onClick={() => handleToggle('technique')}

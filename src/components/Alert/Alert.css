@@ -1,0 +1,28 @@
+.loader-spinner {
+  margin-top: 20px;
+  padding-left: 5px;
+ }
+ .alert-success {
+   background-color: #395;
+ color: white;
+ padding: 10px;
+ font-size: 16px;
+ position: fixed;
+ left: 72%;
+ transform: translate(2%,-150%);
+ width: 500px;
+ height: 70px;
+ z-index: 1000;
+ }
+ .alert-fail {
+   background-color:  #c00000;
+   color: white;
+   padding: 10px;
+   font-size: 16px;
+   position: fixed;
+ left: 72%;
+ transform: translate(2%, -150%);
+ width: 500px;
+ height: 70px;
+ z-index: 1000;
+ }

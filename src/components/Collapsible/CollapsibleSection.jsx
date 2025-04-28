@@ -40,10 +40,8 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent }) => {
     
     if (importContent) {
       const result = importContent.techniques.filter(tq => tq.name === technique);
-      console.log('result', result)
 
       if(result && result.length > 0){
-        console.log('setting details')
         setDetails(result[0]);
         setReferences(result[0].references);
       }

@@ -1,11 +1,11 @@
 
 //Edit Technique utils
 export const transformData = (inputJson) => {
-    if (inputJson) {
-      return inputJson.map(data => ({ value: data }));
-    }
-    return [];
-  };
+  if (inputJson) {
+    return inputJson.map(data => ({ value: data }));
+  }
+  return [];
+};
 
 export const transformKeyValue = (inputJson) => {
   return inputJson.map(item => {
@@ -39,7 +39,7 @@ export const formatReferences = (inputJson) => {
     [item.key]: item.values
   }));
 
-  const formattedJson = outputJson.flatMap(obj => 
+  const formattedJson = outputJson.flatMap(obj =>
     Object.entries(obj).map(([key, value]) => ({
       name: key,
       link: value
@@ -51,5 +51,37 @@ export const formatReferences = (inputJson) => {
 
 export const formatFields = (inputJson) => {
   const outputArray = inputJson.map(item => item.value);
-  return outputArray   
+  return outputArray
+}
+
+const downloadJSON = (data) => {
+  const now = new Date();
+  const timestamp = now.toISOString()
+    .replace(/T/, '_')
+    .replace(/:/g, '-')
+    .replace(/\..+/, '');
+  const baseName = 'techniques';
+  const filename = `${baseName}_${timestamp}.json`;
+  const jsonStr = JSON.stringify(data, null, 2); // pretty print with 2 spaces
+
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  URL.revokeObjectURL(url);
+};
+
+export const handleExport = () => {
+  let jsonBody = {
+    technique_table: JSON.parse(localStorage.getItem('technique_table')),
+    techniques: JSON.parse(localStorage.getItem('techniques')),
+  };
+
+  downloadJSON(jsonBody);
 }
