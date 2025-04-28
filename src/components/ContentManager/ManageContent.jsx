@@ -518,7 +518,7 @@ const ManageContent = (props) => {
 
         </div>
       </section>
-      <button className="save-button" type="submit" onClick={handleSubmit}>Submit</button>
+      <button className="save-button" type="submit" onClick={handleSubmit}>Save</button>
       <button className="save-button" type="cancel" onClick={handleCancelClick}>Cancel</button>
     </div>
   );
