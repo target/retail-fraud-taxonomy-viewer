@@ -88,7 +88,7 @@ export const Main = () => {
 
       {shouldRenderTechniques && !addContent && !editContent && (
         <TechniquesTable
-          key={renderKey}
+          // key={renderKey}
           onValueClick={handleValueClick}
           onEditClick={handleEditClick}
           onImportClick={handleImportClick}

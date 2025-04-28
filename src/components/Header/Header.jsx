@@ -123,8 +123,8 @@ const Header = ({
       
       
               </div>
-              {/* {(localStorage.getItem('technique_table') || fileData) && ( */}
-              {fileData && (
+              {(localStorage.getItem('technique_table') || fileData) && (
+              // {/* {fileData && ( */}
                 <div onClick={handleViewContent} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
                   {/* Custom Toggle Slider */}
                   <div
