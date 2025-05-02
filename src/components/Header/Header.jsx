@@ -1,7 +1,7 @@
 import './Header.css';
 import NRFLogo from '../../content/assets/nrf-logo.svg';
 import React, { useState, useEffect, useRef } from 'react';
-import { RiAddCircleLine, RiImportLine, RiArrowLeftLine, RiExportFill, RiExportLine } from 'react-icons/ri';
+import { RiAddCircleLine, RiImportLine, RiArrowLeftLine, RiExportLine, RiDeleteBin5Line } from 'react-icons/ri';
 import { handleExport } from '../ContentManager/ManageContentUtils';
 
 const Header = ({
@@ -40,6 +40,11 @@ const Header = ({
   const handleButtonClick = () => {
     onAddClick('add');
     editContent = true
+  };
+
+  const deleteCustomContent = () => {
+    localStorage.removeItem('technique_table')
+    localStorage.removeItem('techniques')
   };
 
   const handleBackButtonClick = () => {
@@ -166,9 +171,12 @@ const Header = ({
                   onClick={handleExport}
                   style={{ display: 'flex', alignItems: 'center' }}
                 >
-                  <RiExportLine style={{ fontSize: '20px', marginRight: '5px' }} /> Export Custom Data
+                  <RiExportLine style={{ fontSize: '20px', marginRight: '5px' }} /> Export Custom Content
                 </button>
               </div>
+              <button className="header-button" onClick={() => deleteCustomContent()} style={{ display: 'flex', alignItems: 'center' }}>
+                 <RiDeleteBin5Line style={{ fontSize: '20px', marginRight: '5px' }} /> Delete Custom Content
+          </button>
             </>
           )}
 

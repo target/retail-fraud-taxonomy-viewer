@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import './ManageContent.css';
-import { fetchAllTechniques, fetchTechnique, dataMap, dataArray } from '../../utils/dataMap';
+import { fetchAllTechniques, fetchTechnique, dataArray, getUniqueTechniques } from '../../utils/dataMap';
 import { transformData, transformKeyValue, transformReference, formatDetails, formatFields, formatReferences } from './ManageContentUtils';
 import { RiAddCircleLine, RiDeleteBinLine } from 'react-icons/ri';
 import { Alert } from '../Alert/Alert'
@@ -31,48 +31,77 @@ const ManageContent = (props) => {
   const [allTechniques, setAllTechniques] = useState([]);
   const [code, setCode] = useState('');
   const [parentTechnique, setParentTechnique] = useState('');
-
   const [alertVal, setAlertVal] = useState('')
   const [showFailAlert, setShowFailAlert] = useState(false)
   const [alertHeading, setAlertHeading] = useState('')
   const [requestSubmit, setResponseSubmit] = useState(false)
+  const [selectedTechnique, setSelectedTechnique] = useState('');
+  const options = getUniqueTechniques();
+
+  const handleCloneFromChange = (event) => {
+    const value = event.target.value;
+    setSelectedTechnique(value);
+  };
+
+  const resetForm = () => {
+    setCode('');
+    setTechniqueName('');
+    setParentTechnique('');
+
+    setFields({
+      description: [{ value: '' }],
+      tactics: [{ value: '' }],
+      schemes: [{ value: '' }],
+      sub_techniques: [{ value: '' }],
+    })
+
+    setKeyValuePairs({
+      mitigation: [{ key: '', values: [''] }],
+      detection: [{ key: '', values: [''] }],
+      references: [{ key: '', values: [''] }],
+    })
+  }
 
   useEffect(() => {
-    if (props.technique) {
+    if (props.technique || selectedTechnique) {
       const fetchDetails = async () => {
         let techniqueInfo = {};
+        let techniqueName = props.technique || selectedTechnique
 
-        if (props.viewCustomMode) {
-          techniqueInfo = JSON.parse(localStorage.getItem('techniques')).find(item =>
-            item.name === props.technique
-          );
-        } else {
-          techniqueInfo = await fetchTechnique(props.technique);
+        if (techniqueName) {
+          if (props.viewCustomMode) {
+            techniqueInfo = JSON.parse(localStorage.getItem('techniques')).find(item =>
+              item.name === techniqueName
+            );
+          } else {
+            techniqueInfo = await fetchTechnique(techniqueName);
+          }
+
+          if (techniqueInfo) {
+            setCode(techniqueInfo.code);
+            setTechniqueName(techniqueInfo.name);
+            setParentTechnique(techniqueInfo.parent_technique);
+
+            setFields({
+              description: transformData(techniqueInfo.technique_description || ['']),
+              tactics: transformData(techniqueInfo.tactics.length === 0 ? [''] : techniqueInfo.tactics),
+              schemes: transformData(techniqueInfo.schemes.length === 0 ? [''] : techniqueInfo.schemes),
+              sub_techniques: transformData(techniqueInfo.sub_techniques.length === 0 ? [''] : techniqueInfo.sub_techniques),
+            });
+
+            setKeyValuePairs({
+              mitigation: transformKeyValue(techniqueInfo.mitigation),
+              detection: transformKeyValue(techniqueInfo.detection),
+              references: transformReference(techniqueInfo.references),
+            });
+          }
         }
-
-        if (techniqueInfo) {
-          setCode(techniqueInfo.code);
-          setTechniqueName(techniqueInfo.name);
-          setParentTechnique(techniqueInfo.parent_technique);
-
-          setFields({
-            description: transformData(techniqueInfo.technique_description || ['']),
-            tactics: transformData(techniqueInfo.tactics.length === 0 ? [''] : techniqueInfo.tactics),
-            schemes: transformData(techniqueInfo.schemes.length === 0 ? [''] : techniqueInfo.schemes),
-            sub_techniques: transformData(techniqueInfo.sub_techniques.length === 0 ? [''] : techniqueInfo.sub_techniques),
-          });
-
-          setKeyValuePairs({
-            mitigation: transformKeyValue(techniqueInfo.mitigation),
-            detection: transformKeyValue(techniqueInfo.detection),
-            references: transformReference(techniqueInfo.references),
-          });
-        }
-      };
-
+      }
       fetchDetails();
+    } else {
+      resetForm()
     }
-  }, [props.technique]);
+  }, [props.technique, selectedTechnique]);
 
   // Fetch all techniques on component mount
   useEffect(() => {
@@ -120,18 +149,18 @@ const ManageContent = (props) => {
     }));
   };
 
-    // Handle adding new value to key-value pair
-    const addValueField = (type, keyIndex) => {
-      const newKeyValuePairs = [...keyValuePairs[type]];
-      newKeyValuePairs[keyIndex].values.push('');
-      setKeyValuePairs((prev) => ({
-        ...prev,
-        [type]: newKeyValuePairs,
-      }));
-    };
+  // Handle adding new value to key-value pair
+  const addValueField = (type, keyIndex) => {
+    const newKeyValuePairs = [...keyValuePairs[type]];
+    newKeyValuePairs[keyIndex].values.push('');
+    setKeyValuePairs((prev) => ({
+      ...prev,
+      [type]: newKeyValuePairs,
+    }));
+  };
 
-   // Handle removing a value from a key-value pair
-   const removeValueField = (type, keyIndex, valueIndex) => {
+  // Handle removing a value from a key-value pair
+  const removeValueField = (type, keyIndex, valueIndex) => {
     const newKeyValuePairs = [...keyValuePairs[type]];
     newKeyValuePairs[keyIndex].values = newKeyValuePairs[keyIndex].values.filter((_, i) => i !== valueIndex);
     setKeyValuePairs((prev) => ({
@@ -149,7 +178,7 @@ const ManageContent = (props) => {
     }));
   };
 
-  
+
   // Remove key-value pair
   const removeKeyValuePair = (type, index) => {
     setKeyValuePairs((prev) => ({
@@ -162,9 +191,9 @@ const ManageContent = (props) => {
     const updatedPairs = keyValuePairs[type].map((pair, i) =>
       i === index
         ? {
-            ...pair,
-            [field]: event.target.value,
-          }
+          ...pair,
+          [field]: event.target.value,
+        }
         : pair
     );
     setKeyValuePairs({
@@ -173,137 +202,99 @@ const ManageContent = (props) => {
     });
   };
 
-    // Handle change in key input
-    const handleKeyChange = (type, index, event) => {
-      const newKeyValuePairs = [...keyValuePairs[type]];
-      newKeyValuePairs[index].key = event.target.value;
-      setKeyValuePairs((prev) => ({
-        ...prev,
-        [type]: newKeyValuePairs,
-      }));
-    };
-  
-    // Handle change in value input
-    const handleValueChange = (type, keyIndex, valueIndex, event) => {
-      const newKeyValuePairs = [...keyValuePairs[type]];
-      newKeyValuePairs[keyIndex].values[valueIndex] = event.target.value;
-      setKeyValuePairs((prev) => ({
-        ...prev,
-        [type]: newKeyValuePairs,
-      }));
-    };
+  // Handle change in key input
+  const handleKeyChange = (type, index, event) => {
+    const newKeyValuePairs = [...keyValuePairs[type]];
+    newKeyValuePairs[index].key = event.target.value;
+    setKeyValuePairs((prev) => ({
+      ...prev,
+      [type]: newKeyValuePairs,
+    }));
+  };
+
+  // Handle change in value input
+  const handleValueChange = (type, keyIndex, valueIndex, event) => {
+    const newKeyValuePairs = [...keyValuePairs[type]];
+    newKeyValuePairs[keyIndex].values[valueIndex] = event.target.value;
+    setKeyValuePairs((prev) => ({
+      ...prev,
+      [type]: newKeyValuePairs,
+    }));
+  };
 
   // Function for rendering key-value pairs
-    const addKeyValue = (type) => {
-      return (
-        <div style={{ marginBottom: '20px' }}>
-          {keyValuePairs[type]?.map((pair, keyIndex) => (
-            <div
-              key={keyIndex}
-              className='box-section'
-            >
-              {/* Remove Key-Value Pair Button */}
-              <RiDeleteBinLine
-                className='remove-key-value-pair'
-                onClick={() => removeKeyValuePair(type, keyIndex)}
-              />
-  
-              {/* Key Input */}
-              <div style={{ display: 'flex', marginBottom: '10px' }}>
-                <label htmlFor={`key-${keyIndex}`} style={{ color: 'white' }}>
-                  {type === 'references' ? 'Source:' : 'Type: '}
-                </label>
-                <input
-                  type="text"
-                  id={`key-${keyIndex}`}
-                  value={pair.key}
-                  onChange={(e) => handleKeyChange(type, keyIndex, e)}
-                  placeholder={type === 'references' ? `Source ${keyIndex + 1}` : `Type ${keyIndex + 1}`}
-                  className='key-text'
-                />
-              </div>
-  
-              {/* Value Inputs */}
-              <div style={{ marginBottom: '10px' }}>
-                {pair?.values?.map((value, valueIndex) => (
-                  <div key={valueIndex} style={{ display: 'flex', marginBottom: '10px' }}>
-                    <label htmlFor={`value-${valueIndex}`} style={{ color: 'white' }}>
-                      Info:
-                    </label>
-                    <textarea
-                      type="text"
-                      id={`value-${valueIndex}`}
-                      value={value}
-                      onChange={(e) => handleValueChange(type, keyIndex, valueIndex, e)}
-                      placeholder={`Info ${valueIndex + 1}`}
-                      className='text-area-box'
-                    />
-  
-                    {/* Remove Value Button */}
-                    {pair?.values?.length > 1 && (
-                      <RiDeleteBinLine
-                        className='remove-value'
-                        onClick={() => removeValueField(type, keyIndex, valueIndex)}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-  
-              {/* Add Value Button */}
-              <RiAddCircleLine
-                className='add-value'
-                onClick={() => addValueField(type, keyIndex)}
+  const addKeyValue = (type) => {
+    return (
+      <div style={{ marginBottom: '20px' }}>
+        {keyValuePairs[type]?.map((pair, keyIndex) => (
+          <div
+            key={keyIndex}
+            className='box-section'
+          >
+            {/* Remove Key-Value Pair Button */}
+            <RiDeleteBinLine
+              className='remove-key-value-pair'
+              onClick={() => removeKeyValuePair(type, keyIndex)}
+            />
+
+            {/* Key Input */}
+            <div style={{ display: 'flex', marginBottom: '10px' }}>
+              <label htmlFor={`key-${keyIndex}`} style={{ color: 'white' }}>
+                {type === 'references' ? 'Source:' : 'Type: '}
+              </label>
+              <input
+                type="text"
+                id={`key-${keyIndex}`}
+                value={pair.key}
+                onChange={(e) => handleKeyChange(type, keyIndex, e)}
+                placeholder={type === 'references' ? `Source ${keyIndex + 1}` : `Type ${keyIndex + 1}`}
+                className='key-text'
               />
             </div>
-          ))}
-  
-          {/* Add Key-Value Pair Button */}
-          <RiAddCircleLine
-            className='add-key-value-pair'
-            onClick={() => addKeyValuePair(type)}
-          />
-        </div>
-      );
-    };
 
-  // Format the data to be saved
-  // const formatJSON = () => {
-  //   let requestBody = {
-  //     code,
-  //     name: techniqueName,
-  //     parent_technique: parentTechnique,
-  //     tactics: formatFields(fields.tactics),
-  //     schemes: formatFields(fields.schemes),
-  //     sub_techniques: formatFields(fields.sub_techniques),
-  //     technique_description:  [
-  //       {
-  //         description: formatFields(fields.description),
-  //       },
-  //     ],
-  //     details: [
-  //       {
-  //         technique_description: [
-  //           {
-  //             description: formatFields(fields.description),
-  //           },
-  //         ],
-  //       },
-  //       {
-  //         mitigation: formatDetails(keyValuePairs.mitigation),
-  //       },
-  //       {
-  //         detection: formatDetails(keyValuePairs.detection),
-  //       },
-  //     ],
-  //     sources: [
-  //       {
-  //         references: formatReferences(keyValuePairs.references),
-  //       },
-  //     ],
-  //   };
-  //   return requestBody;
-  // };
+            {/* Value Inputs */}
+            <div style={{ marginBottom: '10px' }}>
+              {pair?.values?.map((value, valueIndex) => (
+                <div key={valueIndex} style={{ display: 'flex', marginBottom: '10px' }}>
+                  <label htmlFor={`value-${valueIndex}`} style={{ color: 'white' }}>
+                    Info:
+                  </label>
+                  <textarea
+                    type="text"
+                    id={`value-${valueIndex}`}
+                    value={value}
+                    onChange={(e) => handleValueChange(type, keyIndex, valueIndex, e)}
+                    placeholder={`Info ${valueIndex + 1}`}
+                    className='text-area-box'
+                  />
+
+                  {/* Remove Value Button */}
+                  {pair?.values?.length > 1 && (
+                    <RiDeleteBinLine
+                      className='remove-value'
+                      onClick={() => removeValueField(type, keyIndex, valueIndex)}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Add Value Button */}
+            <RiAddCircleLine
+              className='add-value'
+              onClick={() => addValueField(type, keyIndex)}
+            />
+          </div>
+        ))}
+
+        {/* Add Key-Value Pair Button */}
+        <RiAddCircleLine
+          className='add-key-value-pair'
+          onClick={() => addKeyValuePair(type)}
+        />
+      </div>
+    );
+  };
 
   // Format the data to be saved
   const formatJSON = () => {
@@ -325,27 +316,27 @@ const ManageContent = (props) => {
   const handleSave = async () => {
     try {
       let jsonContent = formatJSON();
-    let dataMapStorage = localStorage.getItem('techniques');
-    dataMapStorage = dataMapStorage ? JSON.parse(dataMapStorage) : [];
+      let dataMapStorage = localStorage.getItem('techniques');
+      dataMapStorage = dataMapStorage ? JSON.parse(dataMapStorage) : [];
 
-    const updatedDataMapStorage = dataMapStorage.map((item) => {
-      if (item.name.toLowerCase() === techniqueName.toLowerCase()) {
-        return {
-          ...item,
-          ...jsonContent,
-        };
-      }
-      return item;
-    });
+      const updatedDataMapStorage = dataMapStorage.map((item) => {
+        if (item.name.toLowerCase() === techniqueName.toLowerCase()) {
+          return {
+            ...item,
+            ...jsonContent,
+          };
+        }
+        return item;
+      });
 
-    localStorage.setItem('techniques', JSON.stringify(updatedDataMapStorage));
+      localStorage.setItem('techniques', JSON.stringify(updatedDataMapStorage));
 
-    setResponseSubmit(true)
-    setAlertVal('Data saved successfully')
-    setTimeout(() => {
-      setResponseSubmit(false)
-      handleCancelClick()
-    }, 2000)
+      setResponseSubmit(true)
+      setAlertVal('Data saved successfully')
+      setTimeout(() => {
+        setResponseSubmit(false)
+        handleCancelClick()
+      }, 2000)
     } catch (error) {
       setAlertHeading(error)
       setShowFailAlert(true)
@@ -366,7 +357,7 @@ const ManageContent = (props) => {
       {/* Collapsible Technique Section */}
       <section className="collapsible-section">
         <div>
-        {showFailAlert && (
+          {showFailAlert && (
             <Alert
               classStyle="alert-fail"
               heading={alertHeading}
@@ -380,6 +371,15 @@ const ManageContent = (props) => {
               value={alertVal}
             />
           )}
+          <div style={{ paddingBottom: '20px' }}>
+            <label htmlFor="clone-from" style={{ color: 'white', fontSize: '20px' }}>Clone From:  </label>
+            <select id="clone-from" value={selectedTechnique} onChange={handleCloneFromChange} style={{fontSize: '20px'}}>
+              <option value="">-- Select Technique--</option>
+              {options.map((option, index) => (
+                <option key={index} value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
           <div
             className={`Collapsible__trigger ${openSections.technique ? 'open' : ''}`}
             onClick={() => handleToggle('technique')}
@@ -400,21 +400,21 @@ const ManageContent = (props) => {
                     Name:
                   </label>
                   <input type="text" id="name" placeholder="Enter Name" className='key-text' value={techniqueName}
-                        onChange={(e) => setTechniqueName(e.target.value)}  disabled={props.technique !== null}  />
+                    onChange={(e) => setTechniqueName(e.target.value)} disabled={props.technique !== null} />
                 </div>
                 <div>
                   <label htmlFor="name" style={{ color: 'white', marginRight: '5px' }}>
                     Code:
                   </label>
                   <input type="text" id="name" placeholder="Enter Code" className='key-text' value={code}
-                        onChange={(e) => setCode(e.target.value)} />
+                    onChange={(e) => setCode(e.target.value)} />
                 </div>
                 <div>
                   <label htmlFor="name" style={{ color: 'white', marginRight: '5px' }}>
                     Parent Technique:
                   </label>
                   <input type="text" id="name" placeholder="Enter Parent Technique (if any)" className='key-text' value={parentTechnique}
-                        onChange={(e) => setParentTechnique(e.target.value)}  />
+                    onChange={(e) => setParentTechnique(e.target.value)} />
                 </div>
 
                 {/* Description Section with Box Styling */}

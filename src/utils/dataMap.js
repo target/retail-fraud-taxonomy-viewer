@@ -26,6 +26,13 @@ export const fetchAllTechniques = () => {
   return techniques;
 };
 
+export const getUniqueTechniques = () => {
+  const allValues = techniques.flatMap(obj => Object.values(obj));
+  const filteredValues = allValues.filter(val => val && val.trim() !== '');
+  const uniqueValues = [...new Set(filteredValues)];
+  return uniqueValues.sort((a, b) => a.localeCompare(b));
+};
+
 export const filterDataMap = (selectedIcon, filterType) => {
   if (selectedIcon === SHOW_ALL) {
     return techniques;
