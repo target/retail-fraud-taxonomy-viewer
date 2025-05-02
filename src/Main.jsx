@@ -114,6 +114,7 @@ export const Main = () => {
           techniqueName={selectedValue}
           key={renderKey}
           importContent={importContent}
+          viewCustomMode={viewCustomContent}
         />
       )}
 

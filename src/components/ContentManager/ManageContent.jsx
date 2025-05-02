@@ -120,6 +120,27 @@ const ManageContent = (props) => {
     }));
   };
 
+    // Handle adding new value to key-value pair
+    const addValueField = (type, keyIndex) => {
+      const newKeyValuePairs = [...keyValuePairs[type]];
+      newKeyValuePairs[keyIndex].values.push('');
+      setKeyValuePairs((prev) => ({
+        ...prev,
+        [type]: newKeyValuePairs,
+      }));
+    };
+
+   // Handle removing a value from a key-value pair
+   const removeValueField = (type, keyIndex, valueIndex) => {
+    const newKeyValuePairs = [...keyValuePairs[type]];
+    newKeyValuePairs[keyIndex].values = newKeyValuePairs[keyIndex].values.filter((_, i) => i !== valueIndex);
+    setKeyValuePairs((prev) => ({
+      ...prev,
+      [type]: newKeyValuePairs,
+    }));
+  };
+
+
   // Add key-value pair
   const addKeyValuePair = (type) => {
     setKeyValuePairs((prev) => ({
@@ -128,6 +149,7 @@ const ManageContent = (props) => {
     }));
   };
 
+  
   // Remove key-value pair
   const removeKeyValuePair = (type, index) => {
     setKeyValuePairs((prev) => ({
@@ -150,6 +172,26 @@ const ManageContent = (props) => {
       [type]: updatedPairs,
     });
   };
+
+    // Handle change in key input
+    const handleKeyChange = (type, index, event) => {
+      const newKeyValuePairs = [...keyValuePairs[type]];
+      newKeyValuePairs[index].key = event.target.value;
+      setKeyValuePairs((prev) => ({
+        ...prev,
+        [type]: newKeyValuePairs,
+      }));
+    };
+  
+    // Handle change in value input
+    const handleValueChange = (type, keyIndex, valueIndex, event) => {
+      const newKeyValuePairs = [...keyValuePairs[type]];
+      newKeyValuePairs[keyIndex].values[valueIndex] = event.target.value;
+      setKeyValuePairs((prev) => ({
+        ...prev,
+        [type]: newKeyValuePairs,
+      }));
+    };
 
   // Function for rendering key-value pairs
     const addKeyValue = (type) => {
@@ -226,6 +268,44 @@ const ManageContent = (props) => {
     };
 
   // Format the data to be saved
+  // const formatJSON = () => {
+  //   let requestBody = {
+  //     code,
+  //     name: techniqueName,
+  //     parent_technique: parentTechnique,
+  //     tactics: formatFields(fields.tactics),
+  //     schemes: formatFields(fields.schemes),
+  //     sub_techniques: formatFields(fields.sub_techniques),
+  //     technique_description:  [
+  //       {
+  //         description: formatFields(fields.description),
+  //       },
+  //     ],
+  //     details: [
+  //       {
+  //         technique_description: [
+  //           {
+  //             description: formatFields(fields.description),
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         mitigation: formatDetails(keyValuePairs.mitigation),
+  //       },
+  //       {
+  //         detection: formatDetails(keyValuePairs.detection),
+  //       },
+  //     ],
+  //     sources: [
+  //       {
+  //         references: formatReferences(keyValuePairs.references),
+  //       },
+  //     ],
+  //   };
+  //   return requestBody;
+  // };
+
+  // Format the data to be saved
   const formatJSON = () => {
     let requestBody = {
       code,
@@ -234,31 +314,15 @@ const ManageContent = (props) => {
       tactics: formatFields(fields.tactics),
       schemes: formatFields(fields.schemes),
       sub_techniques: formatFields(fields.sub_techniques),
-      details: [
-        {
-          technique_description: [
-            {
-              description: formatFields(fields.description),
-            },
-          ],
-        },
-        {
-          mitigation: formatDetails(keyValuePairs.mitigation),
-        },
-        {
-          detection: formatDetails(keyValuePairs.detection),
-        },
-      ],
-      sources: [
-        {
-          references: formatReferences(keyValuePairs.references),
-        },
-      ],
+      technique_description: formatFields(fields.description),
+      mitigation: formatDetails(keyValuePairs.mitigation),
+      detection: formatDetails(keyValuePairs.detection),
+      references: formatReferences(keyValuePairs.references),
     };
     return requestBody;
   };
 
-  const handleSubmit = async () => {
+  const handleSave = async () => {
     try {
       let jsonContent = formatJSON();
     let dataMapStorage = localStorage.getItem('techniques');
@@ -518,7 +582,7 @@ const ManageContent = (props) => {
 
         </div>
       </section>
-      <button className="save-button" type="submit" onClick={handleSubmit}>Save</button>
+      <button className="save-button" type="submit" onClick={handleSave}>Save</button>
       <button className="save-button" type="cancel" onClick={handleCancelClick}>Cancel</button>
     </div>
   );

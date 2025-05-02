@@ -27,27 +27,45 @@ export const transformReference = (inputJson) => {
 }
 
 //Add Technique utils
+// export const formatDetails = (inputJson) => {
+//   const outputJson = inputJson.map(item => ({
+//     [item.key?.toLowerCase().split(' ').join("_")]: item.values
+//   }));
+//   return outputJson;
+// }
+
 export const formatDetails = (inputJson) => {
   const outputJson = inputJson.map(item => ({
-    [item.key?.toLowerCase().split(' ').join("_")]: item.values
+    type: item.key,
+    details: item.values
   }));
   return outputJson;
-}
+};
 
 export const formatReferences = (inputJson) => {
-  const outputJson = inputJson.map(item => ({
-    [item.key]: item.values
+  const formattedJson = inputJson.map(item => ({
+    name: item.key,
+    source: item.values
   }));
-
-  const formattedJson = outputJson.flatMap(obj =>
-    Object.entries(obj).map(([key, value]) => ({
-      name: key,
-      link: value
-    }))
-  );
-
   return formattedJson;
 };
+
+
+
+// export const formatReferences = (inputJson) => {
+//   const outputJson = inputJson.map(item => ({
+//     [item.key]: item.values
+//   }));
+
+//   const formattedJson = outputJson.flatMap(obj =>
+//     Object.entries(obj).map(([key, value]) => ({
+//       name: key,
+//       link: value
+//     }))
+//   );
+
+//   return formattedJson;
+// };
 
 export const formatFields = (inputJson) => {
   const outputArray = inputJson.map(item => item.value);

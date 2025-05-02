@@ -41,6 +41,7 @@ const TechniquesTable = ({
   const hasFocused = useRef(false);
   const [columnsProcessed, setColumnsProcessed] = useState(new Set());
   const columnsProcessedRef = useRef(new Set(columnsProcessed));
+  const lastTriggeredRef = useRef(null);
 
   const handleEdit = (technique) => {
     onEditClick(technique);
@@ -174,7 +175,7 @@ const TechniquesTable = ({
     }
     // Trigger the process when tableData or addedColumns change
     processColumns();
-  }, [tableData, columnsProcessed]);
+  }, [tableData, columnsProcessed, editStatus]);
 
   const consolidateData = (data) => {
     // Create an object to store the non-empty values for each column
@@ -276,6 +277,7 @@ const TechniquesTable = ({
   };
 
   const handle_sub_techniques = (sub_techniques, rowIndex, colIndex) => {
+    console.log('editStatus', editStatus)
     const stringWithBreaks = (
       <ul>
         {sub_techniques &&
@@ -472,7 +474,6 @@ const TechniquesTable = ({
 
   // Function to add/remove columns dynamically with toggling behavior
   const manage_columns = (technique, rowIndex, colIndex) => {
-
     if (technique) {
       const newColumnIndex = colIndex + 1;
       let data_present_in_column = false;
@@ -647,6 +648,199 @@ const TechniquesTable = ({
     }
   };
 
+  // const handle_dynamic_column = (update_columns, updatedData, operation, newColumnIndex) => {
+  //   let columnsToDelete = [];
+  //   let updatedColumns = [...addedColumns];
+  //   let shouldRenameHeaders = false;
+  //   let headerRenameType = null;
+  //   let renameAffectedColumns = [];
+  
+  //   update_columns.forEach((columnName) => {
+  //     const key_split = columnName.split(' ');
+  //     const columnId = key_split[key_split.length - 1];
+  //     const columnNumber = parseInt(columnId.split('-')[1]);
+  
+  //     if (operation === COLLAPSE) {
+  //       const allEmpty = updatedData.every((item) => !item[columnName]);
+  
+  //       if (allEmpty) {
+  //         updatedData.forEach((item) => {
+  //           delete item[columnName];
+  //         });
+  
+  //         updatedColumns = updatedColumns.filter((index) => index !== columnNumber);
+  
+  //         const other_columns = updatedColumns.filter((item) => item > columnNumber);
+  //         if (other_columns.length > 0) {
+  //           shouldRenameHeaders = true;
+  //           headerRenameType = COLLAPSE;
+  //           renameAffectedColumns = other_columns;
+  
+  //           // Prepare adjusted addedColumns
+  //           updatedColumns = updatedColumns.map((index) =>
+  //             index > columnNumber ? index - 1 : index
+  //           );
+  //         }
+  //       }
+  //     } else {
+  //       const other_columns = updatedColumns.filter((item) => item >= columnNumber);
+  //       if (other_columns.length > 0) {
+  //         shouldRenameHeaders = true;
+  //         headerRenameType = EXPAND;
+  //         renameAffectedColumns = other_columns;
+  
+  //         updatedColumns = updatedColumns.map((index) =>
+  //           index > columnNumber ? index + 1 : index
+  //         );
+  //       }
+  
+  //       if (!updatedColumns.includes(newColumnIndex)) {
+  //         updatedColumns.push(newColumnIndex);
+  //       }
+  //     }
+  //   });
+  
+  //   // Rename headers if necessary
+  //   if (shouldRenameHeaders) {
+  //     updatedData = rename_headers(updatedData, headerRenameType, renameAffectedColumns);
+  //   }
+  
+  //   // Only set state once each
+  //   setTableData(updatedData);
+  //   setAddedColumns(updatedColumns);
+  // };
+
+  // const manage_columns = (technique, rowIndex, colIndex) => {
+  //   if (!technique) return;
+  
+  //   const newColumnIndex = colIndex + 1;
+  //   let data_present_in_column = false;
+  //   let delete_columns = [];
+  //   let added_columns = [];
+  //   const operation = addedColumns.includes(newColumnIndex) ? COLLAPSE : EXPAND;
+  
+  //   const updatedData = tableData.map((row, tableRowIndex) => {
+  //     const updatedRow = { ...row };
+  //     const rowKeys = Object.keys(row);
+  //     let insertedNewColumn = false;
+  
+  //     rowKeys.forEach((key, keyIndex) => {
+  //       if (operation === COLLAPSE && key.includes(DYNAMIC_COLUMN_PREFIX)) {
+  //         const keyParts = key.split(' ');
+  //         const existingColumnName = keyParts[keyParts.length - 1];
+  
+  //         if (existingColumnName.endsWith(newColumnIndex.toString())) {
+  //           const new_column_name = `${DYNAMIC_COLUMN_PREFIX} ${existingColumnName}`;
+  
+  //           if (tableRowIndex === rowIndex) {
+  //             if (updatedRow[new_column_name]) {
+  //               updatedRow[new_column_name] = '';
+  //               data_present_in_column = false;
+  //             } else {
+  //               const techniqueObj = fetchTechnique(technique);
+  //               let sub_tech = [];
+  
+  //               if (searchFilterType === '' || searchFilterType === SHOW_ALL) {
+  //                 sub_tech = techniqueObj['sub_techniques'];
+  //               } else {
+  //                 sub_tech = filterBySubTechniques(techniqueObj['sub_techniques']);
+  //               }
+  
+  //               if (sub_tech && sub_tech.length > 0) {
+  //                 updatedRow[new_column_name] = handle_sub_techniques(sub_tech, rowIndex, colIndex);
+  //                 data_present_in_column = true;
+  //               }
+  //             }
+  //           }
+  
+  //           if (tableRowIndex === tableData.length - 1 && !data_present_in_column) {
+  //             delete_columns.push(new_column_name);
+  //           }
+  //         }
+  
+  //       } else if (operation === EXPAND) {
+  //         if (key.includes(DYNAMIC_COLUMN_PREFIX)) {
+  //           const keyParts = key.split(' ');
+  //           const existingColumnName = keyParts[keyParts.length - 1];
+  
+  //           if (existingColumnName.endsWith(newColumnIndex.toString())) {
+  //             const rowNumber = parseInt(existingColumnName.toString().charAt(0), 10);
+  //             const new_column_name = `${DYNAMIC_COLUMN_PREFIX} ${rowIndex}-${newColumnIndex}`;
+  
+  //             if (keyIndex === rowNumber) {
+  //               updatedRow[new_column_name] = updatedRow[existingColumnName];
+  //               delete updatedRow[existingColumnName];
+  //             }
+  
+  //             if (tableRowIndex === rowIndex) {
+  //               const techniqueObj = fetchTechnique(technique);
+  //               let sub_tech = [];
+  
+  //               if (searchFilterType === '' || searchFilterType === SHOW_ALL) {
+  //                 sub_tech = techniqueObj['sub_techniques'];
+  //               } else {
+  //                 sub_tech = filterBySubTechniques(techniqueObj['sub_techniques']);
+  //               }
+  
+  //               if (sub_tech && sub_tech.length > 0) {
+  //                 updatedRow[new_column_name] = handle_sub_techniques(sub_tech, rowIndex, colIndex);
+  //                 added_columns.push(new_column_name);
+  //               }
+  //             }
+  //           }
+  
+  //         } else {
+  //           // Not a dynamic column yet
+  //           if (keyIndex === colIndex && !insertedNewColumn) {
+  //             const columnName = `${DYNAMIC_COLUMN_PREFIX} ${rowIndex}-${newColumnIndex}`;
+  //             updatedRow[columnName] = '';
+  
+  //             if (tableRowIndex === rowIndex) {
+  //               const techniqueObj = fetchTechnique(technique);
+  //               let sub_tech = [];
+  
+  //               if (searchFilterType === '' || searchFilterType === SHOW_ALL) {
+  //                 sub_tech = techniqueObj['sub_techniques'];
+  //               } else {
+  //                 sub_tech = filterBySubTechniques(techniqueObj['sub_techniques']);
+  //               }
+  
+  //               if (sub_tech && sub_tech.length > 0) {
+  //                 updatedRow[columnName] = handle_sub_techniques(sub_tech, rowIndex, colIndex);
+  //                 insertedNewColumn = true;
+  //                 added_columns.push(columnName);
+  //               } else {
+  //                 delete_columns.push(columnName);
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     });
+  
+  //     return updatedRow;
+  //   });
+  
+  //   // Avoid redundant updates
+  //   if (JSON.stringify(tableData) === JSON.stringify(updatedData)) {
+  //     return;
+  //   }
+  
+  //   if (operation === COLLAPSE) {
+  //     if (delete_columns.length > 0) {
+  //       handle_dynamic_column(delete_columns, updatedData, operation, newColumnIndex);
+  //     } else {
+  //       setTableData(updatedData);
+  //     }
+  //   } else {
+  //     if (added_columns.length > 0) {
+  //       handle_dynamic_column(added_columns, updatedData, operation, newColumnIndex);
+  //     } else {
+  //       handle_dynamic_column(delete_columns, updatedData, COLLAPSE, newColumnIndex);
+  //     }
+  //   }
+  // };
+  
   const form_header = (header) => {
     const result = header
       .split('_')
@@ -764,74 +958,245 @@ const TechniquesTable = ({
     }
   }, [focusedLiIndex]);
 
+  // useEffect(() => {
+  //   if (
+  //     item[key] &&
+  //     item[key].length > 0 &&
+  //     hasSubTechnique(item[key])
+  //   ) {
+  //     manage_columns(item[key].toLowerCase(), rowIndex, colIndex);
+  //   }
+  // }, [editStatus]); 
+
+  // const ItemRow = ({ item, techniqueName, rowIndex, colIndex, editStatus }) => {
+  //   const key = techniqueName;
+  //   const value = item[key]?.toLowerCase();
+  //   const lastTriggeredRef = useRef(null);
+  
+  //   useEffect(() => {
+  //     if (
+  //       editStatus &&
+  //       value &&
+  //       value.length > 0 &&
+  //       hasSubTechnique(item[key])
+  //     ) {
+  //       console.log('Inside')
+  //       const triggerKey = `${value}-${rowIndex}-${colIndex}`;
+  //       if (lastTriggeredRef.current !== triggerKey) {
+  //         lastTriggeredRef.current = triggerKey;
+  //         manage_columns(value, rowIndex, colIndex);
+  //       }
+  //     }
+  //   // }, [editStatus, value, rowIndex, colIndex]);
+  // }, [editStatus]);
+  
+  //   return (
+  //     <>
+  //       {value && hasSubTechnique(item[key]) && (
+  //         <div
+  //           className="sidebar"
+  //           aria-label="expand collapse"
+  //           onClick={(e) => {
+  //             e.stopPropagation();
+  //             manage_columns(value, rowIndex, colIndex);
+  //           }}
+  //         >
+  //           <RiExpandLeftRightFill />
+  //         </div>
+  //       )}
+  //     </>
+  //   );
+  // };
+
+  // const renderRows = () => {
+  //   return (
+  //     tableData &&
+  //     tableData.map((item, rowIndex) => (
+  //       <tr key={rowIndex}>
+  //         {Object.keys(item).map((key, colIndex) => (
+  //           <td
+  //             key={rowIndex + '-' + colIndex}
+  //             className={item[key] === '' ? 'emptycell' : 'tabledata'}
+  //             tabIndex={0}
+  //             style={{
+  //               backgroundColor:
+  //                 focusedCell.row === rowIndex &&
+  //                   focusedCell.col === colIndex &&
+  //                   focusedLiIndex == null
+  //                   ? FOCUS
+  //                   : NO_FOCUS,
+  //               outline: 'none',
+  //             }}
+  //             onClick={() => {
+  //               if (item[key] !== '') {
+  //                 handleCellClick(rowIndex, colIndex, item, key);
+  //               }
+  //             }}
+  //           >
+
+  //             {item[key] &&
+  //               item[key].length > 0 && editStatus &&
+  //               <div
+  //                 className="editicon"
+  //                 aria-label="edit"
+  //                 onClick={(e) => {
+  //                   e.stopPropagation();
+  //                   // e.preventDefault();
+  //                   handleEdit(item[key])
+  //                 }}
+  //               >
+  //                 <RiEdit2Fill />
+  //               </div>
+  //             }
+  //             {item[key]}
+  //             {/* {item[key] &&
+  //               item[key].length > 0 &&
+  //               hasSubTechnique(item[key]) &&  (
+  //                 <>
+  //                   <div
+  //                     className="sidebar"
+  //                     aria-label="expand collapse"
+  //                     onClick={(e) => {
+  //                       e.stopPropagation();
+  //                       manage_columns(
+  //                         item[key].toLowerCase(),
+  //                         rowIndex,
+  //                         colIndex,
+  //                       );
+  //                     }}
+  //                   >
+  //                     <RiExpandLeftRightFill />
+  //                   </div>
+  //                 </>
+  //               )} */}
+  //   {/* {item[key] &&
+  //               item[key].length > 0 &&
+  //               hasSubTechnique(item[key]) &&  (
+  //                 <></> */}
+
+  //         {item[key] &&
+  //                   item[key].length > 0 &&
+  //                   hasSubTechnique(item[key]) && (
+          
+  //               <ItemRow
+  //               item={item}
+  //               techniqueName={key}
+  //               rowIndex={rowIndex}
+  //               colIndex={colIndex}
+  //               editStatus={editStatus}
+  //             />
+  //           )}
+  //           </td>
+  //         ))}
+  //       </tr>
+  //     ))
+  //   );
+  // };
+
+  const ItemRow = ({ item, techniqueName, rowIndex, colIndex }) => {
+    const key = techniqueName;
+    const value = item[key]?.toLowerCase();
+  
+    return (
+      <>
+        {value && hasSubTechnique(item[key]) && (
+          <div
+            className="sidebar"
+            aria-label="expand collapse"
+            onClick={(e) => {
+              e.stopPropagation();
+              manage_columns(value, rowIndex, colIndex);
+            }}
+          >
+            <RiExpandLeftRightFill />
+          </div>
+        )}
+      </>
+    );
+  };
+  
+  useEffect(() => {
+    if (editStatus && tableData) {
+      tableData.forEach((item, rowIndex) => {
+        Object.keys(item).forEach((key, colIndex) => {
+          console.log(item, key)
+          const value = item[key]?.toLowerCase();
+          const triggerKey = `${value}-${rowIndex}-${colIndex}`;
+          if (
+            value &&
+            value.length > 0 &&
+            hasSubTechnique(item[key]) &&
+            lastTriggeredRef.current !== triggerKey
+          ) {
+            lastTriggeredRef.current = triggerKey;
+            manage_columns(value, rowIndex, colIndex);
+          }
+        });
+      });
+    }
+  // }, [editStatus, tableData]);
+}, [editStatus]);
+
+
+
   const renderRows = () => {
     return (
       tableData &&
       tableData.map((item, rowIndex) => (
         <tr key={rowIndex}>
-          {Object.keys(item).map((key, colIndex) => (
-            <td
-              key={rowIndex + '-' + colIndex}
-              className={item[key] === '' ? 'emptycell' : 'tabledata'}
-              tabIndex={0}
-              style={{
-                backgroundColor:
-                  focusedCell.row === rowIndex &&
+          {Object.keys(item).map((key, colIndex) => {
+            const value = item[key];
+            return (
+              <td
+                key={`${rowIndex}-${colIndex}`}
+                className={value === '' ? 'emptycell' : 'tabledata'}
+                tabIndex={0}
+                style={{
+                  backgroundColor:
+                    focusedCell.row === rowIndex &&
                     focusedCell.col === colIndex &&
                     focusedLiIndex == null
-                    ? FOCUS
-                    : NO_FOCUS,
-                outline: 'none',
-              }}
-              onClick={() => {
-                if (item[key] !== '') {
-                  handleCellClick(rowIndex, colIndex, item, key);
-                }
-              }}
-            >
-
-              {item[key] &&
-                item[key].length > 0 && editStatus &&
-                <div
-                  className="editicon"
-                  aria-label="edit"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // e.preventDefault();
-                    handleEdit(item[key])
-                  }}
-                >
-                  <RiEdit2Fill />
-                </div>
-              }
-              {item[key]}
-              {item[key] &&
-                item[key].length > 0 &&
-                hasSubTechnique(item[key]) && (
-                  <>
-                    <div
-                      className="sidebar"
-                      aria-label="expand collapse"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        manage_columns(
-                          item[key].toLowerCase(),
-                          rowIndex,
-                          colIndex,
-                        );
-                      }}
-                    >
-                      <RiExpandLeftRightFill />
-                    </div>
-                  </>
+                      ? FOCUS
+                      : NO_FOCUS,
+                  outline: 'none',
+                }}
+                onClick={() => {
+                  if (value !== '') {
+                    handleCellClick(rowIndex, colIndex, item, key);
+                  }
+                }}
+              >
+                {value && value.length > 0 && editStatus && (
+                  <div
+                    className="editicon"
+                    aria-label="edit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEdit(value);
+                    }}
+                  >
+                    <RiEdit2Fill />
+                  </div>
                 )}
-            </td>
-          ))}
+                {value}
+  
+                {value && value.length > 0 && hasSubTechnique(value) && (
+                  <ItemRow
+                    item={item}
+                    techniqueName={key}
+                    rowIndex={rowIndex}
+                    colIndex={colIndex}
+                  />
+                )}
+              </td>
+            );
+          })}
         </tr>
       ))
     );
   };
 
+  
   const handleKeyDown = (event) => {
     const { row, col } = focusedCell;
     const currentCell = tableRef.current?.querySelector(

@@ -8,7 +8,7 @@ import {
   formatData,
 } from '../../utils/dataMap';
 
-const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent }) => {
+const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCustomMode }) => {
   const [technique, setTechnique] = useState(techniqueName);
   const [isVisible, setIsVisible] = useState(true);
   const [details, setDetails] = useState(null);
@@ -24,24 +24,42 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent }) => {
   }, [techniqueName]);
 
   useEffect(() => {
-    if (technique && !importContent) {
-      const fetchDetails = async () => {
-        const fetchedDetails = await fetchTechniqueDetails(technique);
-        const fetchedReferences = await fetchTechniqueReferences(technique);
-        setDetails(fetchedDetails);
-        setReferences(fetchedReferences);
-      };
+    // if (technique && !importContent) {
+    //   const fetchDetails = async () => {
+    //     const fetchedDetails = await fetchTechniqueDetails(technique);
+    //     const fetchedReferences = await fetchTechniqueReferences(technique);
+    //     setDetails(fetchedDetails);
+    //     setReferences(fetchedReferences);
+    //   };
 
-      fetchDetails();
+    //   fetchDetails();
+    // }
+
+    if (technique) {
+      if (viewCustomMode) {
+        const fetchedDetails = JSON.parse(localStorage.getItem('techniques')).find(item =>
+          item.name === technique
+        );
+        setDetails(fetchedDetails);
+        setReferences(fetchedDetails.references);
+      } else {
+        const fetchDetails = async () => {
+          const fetchedDetails = await fetchTechniqueDetails(technique);
+          const fetchedReferences = await fetchTechniqueReferences(technique);
+          setDetails(fetchedDetails);
+          setReferences(fetchedReferences);
+        };
+        fetchDetails();
+      }
     }
-  }, [technique]);
+  }, [technique, viewCustomMode]);
 
   useEffect(() => {
-    
+
     if (importContent) {
       const result = importContent.techniques.filter(tq => tq.name === technique);
 
-      if(result && result.length > 0){
+      if (result && result.length > 0) {
         setDetails(result[0]);
         setReferences(result[0].references);
       }

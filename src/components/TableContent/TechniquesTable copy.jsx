@@ -174,7 +174,7 @@ const TechniquesTable = ({
     }
     // Trigger the process when tableData or addedColumns change
     processColumns();
-  }, [tableData, columnsProcessed]);
+  }, [tableData, columnsProcessed, editStatus]);
 
   const consolidateData = (data) => {
     // Create an object to store the non-empty values for each column
@@ -276,6 +276,7 @@ const TechniquesTable = ({
   };
 
   const handle_sub_techniques = (sub_techniques, rowIndex, colIndex) => {
+    console.log('editStatus', editStatus)
     const stringWithBreaks = (
       <ul>
         {sub_techniques &&
@@ -764,7 +765,26 @@ const TechniquesTable = ({
     }
   }, [focusedLiIndex]);
 
+  // useEffect(() => {
+  //   if (
+  //     item[key] &&
+  //     item[key].length > 0 &&
+  //     hasSubTechnique(item[key])
+  //   ) {
+  //     manage_columns(item[key].toLowerCase(), rowIndex, colIndex);
+  //   }
+  // }, [editStatus]); 
+
   const renderRows = () => {
+    useEffect(() => {
+      if (
+        item[key] &&
+        item[key].length > 0 &&
+        hasSubTechnique(item[key])
+      ) {
+        manage_columns(item[key].toLowerCase(), rowIndex, colIndex);
+      }
+    }, [editStatus]); 
     return (
       tableData &&
       tableData.map((item, rowIndex) => (
@@ -807,7 +827,7 @@ const TechniquesTable = ({
               {item[key]}
               {item[key] &&
                 item[key].length > 0 &&
-                hasSubTechnique(item[key]) && (
+                hasSubTechnique(item[key]) &&  (
                   <>
                     <div
                       className="sidebar"
