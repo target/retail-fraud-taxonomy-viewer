@@ -34,7 +34,7 @@ const ManageContent = (props) => {
   const [alertVal, setAlertVal] = useState('')
   const [showFailAlert, setShowFailAlert] = useState(false)
   const [alertHeading, setAlertHeading] = useState('')
-  const [requestSubmit, setResponseSubmit] = useState(false)
+  const [responseSubmit, setResponseSubmit] = useState(false)
   const [selectedTechnique, setSelectedTechnique] = useState('');
   const options = getUniqueTechniques();
 
@@ -364,13 +364,14 @@ const ManageContent = (props) => {
               value={alertVal}
             />
           )}
-          {requestSubmit && (
+          {responseSubmit && (
             <Alert
               classStyle="alert-success"
               heading={alertHeading}
               value={alertVal}
             />
           )}
+          {props.addContent && (
           <div style={{ paddingBottom: '20px' }}>
             <label htmlFor="clone-from" style={{ color: 'white', fontSize: '20px' }}>Clone From:  </label>
             <select id="clone-from" value={selectedTechnique} onChange={handleCloneFromChange} style={{fontSize: '20px'}}>
@@ -380,6 +381,7 @@ const ManageContent = (props) => {
               ))}
             </select>
           </div>
+          )}
           <div
             className={`Collapsible__trigger ${openSections.technique ? 'open' : ''}`}
             onClick={() => handleToggle('technique')}

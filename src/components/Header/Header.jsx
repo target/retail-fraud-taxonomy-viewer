@@ -3,6 +3,7 @@ import NRFLogo from '../../content/assets/nrf-logo.svg';
 import React, { useState, useEffect, useRef } from 'react';
 import { RiAddCircleLine, RiImportLine, RiArrowLeftLine, RiExportLine, RiDeleteBin5Line } from 'react-icons/ri';
 import { handleExport } from '../ContentManager/ManageContentUtils';
+import { Alert } from '../Alert/Alert'
 
 const Header = ({
   toggleControl,
@@ -15,11 +16,14 @@ const Header = ({
   onBackClick,
   addContent
 }) => {
-
   const [isToggled, setIsToggled] = useState(editStatus);
   const fileInputRef = useRef();
   const [fileData, setFileData] = useState(null);
   const [viewCustomContent, setViewCustomContent] = useState(false);
+  const [alertVal, setAlertVal] = useState('')
+  const [showFailAlert, setShowFailAlert] = useState(false)
+  const [alertHeading, setAlertHeading] = useState('')
+  const [responseSubmit, setResponseSubmit] = useState(false)
 
   useEffect(() => {
     setIsToggled(editStatus)
@@ -43,8 +47,22 @@ const Header = ({
   };
 
   const deleteCustomContent = () => {
-    localStorage.removeItem('technique_table')
-    localStorage.removeItem('techniques')
+    try {
+      localStorage.removeItem('technique_table')
+      localStorage.removeItem('techniques')
+      setResponseSubmit(true)
+      setAlertVal('Data deleted successfully')
+      setTimeout(() => {
+        setResponseSubmit(false)
+      }, 2000)
+    } catch (error) {
+      setAlertHeading(error)
+      setShowFailAlert(true)
+      setAlertVal('Data delete failed')
+      setTimeout(() => {
+        setShowFailAlert(false)
+      }, 2000)
+    }
   };
 
   const handleBackButtonClick = () => {
@@ -53,8 +71,6 @@ const Header = ({
     setIsToggled(false);
     onBackClick('back');
   };
-
-
 
   const handleImportClick = () => {
     fileInputRef.current.click();
@@ -84,6 +100,20 @@ const Header = ({
     <header>
       <img width="250" height="50" className="logo" alt="NRF Logo" src={NRFLogo} />
       <span>Dev Build</span>
+      {showFailAlert && (
+      <Alert
+        classStyle="alert-fail"
+        heading={alertHeading}
+        value={alertVal}
+      />
+    )}
+    {responseSubmit && (
+      <Alert
+        classStyle="alert-success"
+        heading={alertHeading}
+        value={alertVal}
+      />
+    )}
 
       {!editContent && !addContent && (
         <div className="header-controls">
@@ -175,8 +205,8 @@ const Header = ({
                 </button>
               </div>
               <button className="header-button" onClick={() => deleteCustomContent()} style={{ display: 'flex', alignItems: 'center' }}>
-                 <RiDeleteBin5Line style={{ fontSize: '20px', marginRight: '5px' }} /> Delete Custom Content
-          </button>
+                <RiDeleteBin5Line style={{ fontSize: '20px', marginRight: '5px' }} /> Delete Custom Content
+              </button>
             </>
           )}
 
@@ -201,6 +231,7 @@ const Header = ({
         </div>
       )}
     </header>
+    
   );
 };
 

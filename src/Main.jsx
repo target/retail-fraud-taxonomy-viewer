@@ -125,6 +125,7 @@ export const Main = () => {
           viewCustomMode={viewCustomContent}
           onViewCustomContent={handleViewCustomContent}
           onBackClick={handleBackClick}
+          addContent={addContent}
         />
       )}
     </>
