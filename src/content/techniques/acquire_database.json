@@ -43,5 +43,8 @@
       "name": "Authentication and Access to Financial Institution Services and Systems",
       "source": "https://www.ffiec.gov/guidance/Authentication-and-Access-to-Financial-Institution-Services-and-Systems.pdf"
     }
-  ]
+  ],
+  "hide": true,
+  "color": "",
+  "risk_score": 100
 }

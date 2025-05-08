@@ -1,44 +1,47 @@
 {
-    "code": "FT1204",
-    "name": "Gift Card Redemption",
-    "parent_technique": "",
-    "tactics": [
-        "Control"
-    ],
-    "schemes": [
-        "Gift Card Fraud"
-    ],
-    "sub_techniques": [],
-    "technique_description": [
-        "The fraudster obtains a gift card through illegitimate or illicit means and purchases an item.",
-        "One example of this is if a fraudster uses a fraudulently obtained gift card to purchase a high-value easy-to-sell item such as jewelry or electronics. The fraudster then can monetize these items through various strategies such as resale or drop shipping."
-    ],
-    "mitigation": [
-        {
-            "type": "Primary Gift Card Lock-In",
-            "details": [
-                "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
-            ]
-        },
-        {
-            "type": "Login Required",
-            "details": [
-                "For gift cards, require an account before permitting purchase of or transfer."
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "Transaction Data",
-            "details": [
-                "Identify suspicious purchases of commonly resold items with potentially illicitly obtained gift cards."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
-            "source": "https://www.acams.org/en/media/document/29436"
-        }
-    ]
+  "code": "FT1204",
+  "name": "Gift Card Redemption",
+  "parent_technique": "",
+  "tactics": [
+    "Control"
+  ],
+  "schemes": [
+    "Gift Card Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "The fraudster obtains a gift card through illegitimate or illicit means and purchases an item.",
+    "One example of this is if a fraudster uses a fraudulently obtained gift card to purchase a high-value easy-to-sell item such as jewelry or electronics. The fraudster then can monetize these items through various strategies such as resale or drop shipping."
+  ],
+  "mitigation": [
+    {
+      "type": "Primary Gift Card Lock-In",
+      "details": [
+        "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
+      ]
+    },
+    {
+      "type": "Login Required",
+      "details": [
+        "For gift cards, require an account before permitting purchase of or transfer."
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction Data",
+      "details": [
+        "Identify suspicious purchases of commonly resold items with potentially illicitly obtained gift cards."
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
+      "source": "https://www.acams.org/en/media/document/29436"
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 100
 }

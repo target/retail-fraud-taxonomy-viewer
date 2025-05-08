@@ -351,7 +351,6 @@ const ManageContent = (props) => {
     props.onViewCustomContent(false);
     props.onBackClick('back');
   };
-
   return (
     <div>
       {/* Collapsible Technique Section */}
@@ -587,7 +586,10 @@ const ManageContent = (props) => {
       <button className="save-button" type="submit" onClick={handleSave}>Save</button>
       <button className="save-button" type="cancel" onClick={handleCancelClick}>Cancel</button>
     </div>
+ 
   );
+
+
 };
 
 export default ManageContent;

@@ -1,38 +1,41 @@
 {
-    "code": "FT1201",
-    "name": "Gift Card Return",
-    "parent_technique": "",
-    "tactics": [
-        "Control"
-    ],
-    "schemes": [
-        "Gift Card Fraud"
-    ],
-    "sub_techniques": [],
-    "technique_description": [
-        "The fraudster converts an illicitly acquired or invalid gift card into a legitimate gift card.",
-        "For example, a fraudster illicitly obtains a gift card. Through social engineering or taking advantage of a retailer\u2019s legitimate system, they transfer the value from the illicitly obtained gift card to a new gift card that the fraudster legitimately owns."
-    ],
-    "mitigation": [
-        {
-            "type": "Return Limits",
-            "details": [
-                "Do not exchange gift cards over a pre-determined value."
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "Transaction Data",
-            "details": [
-                "Identify suspicious purchases and returns by gift card numbers."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
-            "source": "https://www.acams.org/en/media/document/29436"
-        }
-    ]
+  "code": "FT1201",
+  "name": "Gift Card Return",
+  "parent_technique": "",
+  "tactics": [
+    "Control"
+  ],
+  "schemes": [
+    "Gift Card Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "The fraudster converts an illicitly acquired or invalid gift card into a legitimate gift card.",
+    "For example, a fraudster illicitly obtains a gift card. Through social engineering or taking advantage of a retailer\u2019s legitimate system, they transfer the value from the illicitly obtained gift card to a new gift card that the fraudster legitimately owns."
+  ],
+  "mitigation": [
+    {
+      "type": "Return Limits",
+      "details": [
+        "Do not exchange gift cards over a pre-determined value."
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction Data",
+      "details": [
+        "Identify suspicious purchases and returns by gift card numbers."
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
+      "source": "https://www.acams.org/en/media/document/29436"
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 100
 }

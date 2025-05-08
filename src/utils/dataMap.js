@@ -119,3 +119,28 @@ export const fetchAllSchemes = () => {
   const uniqueSchemesArray = [...uniqueSchemes].sort();
   return uniqueSchemesArray;
 };
+
+export const handleHideToggle = (hideToggleStatus) => {
+  if (!hideToggleStatus) {
+    const localStorageTechniques = JSON.parse(localStorage?.getItem('techniques'));
+
+    // // Filter items where hide is false
+    const visibleNames = localStorageTechniques
+      .filter(t => t.hide === false)
+      .map(t => t.name);
+
+    const updatedArray = techniques.map(item => {
+      const updatedItem = {};
+
+      Object.entries(item).forEach(([key, val]) => {
+        updatedItem[key] = visibleNames.includes(val) ? val : '';
+      });
+
+      return updatedItem;
+    });
+    return updatedArray
+  }
+  else {
+    return techniques
+  };
+}

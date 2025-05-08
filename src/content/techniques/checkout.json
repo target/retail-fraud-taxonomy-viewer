@@ -1,60 +1,63 @@
 {
-    "code": "FT1303",
-    "name": "Checkout",
-    "parent_technique": "",
-    "tactics": [
-        "Monetization"
-    ],
-    "schemes": [
-        "Gift Card Fraud",
-        "Account Take Over"
-    ],
-    "sub_techniques": [
-        "Point of Sale",
-        "Guest Services",
-        "Online Or Web Mobile"
-    ],
-    "technique_description": [
-        "The fraudster uses legitimate checkout to redeem or otherwise convert illicit resources into liquid funds."
-    ],
-    "mitigation": [
-        {
-            "type": "Access Code Required",
-            "details": [
-                "Require an access code that is separate from the gift card before refunding gift card value."
-            ]
-        },
-        {
-            "type": "Behavior Prevention",
-            "details": [
-                "Identify potentially fraudulent returns and do not refund money if fraud is detected."
-            ]
-        },
-        {
-            "type": "Restocking Fees",
-            "details": [
-                "Require a fee for potentially fraudulent returns."
-            ]
-        },
-        {
-            "type": "Delayed Reimbursement",
-            "details": [
-                "Postpone refund by a predetermined amount of time for items that are commonly related to fraud."
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "Transaction Data ",
-            "details": [
-                "Monitor for returns of items commonly related to fraud such as gift cards, luxury items and electronics for fraudulent activity."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "Industry Partner Collaboration",
-            "source": ""
-        }
-    ]
+  "code": "FT1303",
+  "name": "Checkout",
+  "parent_technique": "",
+  "tactics": [
+    "Monetization"
+  ],
+  "schemes": [
+    "Gift Card Fraud",
+    "Account Take Over"
+  ],
+  "sub_techniques": [
+    "Point of Sale",
+    "Guest Services",
+    "Online Or Web Mobile"
+  ],
+  "technique_description": [
+    "The fraudster uses legitimate checkout to redeem or otherwise convert illicit resources into liquid funds."
+  ],
+  "mitigation": [
+    {
+      "type": "Access Code Required",
+      "details": [
+        "Require an access code that is separate from the gift card before refunding gift card value."
+      ]
+    },
+    {
+      "type": "Behavior Prevention",
+      "details": [
+        "Identify potentially fraudulent returns and do not refund money if fraud is detected."
+      ]
+    },
+    {
+      "type": "Restocking Fees",
+      "details": [
+        "Require a fee for potentially fraudulent returns."
+      ]
+    },
+    {
+      "type": "Delayed Reimbursement",
+      "details": [
+        "Postpone refund by a predetermined amount of time for items that are commonly related to fraud."
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction Data ",
+      "details": [
+        "Monitor for returns of items commonly related to fraud such as gift cards, luxury items and electronics for fraudulent activity."
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 100
 }

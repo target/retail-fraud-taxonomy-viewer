@@ -1,47 +1,50 @@
 {
-    "code": "FT1301",
-    "name": "Resale",
-    "parent_technique": "",
-    "tactics": [
-        "Monetization"
-    ],
-    "schemes": [
-        "Gift Card Fraud"
-    ],
-    "sub_techniques": [
-        "Drop Shipping",
-        "Unwitting Buyer"
-    ],
-    "technique_description": [
-        "The fraudster exchanges the illicitly obtained items or gift cards with another person or organization in exchange for liquid funds.",
-        "For example, a fraudster may steal jewelry worth $100. Using a third-party market such as Facebook Marketplace, they sell the illicitly obtained jewelry for $80, converting the item to currency the fraudster controls."
-    ],
-    "mitigation": [
-        {
-            "type": "Primary Gift Card Lock-In",
-            "details": [
-                "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
-            ]
-        },
-        {
-            "type": "Login Required",
-            "details": [
-                "For gift cards, require an account before permitting purchase of or transfer."
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "Transaction data",
-            "details": [
-                "Monitor for anomalous purchases of easily monetized items such as electronics and luxury goods."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
-            "source": "https://www.acams.org/en/media/document/29436"
-        }
-    ]
+  "code": "FT1301",
+  "name": "Resale",
+  "parent_technique": "",
+  "tactics": [
+    "Monetization"
+  ],
+  "schemes": [
+    "Gift Card Fraud"
+  ],
+  "sub_techniques": [
+    "Drop Shipping",
+    "Unwitting Buyer"
+  ],
+  "technique_description": [
+    "The fraudster exchanges the illicitly obtained items or gift cards with another person or organization in exchange for liquid funds.",
+    "For example, a fraudster may steal jewelry worth $100. Using a third-party market such as Facebook Marketplace, they sell the illicitly obtained jewelry for $80, converting the item to currency the fraudster controls."
+  ],
+  "mitigation": [
+    {
+      "type": "Primary Gift Card Lock-In",
+      "details": [
+        "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
+      ]
+    },
+    {
+      "type": "Login Required",
+      "details": [
+        "For gift cards, require an account before permitting purchase of or transfer."
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction data",
+      "details": [
+        "Monitor for anomalous purchases of easily monetized items such as electronics and luxury goods."
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
+      "source": "https://www.acams.org/en/media/document/29436"
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 100
 }

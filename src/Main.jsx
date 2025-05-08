@@ -17,6 +17,10 @@ export const Main = () => {
   const [editMode, setEditMode] = useState(false);
   const [importContent, setImportContent] = useState(null);
   const [viewCustomContent, setViewCustomContent] = useState(false);
+  const [hide, setHide] = useState(false);
+  const [hideTechnique, setHideTechnique] = useState(null);
+
+  const [hideToggleVal, setHideToggleVal] = useState(true);
 
   useEffect(() => {
     setViewCustomContent(false);
@@ -35,8 +39,14 @@ export const Main = () => {
       setRenderKey(prevKey => prevKey + 1);
     } else {
       setSelectedValue(value);
+      setHide(false)
     }
   }, [selectedValue]);
+
+  const handleHideClick = useCallback((value) => {
+    setHideTechnique(selectedValue)
+    setHide(value);
+  }, []);
 
   const handleEditClick = useCallback((value) => {
     setEditContent(value);
@@ -68,6 +78,10 @@ export const Main = () => {
     setEditMode(editStatus);
   }, []);
 
+  const handleHideToggle = useCallback((hideToggleStatus) => {
+    setHideToggleVal(hideToggleStatus);
+  }, []);
+
   const handleViewCustomContent = useCallback((viewCustomContentMode) => {
     setViewCustomContent(viewCustomContentMode);
   }, []);
@@ -84,9 +98,13 @@ export const Main = () => {
         editContent={editContent}
         onBackClick={handleBackClick}
         addContent={addContent}
+        onHideClick={handleHideClick}
+        hideStatus={hide}
+        onHideToggle={handleHideToggle}
+        hideToggleStatus={hideToggleVal}
       />
 
-      {shouldRenderTechniques && !addContent && !editContent && (
+      {shouldRenderTechniques && !addContent && !editContent && !hideTechnique && (
         <TechniquesTable
           // key={renderKey}
           onValueClick={handleValueClick}
@@ -98,6 +116,9 @@ export const Main = () => {
           editStatus={editMode}
           importContent={importContent}
           viewCustomMode={viewCustomContent}
+          selectedTechnique={selectedValue}
+          hideStatus={hide}
+          hideToggleStatus={hideToggleVal}
         />
       )}
 

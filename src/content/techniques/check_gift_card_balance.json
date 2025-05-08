@@ -79,5 +79,8 @@
       "name": "Industry Partner Collaboration",
       "link": ""
     }
-  ]
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 100
 }

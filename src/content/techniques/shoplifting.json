@@ -1,62 +1,65 @@
 {
-    "code": "FT1101",
-    "name": "Shoplifting",
-    "parent_technique": "",
-    "tactics": [
-        "Initial Access"
-    ],
-    "schemes": [
-        "Gift Card Fraud"
-    ],
-    "sub_techniques": [],
-    "technique_description": [
-        "Taking items from a store without paying for them. Shoplifting can range from concealing items in personal clothing or bags to swapping price tags to make items appear cheaper. Items shoplifted to support fraud are typically high value, small in size and easy to resell.",
-        "Examples of commonly stolen items to support fraud are gift cards, electronics and luxury goods."
-    ],
-    "mitigation": [
-        {
-            "type": "Bag Control",
-            "details": [
-                "Control the size and type of bags that are permitted inside the store."
-            ]
-        },
-        {
-            "type": "Structured Loss Prevention Program",
-            "details": [
-                "Implement a structured loss prevention program involving physical security, policies, procedures, resources and systems to prevent, deter and identify merchandise or gift card loss. "
-            ]
-        },
-        {
-            "type": "Anti-Theft Prevention",
-            "details": [
-                "Additional physical protection of products from theft such as locked shelving, containers and vending machines, and storing items behind checkout counter."
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "Anti-Theft Security Tags ",
-            "details": [
-                "Attach a device to items that will cause an alarm if removed from the store without authorization."
-            ]
-        },
-        {
-            "type": "Security Guards",
-            "details": [
-                "At physical locations, use security guards to identify and deter shoplifting."
-            ]
-        },
-        {
-            "type": "Video Surveillance Systems",
-            "details": [
-                "Monitor video feeds for suspicious activity around high-value items."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
-            "source": "https://www.acams.org/en/media/document/29436"
-        }
-    ]
+  "code": "FT1101",
+  "name": "Shoplifting",
+  "parent_technique": "",
+  "tactics": [
+    "Initial Access"
+  ],
+  "schemes": [
+    "Gift Card Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "Taking items from a store without paying for them. Shoplifting can range from concealing items in personal clothing or bags to swapping price tags to make items appear cheaper. Items shoplifted to support fraud are typically high value, small in size and easy to resell.",
+    "Examples of commonly stolen items to support fraud are gift cards, electronics and luxury goods."
+  ],
+  "mitigation": [
+    {
+      "type": "Bag Control",
+      "details": [
+        "Control the size and type of bags that are permitted inside the store."
+      ]
+    },
+    {
+      "type": "Structured Loss Prevention Program",
+      "details": [
+        "Implement a structured loss prevention program involving physical security, policies, procedures, resources and systems to prevent, deter and identify merchandise or gift card loss. "
+      ]
+    },
+    {
+      "type": "Anti-Theft Prevention",
+      "details": [
+        "Additional physical protection of products from theft such as locked shelving, containers and vending machines, and storing items behind checkout counter."
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "type": "Anti-Theft Security Tags ",
+      "details": [
+        "Attach a device to items that will cause an alarm if removed from the store without authorization."
+      ]
+    },
+    {
+      "type": "Security Guards",
+      "details": [
+        "At physical locations, use security guards to identify and deter shoplifting."
+      ]
+    },
+    {
+      "type": "Video Surveillance Systems",
+      "details": [
+        "Monitor video feeds for suspicious activity around high-value items."
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
+      "source": "https://www.acams.org/en/media/document/29436"
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 100
 }

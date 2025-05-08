@@ -1,44 +1,47 @@
 {
-    "code": "FT1301.2",
-    "name": "Unwitting Buyer",
-    "parent_technique": "Resale",
-    "tactics": [
-        "Monetization"
-    ],
-    "schemes": [
-        "Gift Card Fraud",
-        "Account Take Over"
-    ],
-    "sub_techniques": [],
-    "technique_description": [
-        "The fraudster sells the illicitly obtained goods or resources to an unwitting buyer."
-    ],
-    "mitigation": [
-        {
-            "type": "Primary Gift Card Lock-In",
-            "details": [
-                "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
-            ]
-        },
-        {
-            "type": "Login Required",
-            "details": [
-                "For gift cards, require an account before permitting purchase of or transfer."
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "Market Resale Data",
-            "details": [
-                "Monitor for anomalous sales of serialized items and gift cards in third-party locations and other repositories."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
-            "source": "https://www.acams.org/en/media/document/29436"
-        }
-    ]
+  "code": "FT1301.2",
+  "name": "Unwitting Buyer",
+  "parent_technique": "Resale",
+  "tactics": [
+    "Monetization"
+  ],
+  "schemes": [
+    "Gift Card Fraud",
+    "Account Take Over"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "The fraudster sells the illicitly obtained goods or resources to an unwitting buyer."
+  ],
+  "mitigation": [
+    {
+      "type": "Primary Gift Card Lock-In",
+      "details": [
+        "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
+      ]
+    },
+    {
+      "type": "Login Required",
+      "details": [
+        "For gift cards, require an account before permitting purchase of or transfer."
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "type": "Market Resale Data",
+      "details": [
+        "Monitor for anomalous sales of serialized items and gift cards in third-party locations and other repositories."
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
+      "source": "https://www.acams.org/en/media/document/29436"
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 100
 }

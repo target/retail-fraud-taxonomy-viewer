@@ -1,89 +1,89 @@
 import './Header.css';
 import NRFLogo from '../../content/assets/nrf-logo.svg';
-import React, { useState, useEffect, useRef } from 'react';
-import { RiAddCircleLine, RiImportLine, RiArrowLeftLine, RiExportLine, RiDeleteBin5Line } from 'react-icons/ri';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  RiAddCircleLine, RiImportLine, RiArrowLeftLine,
+  RiExportLine, RiDeleteBin5Line, RiEyeLine, RiPaletteLine,
+  RiFilterFill, RiSettings5Fill
+} from 'react-icons/ri';
 import { handleExport } from '../ContentManager/ManageContentUtils';
-import { Alert } from '../Alert/Alert'
+import { Alert } from '../Alert/Alert';
+
+const ToggleSwitch = ({ label, value, onToggle }) => (
+  <div className="toggle-wrapper" onClick={() => onToggle(!value)}>
+    <div className={`toggle-track ${value ? 'active' : ''}`}>
+      <div className="toggle-thumb" />
+    </div>
+    <span className="toggle-label">{label}</span>
+  </div>
+);
 
 const Header = ({
-  toggleControl,
-  onAddClick,
-  onEditMode,
-  onImportClick,
-  onViewCustomContent,
-  editStatus,
-  editContent,
-  onBackClick,
-  addContent
+  toggleControl, onAddClick, onEditMode, onImportClick,
+  onViewCustomContent, editStatus, editContent, onBackClick,
+  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus
 }) => {
   const [isToggled, setIsToggled] = useState(editStatus);
-  const fileInputRef = useRef();
-  const [fileData, setFileData] = useState(null);
   const [viewCustomContent, setViewCustomContent] = useState(false);
-  const [alertVal, setAlertVal] = useState('')
-  const [showFailAlert, setShowFailAlert] = useState(false)
-  const [alertHeading, setAlertHeading] = useState('')
-  const [responseSubmit, setResponseSubmit] = useState(false)
+  const [fileData, setFileData] = useState(null);
+  const [activeControl, setActiveControl] = useState(null);
+  const [alertVal, setAlertVal] = useState('');
+  const [alertHeading, setAlertHeading] = useState('');
+  const [responseSubmit, setResponseSubmit] = useState(false);
+  const [showFailAlert, setShowFailAlert] = useState(false);
+  const [hide, setHide] = useState(hideStatus);
+  const [showHidden, setShowHidden] = useState(hideToggleStatus);
+  const fileInputRef = useRef();
 
-  useEffect(() => {
-    setIsToggled(editStatus)
-  }, [editStatus]);
+  // const controls = { technique: [RiEyeLine, RiPaletteLine] };
+  const controls = { technique: [RiEyeLine] };
 
-  const handleToggle = () => {
-    const newValue = !isToggled;
-    setIsToggled(newValue);
-    onEditMode(newValue);
+  useEffect(() => setIsToggled(editStatus), [editStatus]);
+  useEffect(() => setHide(hideStatus), [hideStatus]);
+  useEffect(() => setShowHidden(hideToggleStatus), [hideToggleStatus]);
+
+  const toggleEditMode = useCallback((value) => {
+    setIsToggled(value);
+    onEditMode(value);
+  }, [onEditMode]);
+
+  const toggleShowHidden = useCallback((value) => {
+    setShowHidden(value);
+    onHideToggle(value);
+  }, [onHideToggle]);
+
+  const toggleHide = () => {
+    const newValue = !hide;
+    setHide(newValue);
+    onHideClick(newValue);
   };
 
-  const handleViewContent = () => {
+  const toggleViewContent = () => {
     const newValue = !viewCustomContent;
     setViewCustomContent(newValue);
     onViewCustomContent(newValue);
   };
 
-  const handleButtonClick = () => {
+  const handleAddClick = () => {
     onAddClick('add');
-    editContent = true
   };
 
-  const deleteCustomContent = () => {
-    try {
-      localStorage.removeItem('technique_table')
-      localStorage.removeItem('techniques')
-      setResponseSubmit(true)
-      setAlertVal('Data deleted successfully')
-      setTimeout(() => {
-        setResponseSubmit(false)
-      }, 2000)
-    } catch (error) {
-      setAlertHeading(error)
-      setShowFailAlert(true)
-      setAlertVal('Data delete failed')
-      setTimeout(() => {
-        setShowFailAlert(false)
-      }, 2000)
-    }
-  };
-
-  const handleBackButtonClick = () => {
+  const handleBackClick = () => {
     setViewCustomContent(false);
-    onViewCustomContent(false); // IMPORTANT: Reset in parent
+    onViewCustomContent(false);
     setIsToggled(false);
     onBackClick('back');
   };
 
-  const handleImportClick = () => {
-    fileInputRef.current.click();
-  };
+  const handleImportClick = () => fileInputRef.current.click();
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const content = e.target.result;
         try {
-          const parsed = JSON.parse(content);
+          const parsed = JSON.parse(e.target.result);
           setFileData(parsed);
           onImportClick(parsed);
           setViewCustomContent(true);
@@ -96,142 +96,124 @@ const Header = ({
     }
   };
 
+  const deleteCustomContent = () => {
+    try {
+      localStorage.removeItem('technique_table');
+      localStorage.removeItem('techniques');
+      setResponseSubmit(true);
+      setAlertVal('Data deleted successfully');
+      setTimeout(() => setResponseSubmit(false), 2000);
+    } catch (error) {
+      setAlertHeading(error.message || 'Error');
+      setShowFailAlert(true);
+      setAlertVal('Data delete failed');
+      setTimeout(() => setShowFailAlert(false), 2000);
+    }
+  };
+
   return (
     <header>
       <img width="250" height="50" className="logo" alt="NRF Logo" src={NRFLogo} />
       <span>Dev Build</span>
-      {showFailAlert && (
-      <Alert
-        classStyle="alert-fail"
-        heading={alertHeading}
-        value={alertVal}
-      />
-    )}
-    {responseSubmit && (
-      <Alert
-        classStyle="alert-success"
-        heading={alertHeading}
-        value={alertVal}
-      />
-    )}
+
+      {showFailAlert && <Alert classStyle="alert-fail" heading={alertHeading} value={alertVal} />}
+      {responseSubmit && <Alert classStyle="alert-success" heading={alertHeading} value={alertVal} />}
 
       {!editContent && !addContent && (
         <div className="header-controls">
-          <button className="header-button" onClick={() => handleButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
-            <RiAddCircleLine style={{ fontSize: '20px', marginRight: '5px' }} /> Add Technique
+          <button className="header-button" onClick={handleAddClick}>
+            <RiAddCircleLine style={{ fontSize: '25px' }} />
+              Add Technique
           </button>
-          <button className="header-button" onClick={() => handleImportClick()} style={{ display: 'flex', alignItems: 'center' }}>
-            <RiImportLine style={{ fontSize: '20px', marginRight: '5px' }} /> Import Data
+
+          <button className="header-button" onClick={handleImportClick}>
+            <RiImportLine style={{ fontSize: '25px' }} />
+            Import Data
           </button>
+
+          <div style={{ position: 'relative' }}>
+            <button className="header-button" onClick={() => setActiveControl(!activeControl)}>
+            <RiSettings5Fill style={{ fontSize: '25px' }} />
+              Technique Controls
+            </button>
+            {activeControl && (
+              <div style={{
+                position: "absolute",
+                top: "50px",
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                zIndex: 10,
+              }}>
+                {controls.technique.map((Icon, idx) => (
+                  <Icon key={idx} style={{ fontSize: '24px', color: 'white' }} onClick={toggleHide} />
+                ))}
+              </div>
+            )}
+          </div>
 
           <input
             type="file"
             ref={fileInputRef}
-            style={{ display: "none" }}
+            style={{ display: 'none' }}
             onChange={handleFileChange}
           />
 
-          <div onClick={handleToggle} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-            {/* Custom Toggle Slider */}
-            <div
-              style={{
-                width: '50px',
-                height: '25px',
-                borderRadius: '25px',
-                backgroundColor: isToggled ? 'green' : '#ccc',
-                position: 'relative',
-                transition: 'background-color 0.3s ease',
-              }}
-            >
-              {/* Circle inside the toggle */}
-              <div
-                style={{
-                  width: '20px',
-                  height: '20px',
-                  borderRadius: '50%',
-                  backgroundColor: 'white',
-                  position: 'absolute',
-                  top: '2px',
-                  left: isToggled ? 'calc(100% - 22px)' : '2px',
-                  transition: 'left 0.3s ease',  // Smooth transition for the toggle circle
-                }}
-              />
-            </div>
-            <span style={{ marginLeft: '10px' }}>{isToggled ? 'EDIT ON' : 'EDIT OFF'}</span>
-          </div>
-          {(localStorage.getItem('technique_table') || fileData) && (
-            <>
-              <div
-                onClick={handleViewContent}
-                style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-              >
-                {/* Custom Toggle Slider */}
-                <div
-                  style={{
-                    width: '50px',
-                    height: '25px',
-                    borderRadius: '25px',
-                    backgroundColor: viewCustomContent ? 'green' : '#ccc',
-                    position: 'relative',
-                    transition: 'background-color 0.3s ease',
-                  }}
-                >
-                  {/* Circle inside the toggle */}
-                  <div
-                    style={{
-                      width: '20px',
-                      height: '20px',
-                      borderRadius: '50%',
-                      backgroundColor: 'white',
-                      position: 'absolute',
-                      top: '2px',
-                      left: viewCustomContent ? 'calc(100% - 22px)' : '2px',
-                      transition: 'left 0.3s ease',
-                    }}
-                  />
-                </div>
-                <span style={{ marginLeft: '10px' }}>
-                  {viewCustomContent ? 'Custom Content' : 'NRF Content'}
-                </span>
-              </div>
+          <div className="toggle-group">
+            <ToggleSwitch
+              label={isToggled ? 'EDIT ON' : 'EDIT OFF'}
+              value={isToggled}
+              onToggle={toggleEditMode}
+            />
 
-              <div className="header-controls">
-                <button
-                  className="header-button"
-                  onClick={handleExport}
-                  style={{ display: 'flex', alignItems: 'center' }}
-                >
-                  <RiExportLine style={{ fontSize: '20px', marginRight: '5px' }} /> Export Custom Content
+            <ToggleSwitch
+              label={showHidden ? 'SHOW HIDDEN' : 'HIDE'}
+              value={showHidden}
+              onToggle={toggleShowHidden}
+            />
+
+            {(localStorage.getItem('technique_table') || fileData) && (
+              <>
+                <ToggleSwitch
+                  label={viewCustomContent ? 'Custom Content' : 'NRF Content'}
+                  value={viewCustomContent}
+                  onToggle={toggleViewContent}
+                />
+
+                <button className="header-button" onClick={handleExport}>
+                  <RiExportLine style={{ fontSize: '25px' }} />
+                  Export Custom Content
                 </button>
-              </div>
-              <button className="header-button" onClick={() => deleteCustomContent()} style={{ display: 'flex', alignItems: 'center' }}>
-                <RiDeleteBin5Line style={{ fontSize: '20px', marginRight: '5px' }} /> Delete Custom Content
-              </button>
-            </>
-          )}
 
-          <button
-            className="header-button"
-            onClick={() => toggleControl('selection')}
-          >
-            Filter By
-          </button>
+                <button className="header-button" onClick={deleteCustomContent}>
+                  <RiDeleteBin5Line style={{ fontSize: '25px' }} />
+                  Delete Custom Content
+                </button>
+              </>
+            )}
+
+            <button className="header-button" onClick={() => toggleControl('selection')}>
+            <RiFilterFill style={{ fontSize: '25px' }} />
+              Filter By
+            </button>
+          </div>
         </div>
-
       )}
 
       {(editContent || addContent) && (
         <div className="header-controls">
-          <button className="header-button" onClick={() => handleBackButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
-            <RiArrowLeftLine style={{ fontSize: '20px', marginRight: '5px' }} /> Back
+          <button className="header-button" onClick={handleBackClick}>
+            <RiArrowLeftLine style={{ fontSize: '25px' }} />
+            Back
           </button>
-          <button className="header-button" onClick={() => handleBackButtonClick()} style={{ display: 'flex', alignItems: 'center' }}>
-            <RiExportLine style={{ fontSize: '20px', marginRight: '5px' }} /> Export Custom Content
+
+          <button className="header-button" onClick={handleExport}>
+            <RiExportLine style={{ fontSize: '25px' }} />
+            Export Custom Content
           </button>
         </div>
       )}
     </header>
-    
   );
 };
 

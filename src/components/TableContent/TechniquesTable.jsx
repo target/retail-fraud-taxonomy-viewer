@@ -5,6 +5,8 @@ import {
   hasSubTechnique,
   filterDataMap,
   fetchAllTechniques,
+  dataArray,
+  handleHideToggle
 } from '../../utils/dataMap';
 import './Table.css';
 import './subtechnique.css';
@@ -25,7 +27,10 @@ const TechniquesTable = ({
   onEditClick,
   editStatus,
   importContent,
-  viewCustomMode
+  viewCustomMode,
+  selectedTechnique,
+  hideStatus,
+  hideToggleStatus
 }) => {
   const [tableData, setTableData] = useState(() => {
     const savedData = localStorage.getItem('technique_table');
@@ -41,6 +46,7 @@ const TechniquesTable = ({
   const hasFocused = useRef(false);
   const [columnsProcessed, setColumnsProcessed] = useState(new Set());
   const columnsProcessedRef = useRef(new Set(columnsProcessed));
+  const [hiddenTechniques, setHideTechniques] = useState([]);
 
   const handleEdit = (technique) => {
     onEditClick(technique);
@@ -121,6 +127,45 @@ const TechniquesTable = ({
   }, [allTechniques]);
 
   useEffect(() => {
+    const fetchTechniques = async () => {
+      if (!localStorage.getItem('technique_table')) {
+        const fetchedTechniques = await fetchAllTechniques();
+        localStorage.setItem('technique_table', JSON.stringify(fetchedTechniques));
+        localStorage.setItem('techniques', JSON.stringify(dataArray));
+      }
+
+      if(selectedTechnique){
+        const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+     
+        const updatedTechniques = storedTechniques.map(item => {
+          if (item.name === selectedTechnique) {
+            return { ...item, hide: hideStatus };
+          }
+          return item;
+        });
+      
+        localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
+
+        setHideTechniques(prev => {
+          const alreadyExists = prev.includes(selectedTechnique);
+      
+          if (hideStatus && !alreadyExists) {
+            return [...prev, selectedTechnique];
+          } else if (!hideStatus && alreadyExists) {
+            return prev.filter(item => item !== selectedTechnique);
+          }
+      
+          return prev;
+        });
+
+       }
+    };
+
+    fetchTechniques();
+
+  }, [hideStatus]);
+
+  useEffect(() => {
     setAddedColumns([]);
     if (searchFilter !== '' && searchFilterType !== SHOW_ALL) {
       setFilteredDataMap(filterDataMap(searchFilter, searchFilterType));
@@ -129,6 +174,26 @@ const TechniquesTable = ({
     }
     // eslint-disable-next-line
   }, [searchFilter]);
+
+  useEffect(() => {
+    setAddedColumns([]);
+    if (!hideToggleStatus) {
+      const matchedTechniques = handleHideToggle(hideToggleStatus);
+      const result = consolidateData(matchedTechniques);
+      setTableData(result)
+    } else {
+      const localStorageTechniques = JSON.parse(localStorage?.getItem('techniques'));
+    // Find hidden techniques
+    const hiddenTechniquesNames = localStorageTechniques
+      .filter(t => t.hide === true)
+      .map(t => t.name);
+
+      setHideTechniques(hiddenTechniquesNames)
+
+      setTableData(allTechniques);
+    }
+    // eslint-disable-next-line
+  }, [hideToggleStatus]);
 
   useEffect(() => {
     // Update the ref with the latest state combining rowIndex and columnsProcessed
@@ -315,19 +380,28 @@ const TechniquesTable = ({
             >
               {/* {line} */}
               <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
-              {editStatus && <div
-                // className="sub-technique-editicon"
-                style={{ paddingRight: '10px', cursor: 'pointer', backgroundColor: 'rgb(48, 48, 48)' }}
-                aria-label="edit"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  // e.preventDefault();
-                  handleEdit(line)
-                }}
-              >
-                <RiEdit2Fill />
-              </div>
-              }
+              {editStatus && (
+                <>
+                  <div
+                    // className="sub-technique-editicon"
+                    style={{
+                      paddingRight: '10px',
+                      cursor: 'pointer',
+                      backgroundColor: 'rgb(48, 48, 48)',
+                      color: 'white'
+                    }}
+                    aria-label="edit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // e.preventDefault();
+                      handleEdit(line);
+                    }}
+                  >
+                    <RiEdit2Fill className="white-icon"/>
+                  </div>
+                </>
+              )}
+
               {/* <RiEdit2Fill/> */}
             </li>
           ))}
@@ -782,6 +856,9 @@ const TechniquesTable = ({
                     ? FOCUS
                     : NO_FOCUS,
                 outline: 'none',
+                // color: 'red'
+                // color: (item[key] === selectedTechnique && hideStatus) ? 'grey' : 'white'
+                color: hiddenTechniques.includes(item[key]) ? 'grey' : 'white',
               }}
               onClick={() => {
                 if (item[key] !== '') {
@@ -791,19 +868,24 @@ const TechniquesTable = ({
             >
 
               {item[key] &&
-                item[key].length > 0 && editStatus &&
-                <div
-                  className="editicon"
-                  aria-label="edit"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // e.preventDefault();
-                    handleEdit(item[key])
-                  }}
-                >
-                  <RiEdit2Fill />
-                </div>
+                item[key].length > 0 &&
+                editStatus && (
+                  <>
+                    <div
+                      className="editicon"
+                      aria-label="edit"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // e.preventDefault();
+                        handleEdit(item[key]);
+                      }}
+                    >
+                      <RiEdit2Fill className="white-icon"/>
+                    </div>
+                  </>
+                )
               }
+
               {item[key]}
               {item[key] &&
                 item[key].length > 0 &&

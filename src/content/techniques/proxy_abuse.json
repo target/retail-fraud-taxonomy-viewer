@@ -1,38 +1,41 @@
 {
-    "code": "FT1007",
-    "name": "Proxy Abuse",
-    "parent_technique": "",
-    "tactics": [
-        "Pre-Compromise"
-    ],
-    "schemes": [
-        "Account Take Over"
-    ],
-    "sub_techniques": [],
-    "technique_description": [
-        "Actors abuse legitimate or illegal proxy services that act as an intermediary for requests from clients seeking resources from other servers, effectively masking the fraudster\u2019s IP address or other network attributes. Some examples of this are use of commercial VPN services, proxies through hosting providers, residential proxies, compromised machines such as botnets and malware infected hosts, and TOR services."
-    ],
-    "mitigation": [
-        {
-            "type": "Behavioral Prevention",
-            "details": [
-                "Block traffic from known proxies, TOR exit nodes and infected machines."
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "Network Traffic Attributes",
-            "details": [
-                "Aggregate IP addresses to identify the common carriers / autonomous system numbers.",
-                "Establish normal and abnormal behavior for traffic originating from those networks."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "MITRE ATT&CK",
-            "source": "https://attack.mitre.org/techniques/T1090/"
-        }
-    ]
+  "code": "FT1007",
+  "name": "Proxy Abuse",
+  "parent_technique": "",
+  "tactics": [
+    "Pre-Compromise"
+  ],
+  "schemes": [
+    "Account Take Over"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "Actors abuse legitimate or illegal proxy services that act as an intermediary for requests from clients seeking resources from other servers, effectively masking the fraudster\u2019s IP address or other network attributes. Some examples of this are use of commercial VPN services, proxies through hosting providers, residential proxies, compromised machines such as botnets and malware infected hosts, and TOR services."
+  ],
+  "mitigation": [
+    {
+      "type": "Behavioral Prevention",
+      "details": [
+        "Block traffic from known proxies, TOR exit nodes and infected machines."
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "type": "Network Traffic Attributes",
+      "details": [
+        "Aggregate IP addresses to identify the common carriers / autonomous system numbers.",
+        "Establish normal and abnormal behavior for traffic originating from those networks."
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "MITRE ATT&CK",
+      "source": "https://attack.mitre.org/techniques/T1090/"
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 100
 }

@@ -88,3 +88,6 @@
     transition: background-color 0.3s ease, z-index 0.3s ease;
   }
 
+  .white-icon {
+    color: white !important;
+  }

@@ -1,75 +1,78 @@
 {
-    "code": "FT1001",
-    "name": "Reconnaissance1",
-    "parent_technique": "",
-    "tactics": [
-        "Pre-Compromise"
-    ],
-    "schemes": [
-        "Gift Card Fraud",
-        "Account Take Over"
-    ],
-    "sub_techniques": [],
-    "technique_description": [
-        "Fraudsters actively or passively gather information that can be used to support operations. Information may include details of the victim organization, infrastructure, or staff/personnel. This information can be leveraged by the fraudster to aid in other phases of the adversary lifecycle, such as using gathered information to plan and execute future operations.",
-        "Threat actors will attempt to create accounts, wish lists, and other related assets using lists of usernames and credentials from breached databases.  If the attempt fails, it signals to the actor that the account already exists and is a good candidate for credential stuffing."
-    ],
-    "mitigation": [
-        {
-            "type": "Training and Awareness",
-            "details": [
-                "At physical locations, train employees to identify and report suspicious individuals to security."
-            ]
-        },
-        {
-            "type": "Document Control",
-            "details": [
-                "At physical locations, keep all company, store or corporate-related documents, manuals or communication in a non-public or secure area not visible to non-employees."
-            ]
-        },
-        {
-            "type": "Security Guards",
-            "details": [
-                "At physical locations, utilize security guards to identify and deter reconnaissance attempts."
-            ]
-        },
-        {
-            "type": "Software Configuration",
-            "details": [
-                "Fully decommission obsolete login software that may not be protected by current security protocols.",
-                "Redirect login requests to obsolete software to follow the approved login flow"
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "Network Traffic Address Attributes",
-            "details": [
-                "Automated network reconnaissance will scan internet resources in a manner that a normal user typically will not. Monitor for connections to suspicious ports and traversal to suspicious directories such as www.mywebsite.com/admin or www.mywebsite.com/phpadmin"
-            ]
-        },
-        {
-            "type": "Online Identities",
-            "details": [
-                "When account creation is not a high barrier, often fraudsters will create test accounts to support development of automation or defender rule logic testing.  These test accounts may be identified with false information about identity, but also may be indicators of the capabilities the fraudster is developing. Identifying and monitoring such accounts can reveal important information about the actor's operation and intention.",
-                "Monitor account creation endpoints for abnormal behavior. Actors will use account creation as a method to test credential lists to determine whether an account already exists at the targeted site before submitting a login request using those credentials."
-            ]
-        },
-        {
-            "type": "Video Surveillance Systems",
-            "details": [
-                "At physical locations, use video surveillance to identify and report suspicious individuals to security."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "MITRE ATT&CK",
-            "source": "https://attack.mitre.org"
-        },
-        {
-            "name": "Industry Partner Collaboration",
-            "source": ""
-        }
-    ]
+  "code": "FT1001",
+  "name": "Reconnaissance",
+  "parent_technique": "",
+  "tactics": [
+    "Pre-Compromise"
+  ],
+  "schemes": [
+    "Gift Card Fraud",
+    "Account Take Over"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "Fraudsters actively or passively gather information that can be used to support operations. Information may include details of the victim organization, infrastructure, or staff/personnel. This information can be leveraged by the fraudster to aid in other phases of the adversary lifecycle, such as using gathered information to plan and execute future operations.",
+    "Threat actors will attempt to create accounts, wish lists, and other related assets using lists of usernames and credentials from breached databases.  If the attempt fails, it signals to the actor that the account already exists and is a good candidate for credential stuffing."
+  ],
+  "mitigation": [
+    {
+      "type": "Training and Awareness",
+      "details": [
+        "At physical locations, train employees to identify and report suspicious individuals to security."
+      ]
+    },
+    {
+      "type": "Document Control",
+      "details": [
+        "At physical locations, keep all company, store or corporate-related documents, manuals or communication in a non-public or secure area not visible to non-employees."
+      ]
+    },
+    {
+      "type": "Security Guards",
+      "details": [
+        "At physical locations, utilize security guards to identify and deter reconnaissance attempts."
+      ]
+    },
+    {
+      "type": "Software Configuration",
+      "details": [
+        "Fully decommission obsolete login software that may not be protected by current security protocols.",
+        "Redirect login requests to obsolete software to follow the approved login flow"
+      ]
+    }
+  ],
+  "detection": [
+    {
+      "type": "Network Traffic Address Attributes",
+      "details": [
+        "Automated network reconnaissance will scan internet resources in a manner that a normal user typically will not. Monitor for connections to suspicious ports and traversal to suspicious directories such as www.mywebsite.com/admin or www.mywebsite.com/phpadmin"
+      ]
+    },
+    {
+      "type": "Online Identities",
+      "details": [
+        "When account creation is not a high barrier, often fraudsters will create test accounts to support development of automation or defender rule logic testing.  These test accounts may be identified with false information about identity, but also may be indicators of the capabilities the fraudster is developing. Identifying and monitoring such accounts can reveal important information about the actor's operation and intention.",
+        "Monitor account creation endpoints for abnormal behavior. Actors will use account creation as a method to test credential lists to determine whether an account already exists at the targeted site before submitting a login request using those credentials."
+      ]
+    },
+    {
+      "type": "Video Surveillance Systems",
+      "details": [
+        "At physical locations, use video surveillance to identify and report suspicious individuals to security."
+      ]
+    }
+  ],
+  "references": [
+    {
+      "name": "MITRE ATT&CK",
+      "source": "https://attack.mitre.org"
+    },
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 100
 }
