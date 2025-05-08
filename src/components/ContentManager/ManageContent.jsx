@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import './ManageContent.css';
 import { fetchAllTechniques, fetchTechnique, dataArray, getUniqueTechniques } from '../../utils/dataMap';
-import { transformData, transformKeyValue, transformReference, formatDetails, formatFields, formatReferences } from './ManageContentUtils';
+import { transformData, transformKeyValue, transformReference, formatDetails, formatFields, formatReferences, hanleNewTactic } from './ManageContentUtils';
 import { RiAddCircleLine, RiDeleteBinLine } from 'react-icons/ri';
 import { Alert } from '../Alert/Alert'
 
@@ -316,6 +316,12 @@ const ManageContent = (props) => {
   const handleSave = async () => {
     try {
       let jsonContent = formatJSON();
+
+      let techniqueName = jsonContent.name
+      let tactics = jsonContent.tactics
+
+      hanleNewTactic(techniqueName, tactics)
+
       let dataMapStorage = localStorage.getItem('techniques');
       dataMapStorage = dataMapStorage ? JSON.parse(dataMapStorage) : [];
 

@@ -77,3 +77,66 @@ export const handleExport = () => {
 
   downloadJSON(jsonBody);
 }
+
+export const hanleNewTactic = (techniqueName, tactics) => {
+  if (!Array.isArray(tactics) || !techniqueName) return;
+
+  // Normalize tactics to snake_case: spaces and dashes -> _
+  const normalize = (str) =>
+    str.trim().toLowerCase().replace(/[\s-]+/g, '_');
+
+  const normalizedKeys = tactics.map(normalize);
+
+  const stored = localStorage.getItem('technique_table');
+  if (!stored) return;
+
+  let jsonArray;
+  try {
+    jsonArray = JSON.parse(stored);
+  } catch (e) {
+    console.error('Invalid JSON in localStorage:', e);
+    return;
+  }
+
+  if (!Array.isArray(jsonArray) || jsonArray.length === 0) return;
+
+  // Step 1: Normalize existing keys in every object
+  const cleanedArray = jsonArray.map(obj => {
+    const newObj = {};
+    for (const [key, value] of Object.entries(obj)) {
+      const normalizedKey = normalize(key);
+      newObj[normalizedKey] = value;
+    }
+    return newObj;
+  });
+
+  // Step 2: Ensure all tactic keys exist
+  const fullyUpdatedArray = cleanedArray.map(obj => {
+    const newObj = { ...obj };
+    normalizedKeys.forEach(key => {
+      if (!(key in newObj)) {
+        newObj[key] = '';
+      }
+    });
+    return newObj;
+  });
+
+  // Step 3: Add `techniqueName` to first empty value of new keys
+  const allKeys = new Set(Object.keys(cleanedArray[0])); // Check only against normalized keys now
+  normalizedKeys.forEach(key => {
+    if (!allKeys.has(key)) {
+      const indexToUpdate = fullyUpdatedArray.findIndex(obj => !obj[key]);
+      if (indexToUpdate !== -1) {
+        fullyUpdatedArray[indexToUpdate][key] = techniqueName;
+      }
+    }
+  });
+
+  // Save result
+  localStorage.setItem('technique_table', JSON.stringify(fullyUpdatedArray));
+};
+
+
+
+
+

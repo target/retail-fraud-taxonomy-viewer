@@ -185,7 +185,7 @@ const TechniquesTable = ({
       const localStorageTechniques = JSON.parse(localStorage?.getItem('techniques'));
     // Find hidden techniques
     const hiddenTechniquesNames = localStorageTechniques
-      .filter(t => t.hide === true)
+      ?.filter(t => t.hide === true)
       .map(t => t.name);
 
       setHideTechniques(hiddenTechniquesNames)
@@ -858,7 +858,7 @@ const TechniquesTable = ({
                 outline: 'none',
                 // color: 'red'
                 // color: (item[key] === selectedTechnique && hideStatus) ? 'grey' : 'white'
-                color: hiddenTechniques.includes(item[key]) ? 'grey' : 'white',
+                color: hiddenTechniques?.includes(item[key]) ? 'grey' : 'white',
               }}
               onClick={() => {
                 if (item[key] !== '') {
