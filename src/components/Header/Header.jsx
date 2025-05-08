@@ -122,19 +122,19 @@ const Header = ({
       {!editContent && !addContent && (
         <div className="header-controls">
           <button className="header-button" onClick={handleAddClick}>
-            <RiAddCircleLine style={{ fontSize: '25px' }} />
+            <RiAddCircleLine style={{ fontSize: '30px' }} />
               Add Technique
           </button>
 
           <button className="header-button" onClick={handleImportClick}>
-            <RiImportLine style={{ fontSize: '25px' }} />
+            <RiImportLine style={{ fontSize: '30px' }} />
             Import Data
           </button>
 
           <div style={{ position: 'relative' }}>
             <button className="header-button" onClick={() => setActiveControl(!activeControl)}>
-            <RiSettings5Fill style={{ fontSize: '25px' }} />
-              Technique Controls
+            <RiSettings5Fill style={{ fontSize: '30px' }} />Technique Controls
+              
             </button>
             {activeControl && (
               <div style={{
@@ -181,19 +181,19 @@ const Header = ({
                 />
 
                 <button className="header-button" onClick={handleExport}>
-                  <RiExportLine style={{ fontSize: '25px' }} />
+                  <RiExportLine style={{ fontSize: '30px' }} />
                   Export Custom Content
                 </button>
 
                 <button className="header-button" onClick={deleteCustomContent}>
-                  <RiDeleteBin5Line style={{ fontSize: '25px' }} />
+                  <RiDeleteBin5Line style={{ fontSize: '30px' }} />
                   Delete Custom Content
                 </button>
               </>
             )}
 
             <button className="header-button" onClick={() => toggleControl('selection')}>
-            <RiFilterFill style={{ fontSize: '25px' }} />
+            <RiFilterFill style={{ fontSize: '30px' }} />
               Filter By
             </button>
           </div>
@@ -203,12 +203,12 @@ const Header = ({
       {(editContent || addContent) && (
         <div className="header-controls">
           <button className="header-button" onClick={handleBackClick}>
-            <RiArrowLeftLine style={{ fontSize: '25px' }} />
+            <RiArrowLeftLine style={{ fontSize: '30px' }} />
             Back
           </button>
 
           <button className="header-button" onClick={handleExport}>
-            <RiExportLine style={{ fontSize: '25px' }} />
+            <RiExportLine style={{ fontSize: '30px' }} />
             Export Custom Content
           </button>
         </div>
