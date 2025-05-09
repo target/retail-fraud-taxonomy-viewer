@@ -69,7 +69,7 @@ const ManageContent = (props) => {
         let techniqueName = props.technique || selectedTechnique
 
         if (techniqueName) {
-          if (props.viewCustomMode) {
+          if (props.viewCustomMode || props.addContent) {
             techniqueInfo = JSON.parse(localStorage.getItem('techniques')).find(item =>
               item.name === techniqueName
             );
