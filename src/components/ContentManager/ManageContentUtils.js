@@ -78,7 +78,7 @@ export const handleExport = () => {
   downloadJSON(jsonBody);
 }
 
-export const hanleNewTactic = (techniqueName, tactics) => {
+export const handleNewTactic = (techniqueName, tactics) => {
   if (!Array.isArray(tactics) || !techniqueName) return;
 
   // Normalize tactics to snake_case: spaces and dashes -> _
@@ -135,6 +135,44 @@ export const hanleNewTactic = (techniqueName, tactics) => {
   // Save result
   localStorage.setItem('technique_table', JSON.stringify(fullyUpdatedArray));
 };
+
+export const addTechniqueIfNotExists = (inputJSON, keysToUpdate, newTechnique) => {
+  const normalize = (str) => str.trim().toLowerCase().replace(/[\s-]+/g, '_');
+  const normalizedTechnique = newTechnique.trim();
+
+  const targetKeys = Array.isArray(keysToUpdate) ? keysToUpdate : [keysToUpdate];
+
+  const normalizedTargetKeys = targetKeys.map(normalize);
+
+  // Check if the technique exists under any of the target keys
+  const techniqueExists = inputJSON.some(obj =>
+    Object.entries(obj).some(([key, value]) => {
+      return normalizedTargetKeys.includes(normalize(key)) && value === normalizedTechnique;
+    })
+  );
+
+  if (techniqueExists) {
+    // If the technique already exists under any of the keys, return unchanged array
+    return inputJSON;
+  }
+
+  // Schema keys (from the first item, or empty if array is empty)
+  const schemaKeys = inputJSON[0] ? Object.keys(inputJSON[0]) : normalizedTargetKeys;
+
+  // Build new row: set newTechnique for each matching key, empty string for others
+  const newRow = {};
+  schemaKeys.forEach((key) => {
+    if (normalizedTargetKeys.includes(normalize(key))) {
+      newRow[key] = newTechnique;
+    } else {
+      newRow[key] = "";
+    }
+  });
+
+  // Return the updated array
+  return [...inputJSON, newRow];
+}
+
 
 
 

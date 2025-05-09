@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import './ManageContent.css';
 import { fetchAllTechniques, fetchTechnique, dataArray, getUniqueTechniques } from '../../utils/dataMap';
-import { transformData, transformKeyValue, transformReference, formatDetails, formatFields, formatReferences, hanleNewTactic } from './ManageContentUtils';
+import { transformData, transformKeyValue, transformReference, formatDetails, formatFields, formatReferences, handleNewTactic, addTechniqueIfNotExists } from './ManageContentUtils';
 import { RiAddCircleLine, RiDeleteBinLine } from 'react-icons/ri';
 import { Alert } from '../Alert/Alert'
 
@@ -320,22 +320,37 @@ const ManageContent = (props) => {
       let techniqueName = jsonContent.name
       let tactics = jsonContent.tactics
 
-      hanleNewTactic(techniqueName, tactics)
+      let addedTechnique = {}
 
+      if (props.addContent) {
+        handleNewTactic(techniqueName, tactics)
+        let inputJSON = localStorage.getItem('technique_table') ? JSON.parse(localStorage.getItem('technique_table')) : [];
+        addedTechnique = addTechniqueIfNotExists(inputJSON, tactics, techniqueName)
+        localStorage.setItem('technique_table', JSON.stringify(addedTechnique));
+      }
+
+      // Now, update the localStorage based on techniqueName
       let dataMapStorage = localStorage.getItem('techniques');
       dataMapStorage = dataMapStorage ? JSON.parse(dataMapStorage) : [];
 
-      const updatedDataMapStorage = dataMapStorage.map((item) => {
-        if (item.name.toLowerCase() === techniqueName.toLowerCase()) {
-          return {
-            ...item,
-            ...jsonContent,
-          };
-        }
-        return item;
-      });
+      const techniqueExists = dataMapStorage.some(item => item.name.toLowerCase() === techniqueName.toLowerCase());
 
-      localStorage.setItem('techniques', JSON.stringify(updatedDataMapStorage));
+      if (techniqueExists) {
+        // Update existing technique in localStorage
+        const updatedDataMapStorage = dataMapStorage.map((item) => {
+          if (item.name.toLowerCase() === techniqueName.toLowerCase()) {
+            return {
+              ...item,
+              ...jsonContent
+            };
+          }
+          return item;
+        });
+        localStorage.setItem('techniques', JSON.stringify(updatedDataMapStorage));
+      } else {
+        dataMapStorage.push(jsonContent);
+        localStorage.setItem('techniques', JSON.stringify(dataMapStorage));
+      }
 
       setResponseSubmit(true)
       setAlertVal('Data saved successfully')
@@ -377,15 +392,15 @@ const ManageContent = (props) => {
             />
           )}
           {props.addContent && (
-          <div style={{ paddingBottom: '20px' }}>
-            <label htmlFor="clone-from" style={{ color: 'white', fontSize: '20px' }}>Clone From:  </label>
-            <select id="clone-from" value={selectedTechnique} onChange={handleCloneFromChange} style={{fontSize: '20px'}}>
-              <option value="">-- Select Technique--</option>
-              {options.map((option, index) => (
-                <option key={index} value={option}>{option}</option>
-              ))}
-            </select>
-          </div>
+            <div style={{ paddingBottom: '20px' }}>
+              <label htmlFor="clone-from" style={{ color: 'white', fontSize: '20px' }}>Clone From:  </label>
+              <select id="clone-from" value={selectedTechnique} onChange={handleCloneFromChange} style={{ fontSize: '20px' }}>
+                <option value="">-- Select Technique--</option>
+                {options.map((option, index) => (
+                  <option key={index} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
           )}
           <div
             className={`Collapsible__trigger ${openSections.technique ? 'open' : ''}`}
@@ -592,7 +607,7 @@ const ManageContent = (props) => {
       <button className="save-button" type="submit" onClick={handleSave}>Save</button>
       <button className="save-button" type="cancel" onClick={handleCancelClick}>Cancel</button>
     </div>
- 
+
   );
 
 

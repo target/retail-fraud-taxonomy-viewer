@@ -27,8 +27,17 @@ export const fetchAllTechniques = () => {
 };
 
 export const getUniqueTechniques = () => {
-  const allValues = techniques.flatMap(obj => Object.values(obj));
-  const filteredValues = allValues.filter(val => val && val.trim() !== '');
+  let completeTechniques = []
+  let customData = localStorage.getItem('technique_table')
+
+  if(customData && customData.length > 0) {
+    completeTechniques = JSON.parse(customData)
+  } else {
+    completeTechniques = techniques
+  }
+
+  const allTechniques = completeTechniques.flatMap(obj => Object.values(obj));
+  const filteredValues = allTechniques.filter(val => val && val.trim() !== '');
   const uniqueValues = [...new Set(filteredValues)];
   return uniqueValues.sort((a, b) => a.localeCompare(b));
 };
