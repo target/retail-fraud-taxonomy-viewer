@@ -1,5 +1,5 @@
 import './Header.css';
-import './ColorPopup.css';
+import './ColorPicker.css';
 import NRFLogo from '../../content/assets/nrf-logo.svg';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
@@ -38,8 +38,8 @@ const Header = ({
   const [showPopup, setShowPopup] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
 
-  const controls = { technique: [RiEyeLine]}
-  // const controls = { technique: [RiEyeLine, RiPaletteLine] };
+  // const controls = { technique: [RiEyeLine]}
+  const controls = { technique: [RiEyeLine, RiPaletteLine] };
 
   useEffect(() => setIsToggled(editStatus), [editStatus]);
   useEffect(() => setHide(hideStatus), [hideStatus]);
@@ -257,7 +257,7 @@ const Header = ({
         </div>
       )}
 
-        {/* <ColorPopup showPopup={showPopup} togglePopup={() => setShowPopup(!showPopup)} /> */}
+        <ColorPopup showPopup={showPopup} togglePopup={() => setShowPopup(!showPopup)} />
     </header>
   );
 };
