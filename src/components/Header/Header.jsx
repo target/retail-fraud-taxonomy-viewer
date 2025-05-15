@@ -38,7 +38,8 @@ const Header = ({
   const [showPopup, setShowPopup] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
 
-  const controls = { technique: [RiEyeLine, RiPaletteLine] };
+  const controls = { technique: [RiEyeLine]}
+  // const controls = { technique: [RiEyeLine, RiPaletteLine] };
 
   useEffect(() => setIsToggled(editStatus), [editStatus]);
   useEffect(() => setHide(hideStatus), [hideStatus]);
