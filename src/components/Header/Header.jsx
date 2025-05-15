@@ -38,21 +38,7 @@ const Header = ({
   const [showPopup, setShowPopup] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
 
-    const controls = { technique: [RiEyeLine, RiPaletteLine] };
-  // const controls = { technique: [RiEyeLine] };
-
-  // Array of 28 colors
-  // const colors = [
-  //   '#FF5733', '#33FF57', '#3357FF', '#F0E68C', '#FFD700', '#ADFF2F', '#8A2BE2',
-  //   '#A52A2A', '#DEB887', '#5F9EA0', '#7FFF00', '#D2691E', '#FF7F50', '#6495ED',
-  //   '#FFF8DC', '#DC143C', '#00008B', '#008B8B', '#B8860B', '#A9A9A9', '#006400',
-  //   '#BDB76B', '#8B008B', '#FF1493', '#CD5C5C', '#4B0082', '#FF4500', '#DAA520', '#ADFF2F'
-  // ];
-
-  // Toggle popup visibility
-  // const togglePopup = () => {
-  //   setShowPopup(!showPopup);
-  // };
+  const controls = { technique: [RiEyeLine, RiPaletteLine] };
 
   useEffect(() => setIsToggled(editStatus), [editStatus]);
   useEffect(() => setHide(hideStatus), [hideStatus]);
@@ -76,11 +62,6 @@ const Header = ({
     } else if (iconName === 'RiPaletteLine') {
       setShowPopup(!showPopup);
     }
-  };
-
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
-    setShowPopup(false); // hide popup after selection
   };
 
   const toggleViewContent = () => {
@@ -163,7 +144,7 @@ const Header = ({
         <div className="popup">
           <div className="color-grid">
             {colors.map((color, index) => (
-              <div key={index} className="color-square" style={{ backgroundColor: color, border: selectedColor === color ? '2px solid white' : '1px solid #555' }}  onClick={() => handleColorClick(color)} />
+              <div key={index} className="color-square" style={{ backgroundColor: color, border: selectedColor === color ? '5px solid white!' : '1px solid white!' }}  onClick={() => handleColorClick(color)} />
             ))}
           </div>
         </div>
