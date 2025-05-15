@@ -56,11 +56,14 @@ const Header = ({
   }, [onHideToggle]);
 
   const toggleHide = (iconName) => {
+    console.log('inside toggleHide', iconName)
     if (iconName === 'RiEyeLine') {
+      console.log('inside if')
     const newValue = !hide;
     setHide(newValue);
     onHideClick(newValue);
     } else if (iconName === 'RiPaletteLine') {
+      console.log('inside else')
       setShowPopup(!showPopup);
     }
   };
@@ -145,7 +148,7 @@ const Header = ({
         <div className="popup">
           <div className="color-grid">
             {colors.map((color, index) => (
-              <div key={index} className="color-square" style={{ backgroundColor: color, border: selectedColor === color ? '5px solid white!' : '1px solid white!' }}  onClick={() => handleColorClick(color)} />
+              <div key={index} className="color-square" style={{ backgroundColor: color }}  onClick={() => handleColorClick(color)} />
             ))}
           </div>
         </div>
