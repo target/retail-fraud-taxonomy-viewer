@@ -38,8 +38,22 @@ const Header = ({
   const [showPopup, setShowPopup] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
 
-  // const controls = { technique: [RiEyeLine]}
-  const controls = { technique: [RiEyeLine, RiPaletteLine] };
+  const controls = {
+    technique: [
+      { icon: RiEyeLine, name: 'RiEyeLine' },
+      { icon: RiPaletteLine, name: 'RiPaletteLine' },
+    ],
+  };
+
+  const toggleHide = (iconName) => {
+    if (iconName === 'RiEyeLine') {
+      const newValue = !hide;
+      setHide(newValue);
+      onHideClick(newValue);
+    } else if (iconName === 'RiPaletteLine') {
+      setShowPopup(!showPopup);
+    }
+  };
 
   useEffect(() => setIsToggled(editStatus), [editStatus]);
   useEffect(() => setHide(hideStatus), [hideStatus]);
@@ -55,19 +69,6 @@ const Header = ({
     onHideToggle(value);
   }, [onHideToggle]);
 
-  const toggleHide = (iconName) => {
-    console.log('inside toggleHide', iconName)
-    if (iconName === 'RiEyeLine') {
-      console.log('inside if')
-    const newValue = !hide;
-    setHide(newValue);
-    onHideClick(newValue);
-    } else if (iconName === 'RiPaletteLine') {
-      console.log('inside else')
-      setShowPopup(!showPopup);
-    }
-  };
-
   const toggleViewContent = () => {
     const newValue = !viewCustomContent;
     setViewCustomContent(newValue);
@@ -80,6 +81,7 @@ const Header = ({
 
   const handleColorClick = (color) => {
     onColorClick(color);
+    setSelectedColor(color)
   }
 
   const handleBackClick = () => {
@@ -142,20 +144,19 @@ const Header = ({
       // Aqua / Cyan / Teal
       '#00CED1', '#20B2AA', '#40E0D0', '#5F9EA0'
     ];
-  
+
     return (
       showPopup && (
         <div className="popup">
           <div className="color-grid">
             {colors.map((color, index) => (
-              <div key={index} className="color-square" style={{ backgroundColor: color }}  onClick={() => handleColorClick(color)} />
+              <div key={index} className="color-square" style={{ backgroundColor: color, border: color === selectedColor ? '2px solid white' : 'none', }} onClick={() => handleColorClick(color)} />
             ))}
           </div>
         </div>
       )
     );
   };
-  
 
   return (
     <header>
@@ -169,7 +170,7 @@ const Header = ({
         <div className="header-controls">
           <button className="header-button" onClick={handleAddClick}>
             <RiAddCircleLine style={{ fontSize: '30px' }} />
-              Add Technique
+            Add Technique
           </button>
 
           <button className="header-button" onClick={handleImportClick}>
@@ -179,8 +180,8 @@ const Header = ({
 
           <div style={{ position: 'relative' }}>
             <button className="header-button" onClick={() => setActiveControl(!activeControl)}>
-            <RiSettings5Fill style={{ fontSize: '30px' }} />Technique Controls
-              
+              <RiSettings5Fill style={{ fontSize: '30px' }} />Technique Controls
+
             </button>
             {activeControl && (
               <div style={{
@@ -191,8 +192,12 @@ const Header = ({
                 gap: "10px",
                 zIndex: 10,
               }}>
-                {controls.technique.map((Icon, idx) => (
-                  <Icon key={idx} style={{ fontSize: '24px', color: 'white' }} onClick={() => {toggleHide(Icon.name)}} />
+                {controls.technique.map((control, idx) => (
+                  <control.icon
+                    key={idx}
+                    style={{ fontSize: '24px', color: 'white' }}
+                    onClick={() => toggleHide(control.name)}
+                  />
                 ))}
               </div>
             )}
@@ -239,7 +244,7 @@ const Header = ({
             )}
 
             <button className="header-button" onClick={() => toggleControl('selection')}>
-            <RiFilterFill style={{ fontSize: '30px' }} />
+              <RiFilterFill style={{ fontSize: '30px' }} />
               Filter By
             </button>
           </div>
@@ -260,7 +265,7 @@ const Header = ({
         </div>
       )}
 
-        <ColorPopup showPopup={showPopup} togglePopup={() => setShowPopup(!showPopup)} />
+      <ColorPopup showPopup={showPopup} togglePopup={() => setShowPopup(!showPopup)} />
     </header>
   );
 };
