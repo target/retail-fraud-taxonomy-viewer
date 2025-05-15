@@ -28,7 +28,7 @@
   ],
   "detection": [
     {
-      "type": "Time Based Attributes",
+      "type": "Time-Based Attributes",
       "details": [
         "Based on the location of your operations, monitor for activities that occur during off hours."
       ]

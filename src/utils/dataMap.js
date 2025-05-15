@@ -1,6 +1,7 @@
 import techniques from '../content/techniques.json';
 const SCHEMES = 'schemes';
 const MITIGATION = 'mitigation';
+const DETECTION = 'detection';
 const SHOW_ALL = 'Show All';
 
 // const contentFiles = require.context('../content/techniques', false, /\.json$/);
@@ -63,6 +64,15 @@ export const filterDataMap = (selectedIcon, filterType) => {
       }
       return filteredMap;
     }, {});
+  } else if (filterType === DETECTION) {
+    return Object.keys(dataMap).reduce((filteredMap, key) => {
+      if (
+        dataMap[key].detection.some((det) => det.type.includes(selectedIcon))
+      ) {
+        filteredMap[key] = dataMap[key];
+      }
+      return filteredMap;
+    }, {});
   }
 };
 
@@ -107,15 +117,21 @@ export const formatData = (inputData) => {
 };
 
 export const fetchAllMitigations = () => {
-  const allMitigationKeys = new Set();
+  const allMitigationKeys = new Map();
 
   Object.keys(dataMap).forEach((key) => {
     dataMap[key].mitigation.forEach((mitigationItem) => {
-      allMitigationKeys.add(mitigationItem.type);
+      // Normalize the type for uniqueness check (lowercase)
+      const normalizedType = mitigationItem.type.trim().toLowerCase();
+
+      // Only add the first occurrence of the normalized type
+      if (!allMitigationKeys.has(normalizedType)) {
+        allMitigationKeys.set(normalizedType, mitigationItem.type);
+      }
     });
   });
 
-  const uniqueMitigationKeys = [...allMitigationKeys].sort();
+  const uniqueMitigationKeys = [...allMitigationKeys.values()].sort();
   return uniqueMitigationKeys;
 };
 
@@ -127,6 +143,25 @@ export const fetchAllSchemes = () => {
 
   const uniqueSchemesArray = [...uniqueSchemes].sort();
   return uniqueSchemesArray;
+};
+
+export const fetchAllDetections = () => {
+  const allDetectionKeys = new Map();
+
+  Object.keys(dataMap).forEach((key) => {
+    dataMap[key].detection.forEach((detectionItem) => {
+      // Normalize the type for uniqueness check (lowercase)
+      const normalizedType = detectionItem.type.trim().toLowerCase();
+
+      // Only add the first occurrence of the normalized type
+      if (!allDetectionKeys.has(normalizedType)) {
+        allDetectionKeys.set(normalizedType, detectionItem.type);
+      }
+    });
+  });
+
+  const uniqueDetectionKeys = [...allDetectionKeys.values()].sort();
+  return uniqueDetectionKeys;
 };
 
 export const handleHideToggle = (hideToggleStatus) => {

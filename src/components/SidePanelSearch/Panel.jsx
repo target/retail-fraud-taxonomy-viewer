@@ -3,11 +3,12 @@ import { FaTimes } from 'react-icons/fa';
 import {
   fetchAllMitigations,
   fetchAllSchemes,
-  formatData,
+  fetchAllDetections
 } from '../../utils/dataMap';
 
 const MITIGATION = 'mitigation';
 const SCHEMES = 'schemes';
+const DETECTION = 'detection';
 const SHOW_ALL = 'Show All';
 
 const SidePanel = ({ onFilterChange, onClose }) => {
@@ -17,6 +18,7 @@ const SidePanel = ({ onFilterChange, onClose }) => {
 
   const mitigations = fetchAllMitigations();
   const schemes = fetchAllSchemes();
+  const detections = fetchAllDetections();
 
   return (
     <div className="side-panel">
@@ -42,7 +44,7 @@ const SidePanel = ({ onFilterChange, onClose }) => {
               key={index}
               onClick={() => handleFilterChange(mitigation, MITIGATION)}
             >
-              {formatData(mitigation)}
+              {mitigation}
             </button>
           ))}
         </div>
@@ -56,6 +58,19 @@ const SidePanel = ({ onFilterChange, onClose }) => {
               onClick={() => handleFilterChange(scheme, SCHEMES)}
             >
               {scheme}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="filter-section">
+        <h3>Detection ({detections.length})</h3>
+        <div className="filter-list">
+          {detections.map((detection, index) => (
+            <button
+              key={index}
+              onClick={() => handleFilterChange(detection, DETECTION)}
+            >
+              {detection}
             </button>
           ))}
         </div>

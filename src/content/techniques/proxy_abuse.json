@@ -14,7 +14,7 @@
   ],
   "mitigation": [
     {
-      "type": "Behavioral Prevention",
+      "type": "Behavior Prevention",
       "details": [
         "Block traffic from known proxies, TOR exit nodes and infected machines."
       ]

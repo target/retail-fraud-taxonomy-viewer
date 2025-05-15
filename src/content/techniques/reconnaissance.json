@@ -43,7 +43,7 @@
   ],
   "detection": [
     {
-      "type": "Network Traffic Address Attributes",
+      "type": "Network Traffic Attributes",
       "details": [
         "Automated network reconnaissance will scan internet resources in a manner that a normal user typically will not. Monitor for connections to suspicious ports and traversal to suspicious directories such as www.mywebsite.com/admin or www.mywebsite.com/phpadmin"
       ]
