@@ -256,7 +256,7 @@ const Header = ({
         </div>
       )}
 
-        <ColorPopup showPopup={showPopup} togglePopup={() => setShowPopup(!showPopup)} />
+        {/* <ColorPopup showPopup={showPopup} togglePopup={() => setShowPopup(!showPopup)} /> */}
     </header>
   );
 };
