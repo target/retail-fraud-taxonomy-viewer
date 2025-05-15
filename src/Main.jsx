@@ -19,6 +19,7 @@ export const Main = () => {
   const [viewCustomContent, setViewCustomContent] = useState(false);
   const [hide, setHide] = useState(false);
   const [hideTechnique, setHideTechnique] = useState(null);
+  const [colorSelect, setColorSelect] = useState(null);
 
   const [hideToggleVal, setHideToggleVal] = useState(true);
 
@@ -54,6 +55,10 @@ export const Main = () => {
 
   const handleAddClick = useCallback((value) => {
     setAddContent(value);
+  }, []);
+
+  const handleColorClick = useCallback((value) => {
+    setColorSelect(value);
   }, []);
 
   const handleImportClick = useCallback((value) => {
@@ -102,6 +107,7 @@ export const Main = () => {
         hideStatus={hide}
         onHideToggle={handleHideToggle}
         hideToggleStatus={hideToggleVal}
+        onColorClick={handleColorClick}
       />
 
       {shouldRenderTechniques && !addContent && !editContent && !hideTechnique && (
@@ -119,6 +125,7 @@ export const Main = () => {
           selectedTechnique={selectedValue}
           hideStatus={hide}
           hideToggleStatus={hideToggleVal}
+          selectedColor={colorSelect}
         />
       )}
 

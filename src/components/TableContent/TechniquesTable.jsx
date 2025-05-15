@@ -30,7 +30,8 @@ const TechniquesTable = ({
   viewCustomMode,
   selectedTechnique,
   hideStatus,
-  hideToggleStatus
+  hideToggleStatus,
+  selectedColor
 }) => {
   const [tableData, setTableData] = useState(() => {
     const savedData = localStorage.getItem('technique_table');
@@ -47,6 +48,7 @@ const TechniquesTable = ({
   const [columnsProcessed, setColumnsProcessed] = useState(new Set());
   const columnsProcessedRef = useRef(new Set(columnsProcessed));
   const [hiddenTechniques, setHideTechniques] = useState([]);
+  const [cellColors, setCellColors] = useState({});
 
   const handleEdit = (technique) => {
     onEditClick(technique);
@@ -365,10 +367,18 @@ const TechniquesTable = ({
                   for (let i = 0; i < subCells.length; i++) {
                     if (i === index) {
                       subCells[i]?.focus();
-                      subCells[i].style.backgroundColor = FOCUS;
-                    } else {
-                      subCells[i].style.backgroundColor = NO_FOCUS;
-                    }
+                      subCells[i].style.backgroundColor = cellColors[line] ? cellColors[line] : FOCUS;
+                    } 
+                    // else {
+                      // subCells[i].style.backgroundColor =  cellColors[subCells[i]?.textContent] ? cellColors[subCells[i]?.textContent] : NO_FOCUS;
+                      // subCells[i].style.backgroundColor = cellColors[line] ? cellColors[line] : NO_FOCUS
+                      // if(!cellColors[line] || cellColors[line] === ''){
+                      //   subCells[i].style.backgroundColor = NO_FOCUS;
+                      // } else{
+                      //   subCells[i].style.backgroundColor = cellColors[line] 
+                      // }
+                      // subCells[i].style.backgroundColor = cellColors[line] ? cellColors[line] : NO_FOCUS;
+                    // }
                   }
                 }
               }}
@@ -761,6 +771,7 @@ const TechniquesTable = ({
           if (subCells.length > 0) {
             subCells.forEach((subCell) => {
               subCell.style.backgroundColor = NO_FOCUS;
+              // subCell.style.backgroundColor = cellColors[subCell?.textContent] ? cellColors[subCell?.textContent] : NO_FOCUS
             });
           }
         }
@@ -782,7 +793,7 @@ const TechniquesTable = ({
         if (subCells.length > 0) {
           subCells[index]?.focus(); // Focus the first <li> element
           // Set the background color of the newly focused subcell
-          subCells[index].style.backgroundColor = FOCUS;
+          subCells[index].style.backgroundColor = cellColors[line] ? cellColors[line] : FOCUS
         }
       }
       onValueClick(line);
@@ -802,7 +813,7 @@ const TechniquesTable = ({
           const subCells = previousCell.querySelectorAll('li');
           if (subCells.length > 0) {
             subCells.forEach((subCell) => {
-              subCell.style.backgroundColor = NO_FOCUS;
+              subCell.style.backgroundColor = cellColors[subCell?.textContent] ? cellColors[subCell?.textContent] : NO_FOCUS;
             });
           }
         }
@@ -824,7 +835,7 @@ const TechniquesTable = ({
         if (subCells.length > 0) {
           subCells[0]?.focus(); // Focus the first <li> element
           // Set the background color of the newly focused subcell
-          subCells[0].style.backgroundColor = FOCUS;
+          subCells[0].style.backgroundColor = cellColors[item[key]] ? cellColors[item[key]] : FOCUS;
         }
       }
       onValueClick(item[key]);
@@ -838,6 +849,15 @@ const TechniquesTable = ({
     }
   }, [focusedLiIndex]);
 
+  useEffect(() => {
+    if (!selectedTechnique) return;
+
+  setCellColors(prev => ({
+    ...prev,
+    [selectedTechnique]: selectedColor
+  }));
+  }, [selectedColor]);
+
   const renderRows = () => {
     return (
       tableData &&
@@ -850,6 +870,7 @@ const TechniquesTable = ({
               tabIndex={0}
               style={{
                 backgroundColor:
+                cellColors[item[key]] ? cellColors[item[key]] :
                   focusedCell.row === rowIndex &&
                     focusedCell.col === colIndex &&
                     focusedLiIndex == null
@@ -937,7 +958,7 @@ const TechniquesTable = ({
           } else if (focusedLiIndex === null) {
             setFocusedLiIndex(0); // Focus on the first <li> if none is focused
             subCells[0]?.focus();
-            subCells[0].style.backgroundColor = FOCUS;
+            subCells[0].style.backgroundColor = FOCUS ;
           }
         } else {
           // If no subcells, move to the next row's cell
@@ -1020,14 +1041,15 @@ const TechniquesTable = ({
         if (focusedLiIndex === null) {
           setFocusedLiIndex(0);
           subCells[0]?.focus();
-          subCells[0].style.backgroundColor = FOCUS;
+          // subCells[0].style.backgroundColor = FOCUS;
+          subCells[0].style.backgroundColor = cellColors[subCells[0]?.textContent] ? cellColors[subCells[0]?.textContent] : FOCUS;
         } else {
           subCells[focusedLiIndex]?.focus();
-          subCells[focusedLiIndex].style.backgroundColor = FOCUS;
+          subCells[focusedLiIndex].style.backgroundColor = cellColors[subCells[focusedLiIndex]?.textContent] ? cellColors[subCells[focusedLiIndex]?.textContent] : FOCUS;
         }
       }
     }
-  }, [focusedCell, focusedLiIndex]);
+  }, [focusedCell, focusedLiIndex, cellColors]);
 
   return (
     <nav tabIndex={0} onKeyDown={handleKeyDown} ref={tableRef}>

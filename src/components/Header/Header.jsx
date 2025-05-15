@@ -1,4 +1,5 @@
 import './Header.css';
+import './ColorPopup.css';
 import NRFLogo from '../../content/assets/nrf-logo.svg';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
@@ -21,7 +22,7 @@ const ToggleSwitch = ({ label, value, onToggle }) => (
 const Header = ({
   toggleControl, onAddClick, onEditMode, onImportClick,
   onViewCustomContent, editStatus, editContent, onBackClick,
-  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus
+  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus, onColorClick
 }) => {
   const [isToggled, setIsToggled] = useState(editStatus);
   const [viewCustomContent, setViewCustomContent] = useState(false);
@@ -34,9 +35,24 @@ const Header = ({
   const [hide, setHide] = useState(hideStatus);
   const [showHidden, setShowHidden] = useState(hideToggleStatus);
   const fileInputRef = useRef();
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
 
-  // const controls = { technique: [RiEyeLine, RiPaletteLine] };
-  const controls = { technique: [RiEyeLine] };
+    const controls = { technique: [RiEyeLine, RiPaletteLine] };
+  // const controls = { technique: [RiEyeLine] };
+
+  // Array of 28 colors
+  // const colors = [
+  //   '#FF5733', '#33FF57', '#3357FF', '#F0E68C', '#FFD700', '#ADFF2F', '#8A2BE2',
+  //   '#A52A2A', '#DEB887', '#5F9EA0', '#7FFF00', '#D2691E', '#FF7F50', '#6495ED',
+  //   '#FFF8DC', '#DC143C', '#00008B', '#008B8B', '#B8860B', '#A9A9A9', '#006400',
+  //   '#BDB76B', '#8B008B', '#FF1493', '#CD5C5C', '#4B0082', '#FF4500', '#DAA520', '#ADFF2F'
+  // ];
+
+  // Toggle popup visibility
+  // const togglePopup = () => {
+  //   setShowPopup(!showPopup);
+  // };
 
   useEffect(() => setIsToggled(editStatus), [editStatus]);
   useEffect(() => setHide(hideStatus), [hideStatus]);
@@ -52,10 +68,19 @@ const Header = ({
     onHideToggle(value);
   }, [onHideToggle]);
 
-  const toggleHide = () => {
+  const toggleHide = (iconName) => {
+    if (iconName === 'RiEyeLine') {
     const newValue = !hide;
     setHide(newValue);
     onHideClick(newValue);
+    } else if (iconName === 'RiPaletteLine') {
+      setShowPopup(!showPopup);
+    }
+  };
+
+  const handleColorSelect = (color) => {
+    setSelectedColor(color);
+    setShowPopup(false); // hide popup after selection
   };
 
   const toggleViewContent = () => {
@@ -67,6 +92,10 @@ const Header = ({
   const handleAddClick = () => {
     onAddClick('add');
   };
+
+  const handleColorClick = (color) => {
+    onColorClick(color);
+  }
 
   const handleBackClick = () => {
     setViewCustomContent(false);
@@ -111,6 +140,38 @@ const Header = ({
     }
   };
 
+  const ColorPopup = ({ showPopup }) => {
+    const colors = [
+      // Reds & Oranges
+      '#FF0000', '#FF4500', '#FF6347', '#FF7F50',
+      // Yellows & Golds
+      '#FFD700', '#FFA500', '#F0E68C', '#DAA520',
+      // Greens
+      '#ADFF2F', '#7FFF00', '#32CD32', '#228B22',
+      // Blues
+      '#87CEEB', '#1E90FF', '#0000CD', '#00008B',
+      // Purples & Pinks
+      '#8A2BE2', '#4B0082', '#9400D3', '#FF69B4',
+      // Browns & Earth Tones
+      '#A52A2A', '#D2691E', '#CD853F', '#DEB887',
+      // Aqua / Cyan / Teal
+      '#00CED1', '#20B2AA', '#40E0D0', '#5F9EA0'
+    ];
+  
+    return (
+      showPopup && (
+        <div className="popup">
+          <div className="color-grid">
+            {colors.map((color, index) => (
+              <div key={index} className="color-square" style={{ backgroundColor: color, border: selectedColor === color ? '2px solid white' : '1px solid #555' }}  onClick={() => handleColorClick(color)} />
+            ))}
+          </div>
+        </div>
+      )
+    );
+  };
+  
+
   return (
     <header>
       <img width="250" height="50" className="logo" alt="NRF Logo" src={NRFLogo} />
@@ -146,7 +207,7 @@ const Header = ({
                 zIndex: 10,
               }}>
                 {controls.technique.map((Icon, idx) => (
-                  <Icon key={idx} style={{ fontSize: '24px', color: 'white' }} onClick={toggleHide} />
+                  <Icon key={idx} style={{ fontSize: '24px', color: 'white' }} onClick={() => {toggleHide(Icon.name)}} />
                 ))}
               </div>
             )}
@@ -213,6 +274,8 @@ const Header = ({
           </button>
         </div>
       )}
+
+        <ColorPopup showPopup={showPopup} togglePopup={() => setShowPopup(!showPopup)} />
     </header>
   );
 };
