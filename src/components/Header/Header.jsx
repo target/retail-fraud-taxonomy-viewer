@@ -22,7 +22,7 @@ const ToggleSwitch = ({ label, value, onToggle }) => (
 const Header = ({
   toggleControl, onAddClick, onEditMode, onImportClick,
   onViewCustomContent, editStatus, editContent, onBackClick,
-  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus, onColorClick, onRiskScore
+  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus, onColorClick, onRiskScore, selectedTechnique
 }) => {
   const [isToggled, setIsToggled] = useState(editStatus);
   const [viewCustomContent, setViewCustomContent] = useState(false);
@@ -106,6 +106,9 @@ const Header = ({
     } else if (iconName === 'RiPaletteLine') {
       setShowPopup(!showPopup);
     } else if (iconName === 'RiBarChartFill') {
+      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+      const matchedTechnique = storedTechniques.find(item => item.name === selectedTechnique);
+      setRiskScore(matchedTechnique?.risk_score)
       setShowRiskScore((prev) => !prev);
     }
   };
@@ -118,6 +121,13 @@ const Header = ({
   useEffect(() => setIsToggled(editStatus), [editStatus]);
   useEffect(() => setHide(hideStatus), [hideStatus]);
   useEffect(() => setShowHidden(hideToggleStatus), [hideToggleStatus]);
+
+  useEffect(() => {
+  const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+  const matchedTechnique = storedTechniques.find(item => item.name === selectedTechnique);
+  setRiskScore(matchedTechnique?.risk_score)
+  },
+  [selectedTechnique]);
 
   const ColorPopup = ({ showPopup }) => {
     const colors = [

@@ -114,6 +114,7 @@ export const Main = () => {
         hideToggleStatus={hideToggleVal}
         onColorClick={handleColorClick}
         onRiskScore={handleRiskScore}
+        selectedTechnique={selectedValue}
       />
 
       {shouldRenderTechniques && !addContent && !editContent && !hideTechnique && (
