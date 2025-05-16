@@ -20,6 +20,7 @@ export const Main = () => {
   const [hide, setHide] = useState(false);
   const [hideTechnique, setHideTechnique] = useState(null);
   const [colorSelect, setColorSelect] = useState(null);
+  const [riskScoreContent, setRiskScoreContent] = useState(null);
 
   const [hideToggleVal, setHideToggleVal] = useState(true);
 
@@ -59,6 +60,10 @@ export const Main = () => {
 
   const handleColorClick = useCallback((value) => {
     setColorSelect(value);
+  }, []);
+
+  const handleRiskScore = useCallback((value) => {
+    setRiskScoreContent(value);
   }, []);
 
   const handleImportClick = useCallback((value) => {
@@ -108,6 +113,7 @@ export const Main = () => {
         onHideToggle={handleHideToggle}
         hideToggleStatus={hideToggleVal}
         onColorClick={handleColorClick}
+        onRiskScore={handleRiskScore}
       />
 
       {shouldRenderTechniques && !addContent && !editContent && !hideTechnique && (
@@ -126,6 +132,7 @@ export const Main = () => {
           hideStatus={hide}
           hideToggleStatus={hideToggleVal}
           selectedColor={colorSelect}
+          riskScoreInfo={riskScoreContent}
         />
       )}
 

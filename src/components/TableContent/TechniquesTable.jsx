@@ -31,8 +31,10 @@ const TechniquesTable = ({
   selectedTechnique,
   hideStatus,
   hideToggleStatus,
-  selectedColor
+  selectedColor,
+  riskScoreInfo
 }) => {
+  console.log('received props', riskScoreInfo)
   const [tableData, setTableData] = useState(() => {
     const savedData = localStorage.getItem('technique_table');
     return savedData ? JSON.parse(savedData) : [];
@@ -149,7 +151,7 @@ const TechniquesTable = ({
         localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
 
         setHideTechniques(prev => {
-          const alreadyExists = prev.includes(selectedTechnique);
+          const alreadyExists = prev?.includes(selectedTechnique);
       
           if (hideStatus && !alreadyExists) {
             return [...prev, selectedTechnique];
@@ -857,6 +859,28 @@ const TechniquesTable = ({
     [selectedTechnique]: selectedColor
   }));
   }, [selectedColor]);
+
+  useEffect(() => {
+    if (!selectedTechnique) return;
+
+    console.log('riskScoreInfo', riskScoreInfo)
+
+    //Update the risk score value of the technique
+    if(selectedTechnique && riskScoreInfo !== null){
+      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+      const updatedTechniques = storedTechniques.map(item => {
+        if (item.name === selectedTechnique) {
+          return { ...item, risk_score: parseInt(riskScoreInfo) };
+        }
+        return item;
+      });
+
+      console.log('updatedTechniques', updatedTechniques)
+      localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
+    }
+
+  }, [riskScoreInfo]);
 
   const renderRows = () => {
     return (
