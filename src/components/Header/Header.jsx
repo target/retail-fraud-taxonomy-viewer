@@ -129,34 +129,53 @@ const Header = ({
 
   const ColorPopup = ({ showPopup }) => {
     const colors = [
-      // Reds & Oranges
-      '#FF0000', '#FF4500', '#FF6347', '#FF7F50',
-      // Yellows & Golds
-      '#FFD700', '#FFA500', '#F0E68C', '#DAA520',
-      // Greens
-      '#ADFF2F', '#7FFF00', '#32CD32', '#228B22',
-      // Blues
-      '#87CEEB', '#1E90FF', '#0000CD', '#00008B',
-      // Purples & Pinks
-      '#8A2BE2', '#4B0082', '#9400D3', '#FF69B4',
-      // Browns & Earth Tones
-      '#A52A2A', '#D2691E', '#CD853F', '#DEB887',
-      // Aqua / Cyan / Teal
-      '#00CED1', '#20B2AA', '#40E0D0', '#5F9EA0'
+      // Dark Reds & Oranges
+      '#8B0000', '#A52A2A', '#B22222', '#CD5C5C',
+      // Dark Yellows & Golds
+      '#8B4513', '#B8860B', '#DAA520', '#A67C00',
+      // Dark Greens
+      '#006400', '#2F4F4F', '#228B22', '#556B2F',
+      // Dark Blues
+      '#00008B', '#003366', '#4682B4', '#1E3A5F',
+      // Dark Purples & Pinks
+      '#800080', '#4B0082', '#6A0DAD', '#8A2BE2',
+      // Dark Browns & Earth Tones
+      '#8B4513', '#D2691E', '#6B4226', '#8B3A3A',
+      // Dark Aqua / Cyan / Teal
+      '#008B8B', '#5F9EA0', '#4682B4', '#2F4F4F',
+      // Transaparent
+       'rgba(0, 0, 0, 0)'
     ];
-
-    return (
-      showPopup && (
-        <div className="popup">
-          <div className="color-grid">
-            {colors.map((color, index) => (
-              <div key={index} className="color-square" style={{ backgroundColor: color, border: color === selectedColor ? '2px solid white' : 'none', }} onClick={() => handleColorClick(color)} />
-            ))}
-          </div>
+    
+  return (
+    showPopup && (
+      <div className="popup">
+        <div className="color-grid">
+          {colors.map((color, index) => (
+            <div
+              key={index}
+              className="color-square"
+              style={{
+                backgroundColor: color,
+                border: color === selectedColor ? '2px solid white' : '2px solid #555',
+                display: color === 'rgba(0, 0, 0, 0)' ? 'flex' : 'block',
+                justifyContent: 'center',
+                alignItems: 'center',
+                color: color === 'rgba(0, 0, 0, 0)' ? 'white' : 'transparent',
+                textAlign: 'center',
+                minWidth: color === 'rgba(0, 0, 0, 0)' ? '50px' : '30px',
+                minHeight: color === 'rgba(0, 0, 0, 0)' ? '50px' : '30px',
+              }}
+              onClick={() => handleColorClick(color)}
+            >
+              {color === 'rgba(0, 0, 0, 0)' && 'No Color'}
+            </div>
+          ))}
         </div>
-      )
-    );
-  };
+      </div>
+    )
+  );
+};
 
   return (
     <header>
