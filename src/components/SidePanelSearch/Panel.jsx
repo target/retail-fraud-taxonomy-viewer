@@ -9,6 +9,7 @@ import {
 const MITIGATION = 'mitigation';
 const SCHEMES = 'schemes';
 const DETECTION = 'detection';
+const RISK_SCORE = 'risk_score';
 const SHOW_ALL = 'Show All';
 
 const SidePanel = ({ onFilterChange, onClose }) => {
@@ -19,6 +20,7 @@ const SidePanel = ({ onFilterChange, onClose }) => {
   const mitigations = fetchAllMitigations();
   const schemes = fetchAllSchemes();
   const detections = fetchAllDetections();
+  const risk_score = ['<= 50', '> 50']
 
   return (
     <div className="side-panel">
@@ -71,6 +73,19 @@ const SidePanel = ({ onFilterChange, onClose }) => {
               onClick={() => handleFilterChange(detection, DETECTION)}
             >
               {detection}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="filter-section">
+        <h3>Risk Score ({risk_score.length})</h3>
+        <div className="filter-list">
+          {risk_score.map((rs, index) => (
+            <button
+              key={index}
+              onClick={() => handleFilterChange(rs, RISK_SCORE)}
+            >
+              {rs}
             </button>
           ))}
         </div>

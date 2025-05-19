@@ -34,7 +34,6 @@ const TechniquesTable = ({
   selectedColor,
   riskScoreInfo
 }) => {
-  console.log('received props', riskScoreInfo)
   const [tableData, setTableData] = useState(() => {
     const savedData = localStorage.getItem('technique_table');
     return savedData ? JSON.parse(savedData) : [];
@@ -862,9 +861,6 @@ const TechniquesTable = ({
 
   useEffect(() => {
     if (!selectedTechnique) return;
-
-    console.log('riskScoreInfo', riskScoreInfo)
-
     //Update the risk score value of the technique
     if(selectedTechnique && riskScoreInfo !== null){
       const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
@@ -876,7 +872,6 @@ const TechniquesTable = ({
         return item;
       });
 
-      console.log('updatedTechniques', updatedTechniques)
       localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
     }
 
