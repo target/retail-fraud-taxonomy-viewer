@@ -10,7 +10,7 @@ const contentFiles = import.meta.glob('../content/techniques/*.json', {
   eager: true,
 });
 
-export const dataMap = Object.keys(contentFiles).reduce((map, filePath) => {
+export let dataMap = Object.keys(contentFiles).reduce((map, filePath) => {
   const key = filePath
     .replace('../content/techniques/', '')
     .replace('.json', '');
@@ -68,12 +68,26 @@ export function evaluateRiskCondition(conditionStr, riskScore) {
   return false;
 }
 
+export const formDataMapfromLocalStorage = () => {
+  const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+  
+  const dataMap = storedTechniques.reduce((acc, item) => {
+    const key = item.name.toLowerCase().replace(/\s+/g, '_');
+    acc[key] = item;
+    return acc;
+  }, {});
+
+  return dataMap
+}
+
 export const filterDataMap = (selectedIcon, filterType) => {
   if (selectedIcon === SHOW_ALL) {
     return techniques;
   }
 
   if (filterType === SCHEMES) {
+    dataMap = formDataMapfromLocalStorage()
+
     return Object.keys(dataMap).reduce((filteredMap, key) => {
       if (dataMap[key].schemes.includes(selectedIcon)) {
         filteredMap[key] = dataMap[key];
@@ -81,6 +95,8 @@ export const filterDataMap = (selectedIcon, filterType) => {
       return filteredMap;
     }, {});
   } else if (filterType === MITIGATION) {
+    dataMap = formDataMapfromLocalStorage()
+
     return Object.keys(dataMap).reduce((filteredMap, key) => {
       if (
         dataMap[key].mitigation.some((mit) => mit.type.includes(selectedIcon))
@@ -90,6 +106,8 @@ export const filterDataMap = (selectedIcon, filterType) => {
       return filteredMap;
     }, {});
   } else if (filterType === DETECTION) {
+    dataMap = formDataMapfromLocalStorage()
+
     return Object.keys(dataMap).reduce((filteredMap, key) => {
       if (
         dataMap[key].detection.some((det) => det.type.includes(selectedIcon))
@@ -99,17 +117,11 @@ export const filterDataMap = (selectedIcon, filterType) => {
       return filteredMap;
     }, {});
   } else if (filterType === RISK_SCORE) {
-    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
-  
-    const dataMap = storedTechniques.reduce((acc, item) => {
-      const key = item.name.toLowerCase().replace(/\s+/g, '_');
-      acc[key] = item;
-      return acc;
-    }, {});
+    dataMap = formDataMapfromLocalStorage()
   
     const filteredDataMap = Object.keys(dataMap).reduce((filteredMap, key) => {
       if (evaluateRiskCondition(selectedIcon, dataMap[key].risk_score)) {
-        filteredMap[key] = dataMap[key]; // Match structure: { shoplifting: Module }
+        filteredMap[key] = dataMap[key];
       }
       return filteredMap;
     }, {});
