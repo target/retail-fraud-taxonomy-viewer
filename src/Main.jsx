@@ -21,7 +21,6 @@ export const Main = () => {
   const [hideTechnique, setHideTechnique] = useState(null);
   const [colorSelect, setColorSelect] = useState(null);
   const [riskScoreContent, setRiskScoreContent] = useState(null);
-
   const [hideToggleVal, setHideToggleVal] = useState(true);
 
   useEffect(() => {
@@ -71,6 +70,16 @@ export const Main = () => {
     setViewCustomContent(true);
   }, []);
 
+  const handleSubmitContent = useCallback((value) => {
+    setAddContent(null);
+    setEditContent(null);
+    setViewCustomContent(true);
+    setEditMode(false)
+    setHideTechnique(false)
+    setShouldRenderTechniques(true);
+    setSelectedValue(value)
+  }, []);
+
   const handleCloseSidePanel = useCallback(() => {
     setIsSidePanelVisible(false);
   }, []);
@@ -115,11 +124,11 @@ export const Main = () => {
         onColorClick={handleColorClick}
         onRiskScore={handleRiskScore}
         selectedTechnique={selectedValue}
+        viewCustomMode={viewCustomContent}
       />
 
       {shouldRenderTechniques && !addContent && !editContent && !hideTechnique && (
         <TechniquesTable
-          // key={renderKey}
           onValueClick={handleValueClick}
           onEditClick={handleEditClick}
           onImportClick={handleImportClick}
@@ -162,6 +171,7 @@ export const Main = () => {
           onViewCustomContent={handleViewCustomContent}
           onBackClick={handleBackClick}
           addContent={addContent}
+          onContentSubmit={handleSubmitContent}
         />
       )}
     </>

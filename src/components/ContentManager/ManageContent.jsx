@@ -354,9 +354,9 @@ const ManageContent = (props) => {
 
       setResponseSubmit(true)
       setAlertVal('Data saved successfully')
+      props.onContentSubmit(techniqueName)
       setTimeout(() => {
         setResponseSubmit(false)
-        handleCancelClick()
       }, 2000)
     } catch (error) {
       setAlertHeading(error)
@@ -607,10 +607,7 @@ const ManageContent = (props) => {
       <button className="save-button" type="submit" onClick={handleSave}>Save</button>
       <button className="save-button" type="cancel" onClick={handleCancelClick}>Cancel</button>
     </div>
-
   );
-
-
 };
 
 export default ManageContent;

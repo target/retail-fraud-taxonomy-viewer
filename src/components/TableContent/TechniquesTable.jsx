@@ -871,6 +871,10 @@ const TechniquesTable = ({
   }, [riskScoreInfo]);
 
   const renderRows = () => {
+    if(tableData && tableData.length == 0){
+      setTableData(JSON.parse(localStorage.getItem('technique_table')));
+    }
+
     return (
       tableData &&
       tableData.map((item, rowIndex) => (

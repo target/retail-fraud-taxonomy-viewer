@@ -22,10 +22,11 @@ const ToggleSwitch = ({ label, value, onToggle }) => (
 const Header = ({
   toggleControl, onAddClick, onEditMode, onImportClick,
   onViewCustomContent, editStatus, editContent, onBackClick,
-  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus, onColorClick, onRiskScore, selectedTechnique
+  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus, 
+  onColorClick, onRiskScore, selectedTechnique, viewCustomMode
 }) => {
   const [isToggled, setIsToggled] = useState(editStatus);
-  const [viewCustomContent, setViewCustomContent] = useState(false);
+  const [viewCustomContent, setViewCustomContent] = useState(viewCustomMode);
   const [fileData, setFileData] = useState(null);
   const [activeControl, setActiveControl] = useState(null);
   const [alertVal, setAlertVal] = useState('');
@@ -37,7 +38,6 @@ const Header = ({
   const fileInputRef = useRef();
   const [showPopup, setShowPopup] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
-
   const [showRiskScore, setShowRiskScore] = useState(false);
   const [riskScore, setRiskScore] = useState('');
 
@@ -121,6 +121,7 @@ const Header = ({
   useEffect(() => setIsToggled(editStatus), [editStatus]);
   useEffect(() => setHide(hideStatus), [hideStatus]);
   useEffect(() => setShowHidden(hideToggleStatus), [hideToggleStatus]);
+  useEffect(() => setViewCustomContent(viewCustomMode), [viewCustomMode]);
 
   useEffect(() => {
   const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];

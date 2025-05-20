@@ -24,17 +24,6 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCus
   }, [techniqueName]);
 
   useEffect(() => {
-    // if (technique && !importContent) {
-    //   const fetchDetails = async () => {
-    //     const fetchedDetails = await fetchTechniqueDetails(technique);
-    //     const fetchedReferences = await fetchTechniqueReferences(technique);
-    //     setDetails(fetchedDetails);
-    //     setReferences(fetchedReferences);
-    //   };
-
-    //   fetchDetails();
-    // }
-
     if (technique) {
       if (viewCustomMode) {
         const fetchedDetails = JSON.parse(localStorage.getItem('techniques')).find(item =>
