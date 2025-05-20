@@ -132,7 +132,7 @@ export const filterDataMap = (selectedIcon, filterType) => {
 
 export const fetchTechnique = (technique) => {
   if (!technique) return undefined;
-  const key = technique.toLowerCase().replace(/\s+/g, '_');
+  const key = technique?.toLowerCase().replace(/\s+/g, '_');
   return dataMap[key];
 };
 

@@ -242,6 +242,8 @@ const TechniquesTable = ({
     }
     // Trigger the process when tableData or addedColumns change
     processColumns();
+
+    handleCellColoring()
   }, [tableData, columnsProcessed]);
 
   const consolidateData = (data) => {
@@ -368,18 +370,10 @@ const TechniquesTable = ({
                   for (let i = 0; i < subCells.length; i++) {
                     if (i === index) {
                       subCells[i]?.focus();
-                      subCells[i].style.backgroundColor = cellColors[line] ? cellColors[line] : FOCUS;
-                    } 
-                    // else {
-                      // subCells[i].style.backgroundColor =  cellColors[subCells[i]?.textContent] ? cellColors[subCells[i]?.textContent] : NO_FOCUS;
-                      // subCells[i].style.backgroundColor = cellColors[line] ? cellColors[line] : NO_FOCUS
-                      // if(!cellColors[line] || cellColors[line] === ''){
-                      //   subCells[i].style.backgroundColor = NO_FOCUS;
-                      // } else{
-                      //   subCells[i].style.backgroundColor = cellColors[line] 
-                      // }
-                      // subCells[i].style.backgroundColor = cellColors[line] ? cellColors[line] : NO_FOCUS;
-                    // }
+                      subCells[i].style.backgroundColor = FOCUS;
+                    } else {
+                      subCells[i].style.backgroundColor = NO_FOCUS;
+                    }
                   }
                 }
               }}
@@ -772,7 +766,6 @@ const TechniquesTable = ({
           if (subCells.length > 0) {
             subCells.forEach((subCell) => {
               subCell.style.backgroundColor = NO_FOCUS;
-              // subCell.style.backgroundColor = cellColors[subCell?.textContent] ? cellColors[subCell?.textContent] : NO_FOCUS
             });
           }
         }
@@ -794,7 +787,7 @@ const TechniquesTable = ({
         if (subCells.length > 0) {
           subCells[index]?.focus(); // Focus the first <li> element
           // Set the background color of the newly focused subcell
-          subCells[index].style.backgroundColor = cellColors[line] ? cellColors[line] : FOCUS
+          subCells[index].style.backgroundColor = FOCUS;
         }
       }
       onValueClick(line);
@@ -814,7 +807,7 @@ const TechniquesTable = ({
           const subCells = previousCell.querySelectorAll('li');
           if (subCells.length > 0) {
             subCells.forEach((subCell) => {
-              subCell.style.backgroundColor = cellColors[subCell?.textContent] ? cellColors[subCell?.textContent] : NO_FOCUS;
+              subCell.style.backgroundColor = NO_FOCUS;
             });
           }
         }
@@ -836,7 +829,7 @@ const TechniquesTable = ({
         if (subCells.length > 0) {
           subCells[0]?.focus(); // Focus the first <li> element
           // Set the background color of the newly focused subcell
-          subCells[0].style.backgroundColor = cellColors[item[key]] ? cellColors[item[key]] : FOCUS;
+          subCells[0].style.backgroundColor = FOCUS;
         }
       }
       onValueClick(item[key]);
@@ -1060,16 +1053,47 @@ const TechniquesTable = ({
         if (focusedLiIndex === null) {
           setFocusedLiIndex(0);
           subCells[0]?.focus();
-          // subCells[0].style.backgroundColor = FOCUS;
-          subCells[0].style.backgroundColor = cellColors[subCells[0]?.textContent] ? cellColors[subCells[0]?.textContent] : FOCUS;
+          subCells[0].style.backgroundColor = FOCUS;
         } else {
           subCells[focusedLiIndex]?.focus();
-          subCells[focusedLiIndex].style.backgroundColor = cellColors[subCells[focusedLiIndex]?.textContent] ? cellColors[subCells[focusedLiIndex]?.textContent] : FOCUS;
+          subCells[focusedLiIndex].style.backgroundColor = FOCUS;
         }
       }
     }
+
+    handleCellColoring()
+
   }, [focusedCell, focusedLiIndex, cellColors]);
 
+
+  function handleCellColoring () {
+    const headers = Object.keys(tableData[0]);
+
+    for (let rowIndex = 0; rowIndex < tableData.length; rowIndex++) {
+      for (let colIndex = 0; colIndex < headers.length; colIndex++) {
+        // const cell = tableRef.current?.querySelector(
+        //   `tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`
+        // );
+
+        const currentCell = tableRef.current?.querySelector(
+          `tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`,
+        );
+
+        if (!currentCell) return;
+
+        const subCells = currentCell.querySelectorAll('li');
+        const isSubcell = subCells.length > 0;
+
+        if (isSubcell) {
+          for (let i = 0; i < subCells.length; i++) {
+              subCells[i].style.backgroundColor =cellColors[subCells[i]?.textContent]
+          }
+        } else {
+          currentCell.style.backgroundColor = cellColors[tableData[rowIndex][colIndex]];
+        }
+      }
+    }
+  }
   return (
     <nav tabIndex={0} onKeyDown={handleKeyDown} ref={tableRef}>
       <table className={`table-container ${isPanelOpen ? 'shrink' : ''}`}>
