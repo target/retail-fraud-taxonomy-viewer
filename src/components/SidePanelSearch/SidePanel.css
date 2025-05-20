@@ -82,3 +82,13 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.search-button {
+  background-color: #0099cc !important;
+  height: 40px;
+  color: white;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

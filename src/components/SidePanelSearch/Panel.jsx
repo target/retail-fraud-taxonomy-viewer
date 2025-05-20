@@ -5,6 +5,7 @@ import {
   fetchAllSchemes,
   fetchAllDetections
 } from '../../utils/dataMap';
+import { useState } from 'react';
 
 const MITIGATION = 'mitigation';
 const SCHEMES = 'schemes';
@@ -21,6 +22,18 @@ const SidePanel = ({ onFilterChange, onClose }) => {
   const schemes = fetchAllSchemes();
   const detections = fetchAllDetections();
   const risk_score = ['<= 50', '> 50']
+  const [minRiskScore, setMinRiskScore] = useState(0);
+  const [maxRiskScore, setMaxRiskScore] = useState(100);
+
+  const handleMinRiskScoreChange = (e) => {
+    const val = e.target.value;
+    setMinRiskScore(val)
+  };
+
+  const handleMaxRiskScoreChange = (e) => {
+    const val = e.target.value;
+    setMaxRiskScore(val)
+  };
 
   return (
     <div className="side-panel">
@@ -78,16 +91,29 @@ const SidePanel = ({ onFilterChange, onClose }) => {
         </div>
       </div>
       <div className="filter-section">
-        <h3>Risk Score ({risk_score.length})</h3>
+        <h3>Risk Score</h3>
         <div className="filter-list">
-          {risk_score.map((rs, index) => (
-            <button
-              key={index}
-              onClick={() => handleFilterChange(rs, RISK_SCORE)}
-            >
-              {rs}
-            </button>
-          ))}
+          Enter Score Range
+          <input
+            type="number"
+            value={minRiskScore}
+            onChange={handleMinRiskScoreChange}
+            placeholder="Min Score"
+            style={{ marginLeft: '8px', width: '70px', height: '20px' }}
+          />
+          <input
+            type="number"
+            value={maxRiskScore}
+            onChange={handleMaxRiskScoreChange}
+            placeholder="Max Score"
+            style={{ marginLeft: '25px', width: '70px', height: '20px' }}
+          />
+          <button
+            className="search-button"
+            onClick={() => handleFilterChange({minScore: minRiskScore, maxScore: maxRiskScore}, RISK_SCORE)}
+          >
+            Search
+          </button>
         </div>
       </div>
     </div>

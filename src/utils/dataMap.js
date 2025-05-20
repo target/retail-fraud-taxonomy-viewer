@@ -44,30 +44,6 @@ export const getUniqueTechniques = () => {
   return uniqueValues.sort((a, b) => a.localeCompare(b));
 };
 
-export function evaluateRiskCondition(conditionStr, riskScore) {
-  const operators = {
-    '>': (a, b) => a > b,
-    '>=': (a, b) => a >= b,
-    '<': (a, b) => a < b,
-    '<=': (a, b) => a <= b,
-    '==': (a, b) => a === b,
-    '!=': (a, b) => a !== b,
-  };
-
-  const sortedOps = Object.keys(operators).sort((a, b) => b.length - a.length); // Match longest first
-
-  for (const op of sortedOps) {
-    if (conditionStr.startsWith(op)) {
-      const num = parseFloat(conditionStr.slice(op.length));
-      if (isNaN(num)) return false;
-      return operators[op](riskScore, num);
-    }
-  }
-
-  console.warn("Invalid condition string:", conditionStr);
-  return false;
-}
-
 export const formDataMapfromLocalStorage = () => {
   const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
   
@@ -118,9 +94,9 @@ export const filterDataMap = (selectedIcon, filterType) => {
     }, {});
   } else if (filterType === RISK_SCORE) {
     dataMap = formDataMapfromLocalStorage()
-  
+
     const filteredDataMap = Object.keys(dataMap).reduce((filteredMap, key) => {
-      if (evaluateRiskCondition(selectedIcon, dataMap[key].risk_score)) {
+        if (dataMap[key].risk_score >= selectedIcon.minScore && dataMap[key].risk_score <= selectedIcon.maxScore) {
         filteredMap[key] = dataMap[key];
       }
       return filteredMap;
