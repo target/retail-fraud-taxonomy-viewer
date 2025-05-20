@@ -137,31 +137,31 @@ const TechniquesTable = ({
         localStorage.setItem('techniques', JSON.stringify(dataArray));
       }
 
-      if(selectedTechnique){
+      if (selectedTechnique) {
         const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
-     
+
         const updatedTechniques = storedTechniques.map(item => {
           if (item.name === selectedTechnique) {
             return { ...item, hide: hideStatus };
           }
           return item;
         });
-      
+
         localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
 
         setHideTechniques(prev => {
           const alreadyExists = prev?.includes(selectedTechnique);
-      
+
           if (hideStatus && !alreadyExists) {
             return [...prev, selectedTechnique];
           } else if (!hideStatus && alreadyExists) {
             return prev.filter(item => item !== selectedTechnique);
           }
-      
+
           return prev;
         });
 
-       }
+      }
     };
 
     fetchTechniques();
@@ -186,10 +186,10 @@ const TechniquesTable = ({
       setTableData(result)
     } else {
       const localStorageTechniques = JSON.parse(localStorage?.getItem('techniques'));
-    // Find hidden techniques
-    const hiddenTechniquesNames = localStorageTechniques
-      ?.filter(t => t.hide === true)
-      .map(t => t.name);
+      // Find hidden techniques
+      const hiddenTechniquesNames = localStorageTechniques
+        ?.filter(t => t.hide === true)
+        .map(t => t.name);
 
       setHideTechniques(hiddenTechniquesNames)
 
@@ -402,7 +402,7 @@ const TechniquesTable = ({
                       handleEdit(line);
                     }}
                   >
-                    <RiEdit2Fill className="white-icon"/>
+                    <RiEdit2Fill className="white-icon" />
                   </div>
                 </>
               )}
@@ -846,16 +846,16 @@ const TechniquesTable = ({
   useEffect(() => {
     if (!selectedTechnique) return;
 
-  setCellColors(prev => ({
-    ...prev,
-    [selectedTechnique]: selectedColor
-  }));
+    setCellColors(prev => ({
+      ...prev,
+      [selectedTechnique]: selectedColor
+    }));
   }, [selectedColor]);
 
   useEffect(() => {
     if (!selectedTechnique) return;
     //Update the risk score value of the technique
-    if(selectedTechnique && riskScoreInfo !== null){
+    if (selectedTechnique && riskScoreInfo !== null) {
       const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
 
       const updatedTechniques = storedTechniques.map(item => {
@@ -882,12 +882,12 @@ const TechniquesTable = ({
               tabIndex={0}
               style={{
                 backgroundColor:
-                cellColors[item[key]] ? cellColors[item[key]] :
-                  focusedCell.row === rowIndex &&
-                    focusedCell.col === colIndex &&
-                    focusedLiIndex == null
-                    ? FOCUS
-                    : NO_FOCUS,
+                  cellColors[item[key]] ? cellColors[item[key]] :
+                    focusedCell.row === rowIndex &&
+                      focusedCell.col === colIndex &&
+                      focusedLiIndex == null
+                      ? FOCUS
+                      : NO_FOCUS,
                 outline: 'none',
                 // color: 'red'
                 // color: (item[key] === selectedTechnique && hideStatus) ? 'grey' : 'white'
@@ -913,7 +913,7 @@ const TechniquesTable = ({
                         handleEdit(item[key]);
                       }}
                     >
-                      <RiEdit2Fill className="white-icon"/>
+                      <RiEdit2Fill className="white-icon" />
                     </div>
                   </>
                 )
@@ -970,7 +970,7 @@ const TechniquesTable = ({
           } else if (focusedLiIndex === null) {
             setFocusedLiIndex(0); // Focus on the first <li> if none is focused
             subCells[0]?.focus();
-            subCells[0].style.backgroundColor = FOCUS ;
+            subCells[0].style.backgroundColor = FOCUS;
           }
         } else {
           // If no subcells, move to the next row's cell
@@ -1062,34 +1062,30 @@ const TechniquesTable = ({
     }
 
     handleCellColoring()
-
   }, [focusedCell, focusedLiIndex, cellColors]);
 
+  const handleCellColoring = ()  =>{
+    if (tableData && tableData.length > 0) {
+      const headers = Object.keys(tableData[0]);
 
-  function handleCellColoring () {
-    const headers = Object.keys(tableData[0]);
+      for (let rowIndex = 0; rowIndex < tableData.length; rowIndex++) {
+        for (let colIndex = 0; colIndex < headers.length; colIndex++) {
+          const currentCell = tableRef.current?.querySelector(
+            `tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`,
+          );
 
-    for (let rowIndex = 0; rowIndex < tableData.length; rowIndex++) {
-      for (let colIndex = 0; colIndex < headers.length; colIndex++) {
-        // const cell = tableRef.current?.querySelector(
-        //   `tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`
-        // );
+          if (!currentCell) return;
 
-        const currentCell = tableRef.current?.querySelector(
-          `tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`,
-        );
+          const subCells = currentCell.querySelectorAll('li');
+          const isSubcell = subCells.length > 0;
 
-        if (!currentCell) return;
-
-        const subCells = currentCell.querySelectorAll('li');
-        const isSubcell = subCells.length > 0;
-
-        if (isSubcell) {
-          for (let i = 0; i < subCells.length; i++) {
-              subCells[i].style.backgroundColor =cellColors[subCells[i]?.textContent]
+          if (isSubcell) {
+            for (let i = 0; i < subCells.length; i++) {
+              subCells[i].style.backgroundColor = cellColors[subCells[i]?.textContent]
+            }
+          } else {
+            currentCell.style.backgroundColor = cellColors[tableData[rowIndex][colIndex]];
           }
-        } else {
-          currentCell.style.backgroundColor = cellColors[tableData[rowIndex][colIndex]];
         }
       }
     }
