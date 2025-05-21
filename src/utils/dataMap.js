@@ -108,8 +108,11 @@ export const filterDataMap = (selectedIcon, filterType) => {
 
 export const fetchTechnique = (technique) => {
   if (!technique) return undefined;
+
+  if(!(technique !== null && typeof technique === 'object' && !Array.isArray(technique))){
   const key = technique?.toLowerCase().replace(/\s+/g, '_');
   return dataMap[key];
+  }
 };
 
 export const hasSubTechnique = (technique) => {

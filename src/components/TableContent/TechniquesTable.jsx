@@ -519,6 +519,13 @@ const TechniquesTable = ({
             });
           }
         }
+
+        if (focusedCell.col + 1 > columnNumber) {
+          setFocusedCell((prev) => {
+            const newCol = prev ? prev.col - 1 : 0;
+            return { row: prev.row, col: newCol };
+          });
+        }
         setTableData(updatedData);
       } else {
         // operation == add
@@ -534,6 +541,13 @@ const TechniquesTable = ({
           // setTableData(updatedData);
         } else {
           setAddedColumns([...addedColumns, newColumnIndex]);
+        }
+
+        if (focusedCell.col + 1 > columnNumber) {
+          setFocusedCell((prev) => {
+            const newCol = prev ? prev.col + 1 : 0;
+            return { row: prev.row, col: newCol };
+          });
         }
       }
     });
@@ -787,7 +801,14 @@ const TechniquesTable = ({
         if (subCells.length > 0) {
           subCells[index]?.focus(); // Focus the first <li> element
           // Set the background color of the newly focused subcell
-          subCells[index].style.backgroundColor = FOCUS;
+          for (let i = 0; i < subCells.length; i++) {
+
+            if (i == index) {
+              subCells[i].style.backgroundColor = FOCUS;
+            } else {
+              subCells[i].style.backgroundColor = NO_FOCUS;
+            }
+          }
         }
       }
       onValueClick(line);
@@ -800,7 +821,7 @@ const TechniquesTable = ({
       // Reset previously focused subcell's background color (if any)
       if (focusedCell) {
         const previousCell = tableRef.current?.querySelector(
-          `tr:nth-child(${focusedCell.row + 1}) td:nth-child(${focusedCell.col + 1})`,
+          `tbody tr:nth-child(${focusedCell.row + 1}) td:nth-child(${focusedCell.col})`,
         );
         if (previousCell) {
           // If the previous cell had subcells, reset their background color
@@ -870,82 +891,202 @@ const TechniquesTable = ({
 
   }, [riskScoreInfo]);
 
+  function extractText(node) {
+    if (typeof node === 'string' || typeof node === 'number') {
+      return node;
+    }
+    if (Array.isArray(node)) {
+      return node.map(extractText).join('');
+    }
+    if (node?.props?.children) {
+      return extractText(node.props.children);
+    }
+    return '';
+  }
+
+  function extractLiValues(reactUlElement) {
+    const children = reactUlElement?.props?.children;
+    if (!children) return [];
+
+    const liElements = Array.isArray(children) ? children : [children];
+
+    return liElements
+      .filter(child => child?.type === 'li')
+      .map(li => extractText(li.props.children));
+  }
+
+
+
   const renderRows = () => {
-    if(tableData && tableData.length == 0){
-      setTableData(JSON.parse(localStorage.getItem('technique_table')));
+    if (tableData && tableData.length === 0) {
+      const savedData = localStorage.getItem('technique_table');
+      if (savedData) setTableData(JSON.parse(savedData));
     }
 
     return (
       tableData &&
       tableData.map((item, rowIndex) => (
         <tr key={rowIndex}>
-          {Object.keys(item).map((key, colIndex) => (
-            <td
-              key={rowIndex + '-' + colIndex}
-              className={item[key] === '' ? 'emptycell' : 'tabledata'}
-              tabIndex={0}
-              style={{
-                backgroundColor:
-                  cellColors[item[key]] ? cellColors[item[key]] :
-                    focusedCell.row === rowIndex &&
+          {Object.keys(item).map((key, colIndex) => {
+            const cellValue = item[key];
+
+            let isSubcell = false
+            let sub_techniques = []
+
+            if (cellValue !== null && typeof cellValue === 'object' && !Array.isArray(cellValue)) { //Sub Techniques
+              isSubcell = true
+              sub_techniques = extractLiValues(cellValue)
+            }
+
+            return (
+              <td
+                key={rowIndex + '-' + colIndex}
+                className={cellValue === '' ? 'emptycell' : 'tabledata'}
+                tabIndex={0}
+                style={{
+                  backgroundColor:
+                    cellColors[cellValue] ??
+                    (focusedCell.row === rowIndex &&
                       focusedCell.col === colIndex &&
                       focusedLiIndex == null
                       ? FOCUS
-                      : NO_FOCUS,
-                outline: 'none',
-                // color: 'red'
-                // color: (item[key] === selectedTechnique && hideStatus) ? 'grey' : 'white'
-                color: hiddenTechniques?.includes(item[key]) ? 'grey' : 'white',
-              }}
-              onClick={() => {
-                if (item[key] !== '') {
-                  handleCellClick(rowIndex, colIndex, item, key);
-                }
-              }}
-            >
+                      : NO_FOCUS),
+                  outline: 'none',
+                  color: hiddenTechniques?.includes(cellValue) ? 'grey' : 'white',
+                }}
+                onClick={() => {
+                  if (cellValue !== '') {
+                    handleCellClick(rowIndex, colIndex, item, key);
+                  }
+                }}
+              >
+                {/* Subcell rendering */}
+                {isSubcell ? (
+                  // <ul>
+                  //   {sub_tech.map((subItem, subIndex) => (
+                  //     <li
+                  //       key={subIndex}
+                  //       style={{ backgroundColor: cellColors[subItem] }}
+                  //     >
+                  //       {subItem}
+                  //       {editStatus && (
+                  //         <div
+                  //           className="editicon"
+                  //           aria-label="edit"
+                  //           onClick={(e) => {
+                  //             e.stopPropagation();
+                  //             handleEdit(subItem);
+                  //           }}
+                  //         >
+                  //           <RiEdit2Fill className="white-icon" />
+                  //         </div>
+                  //       )}
+                  //     </li>
+                  //   ))}
+                  // </ul>
+                  <ul>
+                    {sub_techniques &&
+                      sub_techniques.map((line, index) => (
+                        <li
+                          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                          tabIndex={0}
+                          key={index}
+                          onFocus={() => {
+                            let row = rowIndex;
+                            let col = colIndex;
+                            const currentCell = tableRef.current?.querySelector(
+                              `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`,
+                            );
 
-              {item[key] &&
-                item[key].length > 0 &&
-                editStatus && (
+                            if (!currentCell) return;
+
+                            const subCells = currentCell.querySelectorAll('li');
+                            const isSubcell = subCells.length > 0;
+
+                            if (isSubcell) {
+                              for (let i = 0; i < subCells.length; i++) {
+                                if (i === index) {
+                                  subCells[i]?.focus();
+                                  subCells[i].style.backgroundColor = FOCUS;
+                                } else {
+                                  subCells[i].style.backgroundColor = NO_FOCUS;
+                                }
+                              }
+                            }
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevents the event from bubbling up to the <td>
+                            // onValueClick(line); // Trigger the onValueClick function
+                            handleSubCellClick(rowIndex, colIndex, line, index);
+                          }}
+                        >
+                          {/* {line} */}
+                          <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
+                          {editStatus && (
+                            <>
+                              <div
+                                // className="sub-technique-editicon"
+                                style={{
+                                  paddingRight: '10px',
+                                  cursor: 'pointer',
+                                  backgroundColor: 'rgb(48, 48, 48)',
+                                  color: 'white'
+                                }}
+                                aria-label="edit"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  // e.preventDefault();
+                                  handleEdit(line);
+                                }}
+                              >
+                                <RiEdit2Fill className="white-icon" />
+                              </div>
+                            </>
+                          )}
+
+                          {/* <RiEdit2Fill/> */}
+                        </li>
+                      ))}
+                  </ul>
+                ) : (
                   <>
-                    <div
-                      className="editicon"
-                      aria-label="edit"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        // e.preventDefault();
-                        handleEdit(item[key]);
-                      }}
-                    >
-                      <RiEdit2Fill className="white-icon" />
-                    </div>
+                    {editStatus && cellValue && (
+                      <div
+                        className="editicon"
+                        aria-label="edit"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEdit(cellValue);
+                        }}
+                      >
+                        <RiEdit2Fill className="white-icon" />
+                      </div>
+                    )}
+                    {cellValue}
                   </>
-                )
-              }
+                )}
 
-              {item[key]}
-              {item[key] &&
-                item[key].length > 0 &&
-                hasSubTechnique(item[key]) && (
-                  <>
+                {/* Expand/collapse if sub-technique is present */}
+                {cellValue &&
+                  hasSubTechnique(cellValue) && (
                     <div
                       className="sidebar"
                       aria-label="expand collapse"
                       onClick={(e) => {
                         e.stopPropagation();
                         manage_columns(
-                          item[key].toLowerCase(),
+                          typeof cellValue === 'string' ? cellValue.toLowerCase() : '',
                           rowIndex,
-                          colIndex,
+                          colIndex
                         );
                       }}
                     >
                       <RiExpandLeftRightFill />
                     </div>
-                  </>
-                )}
-            </td>
-          ))}
+                  )}
+              </td>
+            );
+          })}
         </tr>
       ))
     );
@@ -1068,7 +1209,7 @@ const TechniquesTable = ({
     handleCellColoring()
   }, [focusedCell, focusedLiIndex, cellColors]);
 
-  const handleCellColoring = ()  =>{
+  const handleCellColoring = () => {
     if (tableData && tableData.length > 0) {
       const headers = Object.keys(tableData[0]);
 
