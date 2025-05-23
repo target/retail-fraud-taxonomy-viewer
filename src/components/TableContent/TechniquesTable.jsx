@@ -323,7 +323,7 @@ const TechniquesTable = ({
       const updatedTechniques = [...filteredTechniques];
 
       filteredKeys.forEach(name => {
-        const technique = storedTechniques.find(t => t.name === name);
+        const technique = storedTechniques.find(t => t.name.toLowerCase() === name.toLowerCase());
         if (!technique) return;
 
         let tactics;
