@@ -299,7 +299,7 @@ const TechniquesTable = ({
       });
     }
 
-    const filteredTechniques = allTechniques.map((technique) => {
+    let filteredTechniques = allTechniques.map((technique) => {
       const updatedTechnique = { ...technique };
       Object.keys(updatedTechnique).forEach((key) => {
         if (!filteredKeys.includes(updatedTechnique[key])) {
@@ -309,9 +309,66 @@ const TechniquesTable = ({
       return updatedTechnique;
     });
 
+    if(searchFilterType === 'risk_score' && filteredKeys && filteredKeys.length > 0){
+      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+      // Get keys from the first object once to create fresh empty entries dynamically
+      const baseKeys = Object.keys(filteredTechniques[0]);
+      const createEmptyEntry = () =>
+        baseKeys.reduce((acc, key) => {
+          acc[key] = '';
+          return acc;
+        }, {});
+
+      const updatedTechniques = [...filteredTechniques];
+
+      filteredKeys.forEach(name => {
+        const technique = storedTechniques.find(t => t.name === name);
+        if (!technique) return;
+
+        let tactics;
+        try {
+          // If tactics is a JSON string, parse it. Otherwise, assume it's an array.
+          tactics = typeof technique.tactics === 'string' ? JSON.parse(technique.tactics) : technique.tactics;
+        } catch (err) {
+          return;
+        }
+
+        tactics.forEach(tactic => {
+          const tacticKey = tactic.toLowerCase().replace(/\s+/g, '_'); // normalize key
+
+          // Check if tacticKey exists
+          if (!(tacticKey in updatedTechniques[0])) {
+            return;
+          }
+
+          // Check if this technique.name already exists in any entry's tacticKey to avoid duplicates
+          const isDuplicate = updatedTechniques.some(entry => entry[tacticKey] === technique.name);
+          if (isDuplicate) {
+            return;
+          }
+
+          // Assign to first available object with empty slot
+          let assigned = false;
+          for (let i = 0; i < updatedTechniques.length; i++) {
+            if (!updatedTechniques[i][tacticKey]) {
+              updatedTechniques[i][tacticKey] = technique.name;
+              assigned = true;
+              break;
+            }
+          }
+          // If none available, create new entry
+          if (!assigned) {
+            const newEntry = createEmptyEntry();
+            newEntry[tacticKey] = technique.name;
+            updatedTechniques.push(newEntry);
+          }
+        });
+      });
+}
+    
     if (filteredTechniques.length > 0) {
       const result = consolidateData(filteredTechniques);
-
       if (result !== null && result.length > 0) {
         let index = Object.keys(result[0]).findIndex(key => result[0][key] !== '');
         setFocusedCell({ row: 0, col: index })
