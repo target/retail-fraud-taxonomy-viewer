@@ -22,7 +22,7 @@ const ToggleSwitch = ({ label, value, onToggle }) => (
 const Header = ({
   toggleControl, onAddClick, onEditMode, onImportClick,
   onViewCustomContent, editStatus, editContent, onBackClick,
-  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus, 
+  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus,
   onColorClick, onRiskScore, selectedTechnique, viewCustomMode
 }) => {
   const [isToggled, setIsToggled] = useState(editStatus);
@@ -43,8 +43,8 @@ const Header = ({
 
   const handleRiskScoreChange = (e) => {
     const val = e.target.value;
-      setRiskScore(val);
-      onRiskScore(val)
+    setRiskScore(val);
+    onRiskScore(val)
   };
 
   const handleAddClick = () => onAddClick('add');
@@ -124,11 +124,11 @@ const Header = ({
   useEffect(() => setViewCustomContent(viewCustomMode), [viewCustomMode]);
 
   useEffect(() => {
-  const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
-  const matchedTechnique = storedTechniques.find(item => item.name === selectedTechnique);
-  setRiskScore(matchedTechnique?.risk_score)
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+    const matchedTechnique = storedTechniques.find(item => item.name === selectedTechnique);
+    setRiskScore(matchedTechnique?.risk_score)
   },
-  [selectedTechnique]);
+    [selectedTechnique]);
 
   const ColorPopup = ({ showPopup }) => {
     const colors = [
@@ -147,38 +147,54 @@ const Header = ({
       // Dark Aqua / Cyan / Teal
       '#008B8B', '#5F9EA0', '#4682B4', '#2F4F4F',
       // Transaparent
-       'rgba(0, 0, 0, 0)'
+      'rgba(0, 0, 0, 0)',
+      'rgba(0, 0, 0, 1)'
     ];
-    
-  return (
-    showPopup && (
-      <div className="popup">
-        <div className="color-grid">
-          {colors.map((color, index) => (
-            <div
-              key={index}
-              className="color-square"
-              style={{
-                backgroundColor: color,
-                border: color === selectedColor ? '2px solid white' : '2px solid #555',
-                display: color === 'rgba(0, 0, 0, 0)' ? 'flex' : 'block',
-                justifyContent: 'center',
-                alignItems: 'center',
-                color: color === 'rgba(0, 0, 0, 0)' ? 'white' : 'transparent',
-                textAlign: 'center',
-                minWidth: color === 'rgba(0, 0, 0, 0)' ? '50px' : '30px',
-                minHeight: color === 'rgba(0, 0, 0, 0)' ? '50px' : '30px',
-              }}
-              onClick={() => handleColorClick(color)}
-            >
-              {color === 'rgba(0, 0, 0, 0)' && 'No Color'}
-            </div>
-          ))}
+
+    return (
+      showPopup && (
+        <div className="popup">
+          <div className="color-grid">
+            {colors.map((color, index) => {
+              const NO_COLOR = 'rgba(0, 0, 0, 0)';
+              const REMOVE_COLOR = 'rgba(0, 0, 0, 1)';
+              const isSpecialColor = color === NO_COLOR || color === REMOVE_COLOR;
+
+              // Add extra spacing between the special color boxes
+              const isLastSpecial = color === REMOVE_COLOR;
+              const isFirstSpecial = color === NO_COLOR;
+
+              return (
+                <div
+                  key={index}
+                  className="color-square"
+                  style={{
+                    backgroundColor: color,
+                    border: color === selectedColor ? '2px solid white' : '2px solid #555',
+                    display: isSpecialColor ? 'flex' : 'block',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: isSpecialColor ? 'white' : 'transparent',
+                    textAlign: 'center',
+                    minWidth: isSpecialColor ? '55px' : '30px',
+                    minHeight: isSpecialColor ? '55px' : '30px',
+                    marginLeft: isLastSpecial ? '50px' : '0',
+                    marginBottom: '8px', // General spacing
+                  }}
+                  onClick={() => handleColorClick(color)}
+                >
+                  {color === NO_COLOR && 'No Color'}
+                  {color === REMOVE_COLOR && 'Remove All'}
+                </div>
+              );
+            })}
+
+
+          </div>
         </div>
-      </div>
-    )
-  );
-};
+      )
+    );
+  };
 
   return (
     <header>
@@ -218,18 +234,18 @@ const Header = ({
                 zIndex: 10,
               }}>
                 <RiEyeLine
-                title='Hide/Unhide'
+                  title='Hide/Unhide'
                   style={{ fontSize: '24px', color: 'white', cursor: 'pointer' }}
                   onClick={() => toggleHide('RiEyeLine')}
                 />
                 <RiPaletteLine
-                title='Coloring'
+                  title='Coloring'
                   style={{ fontSize: '24px', color: 'white', cursor: 'pointer' }}
                   onClick={() => toggleHide('RiPaletteLine')}
                 />
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <RiBarChartFill
-                  title='Risk score'
+                    title='Risk score'
                     style={{ fontSize: '24px', color: 'white', cursor: 'pointer' }}
                     onClick={() => toggleHide('RiBarChartFill')}
                   />
@@ -239,7 +255,7 @@ const Header = ({
                       value={riskScore}
                       onChange={handleRiskScoreChange}
                       placeholder="Score"
-                      style={{ marginLeft: '8px', width: '60px' , height: '20px'}}
+                      style={{ marginLeft: '8px', width: '60px', height: '20px' }}
                     />
                   )}
                 </div>
@@ -314,7 +330,7 @@ const Header = ({
         </div>
       )}
 
-<ColorPopup showPopup={showPopup} togglePopup={() => setShowPopup(!showPopup)} />
+      <ColorPopup showPopup={showPopup} togglePopup={() => setShowPopup(!showPopup)} />
     </header>
   );
 };

@@ -935,10 +935,18 @@ const TechniquesTable = ({
   useEffect(() => {
     if (!selectedTechnique) return;
 
-    setCellColors(prev => ({
-      ...prev,
-      [selectedTechnique]: selectedColor
-    }));
+    if(selectedColor === 'rgba(0, 0, 0, 1)') {
+      setCellColors(prev =>
+        Object.fromEntries(
+          Object.keys(prev).map(key => [key, 'rgba(0, 0, 0, 1)'])
+        )
+      );
+    } else {
+      setCellColors(prev => ({
+        ...prev,
+        [selectedTechnique]: selectedColor
+      }));
+    }
   }, [selectedColor]);
 
   useEffect(() => {
@@ -1030,28 +1038,6 @@ const TechniquesTable = ({
               >
                 {/* Subcell rendering */}
                 {isSubcell ? (
-                  // <ul>
-                  //   {sub_tech.map((subItem, subIndex) => (
-                  //     <li
-                  //       key={subIndex}
-                  //       style={{ backgroundColor: cellColors[subItem] }}
-                  //     >
-                  //       {subItem}
-                  //       {editStatus && (
-                  //         <div
-                  //           className="editicon"
-                  //           aria-label="edit"
-                  //           onClick={(e) => {
-                  //             e.stopPropagation();
-                  //             handleEdit(subItem);
-                  //           }}
-                  //         >
-                  //           <RiEdit2Fill className="white-icon" />
-                  //         </div>
-                  //       )}
-                  //     </li>
-                  //   ))}
-                  // </ul>
                   <ul>
                     {sub_techniques &&
                       sub_techniques.map((line, index) => (
