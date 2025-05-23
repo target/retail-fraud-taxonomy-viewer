@@ -309,7 +309,18 @@ const TechniquesTable = ({
       return updatedTechnique;
     });
 
-    if(searchFilterType === 'risk_score' && filteredKeys && filteredKeys.length > 0){
+    const isValueEmpty = value =>
+      value === "" || value === null || value === undefined;
+    
+    const allKeysEmptyInAllObjects = (jsonArray) => {
+      return jsonArray.every(obj =>
+        Object.values(obj).every(isValueEmpty)
+      );
+    };
+
+    let tableIsEmpty = allKeysEmptyInAllObjects(filteredTechniques)
+
+    if((searchFilterType === 'risk_score' || tableIsEmpty) && filteredKeys && filteredKeys.length > 0){
       const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
 
       // Get keys from the first object once to create fresh empty entries dynamically
