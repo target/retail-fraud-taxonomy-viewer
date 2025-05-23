@@ -208,6 +208,12 @@ const TechniquesTable = ({
 
       setTableData(allTechniques);
     }
+
+    //When NRF Content is ON, irrespective of Hide/Unhide - Show ALL
+    if(!viewCustomMode){
+      setHideTechniques([])
+      setTableData(allTechniques);
+    }
   }
 
   useEffect(() => {
