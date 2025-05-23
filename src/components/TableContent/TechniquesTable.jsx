@@ -102,12 +102,12 @@ const TechniquesTable = ({
     if (importContent?.technique_table) {
       localStorage.setItem('technique_table', JSON.stringify(importContent.technique_table));
       localStorage.setItem('techniques', JSON.stringify(importContent.techniques));
-      setTableData(importContent.technique_table);
+      handleHideTechniques()
     }
   }, [importContent]);
 
-  // Handle viewCustomMode toggles
   useEffect(() => {
+    if(!importContent) {
     if (viewCustomMode) {
       const local = localStorage.getItem("technique_table");
       try {
@@ -121,6 +121,16 @@ const TechniquesTable = ({
     } else {
       setTableData(allTechniques);
     }
+  }
+
+  if(!viewCustomMode){
+    setTableData(allTechniques);
+    setHideTechniques([])
+  } else {
+    handleHideTechniques()
+  }
+     
+
   }, [viewCustomMode]);
 
   useEffect(() => {
@@ -150,16 +160,18 @@ const TechniquesTable = ({
         localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
 
         setHideTechniques(prev => {
-          const alreadyExists = prev?.includes(selectedTechnique);
-
+          const list = prev ?? []; // default to empty array if prev is undefined
+          const alreadyExists = list.includes(selectedTechnique);
+        
           if (hideStatus && !alreadyExists) {
-            return [...prev, selectedTechnique];
+            return [...list, selectedTechnique];
           } else if (!hideStatus && alreadyExists) {
-            return prev.filter(item => item !== selectedTechnique);
+            return list.filter(item => item !== selectedTechnique);
           }
-
-          return prev;
+        
+          return list;
         });
+        
 
       }
     };
@@ -178,7 +190,8 @@ const TechniquesTable = ({
     // eslint-disable-next-line
   }, [searchFilter]);
 
-  useEffect(() => {
+
+  const handleHideTechniques = () => {
     setAddedColumns([]);
     if (!hideToggleStatus) {
       const matchedTechniques = handleHideToggle(hideToggleStatus);
@@ -195,6 +208,11 @@ const TechniquesTable = ({
 
       setTableData(allTechniques);
     }
+  }
+
+  useEffect(() => {
+    setAddedColumns([]);
+    handleHideTechniques()
     // eslint-disable-next-line
   }, [hideToggleStatus]);
 
@@ -990,8 +1008,6 @@ const TechniquesTable = ({
       .filter(child => child?.type === 'li')
       .map(li => extractText(li.props.children));
   }
-
-
 
   const renderRows = () => {
     if (tableData && tableData.length === 0) {
