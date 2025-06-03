@@ -87,6 +87,8 @@ const Header = ({
     try {
       localStorage.removeItem('technique_table');
       localStorage.removeItem('techniques');
+      setViewCustomContent(false);
+      onViewCustomContent(false);
       setResponseSubmit(true);
       setAlertVal('Data deleted successfully');
       setTimeout(() => setResponseSubmit(false), 2000);

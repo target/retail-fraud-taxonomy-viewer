@@ -124,7 +124,13 @@ const TechniquesTable = ({
   }
 
   if(!viewCustomMode){
-    setTableData(allTechniques);
+    const fetchTechniques = async () => {
+      const fetchedTechniques = await fetchAllTechniques();
+      setAllTechniques(fetchedTechniques);
+      setTableData(fetchedTechniques);
+    };
+    fetchTechniques();
+
     setHideTechniques([])
   } else {
     handleHideTechniques()
@@ -1017,8 +1023,10 @@ const TechniquesTable = ({
 
   const renderRows = () => {
     if (tableData && tableData.length === 0) {
+      if(viewCustomMode) {
       const savedData = localStorage.getItem('technique_table');
       if (savedData) setTableData(JSON.parse(savedData));
+      } 
     }
 
     return (
