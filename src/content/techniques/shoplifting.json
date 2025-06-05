@@ -18,19 +18,22 @@
       "type": "Bag Control",
       "details": [
         "Control the size and type of bags that are permitted inside the store."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Structured Loss Prevention Program",
       "details": [
         "Implement a structured loss prevention program involving physical security, policies, procedures, resources and systems to prevent, deter and identify merchandise or gift card loss. "
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Anti-Theft Prevention",
       "details": [
         "Additional physical protection of products from theft such as locked shelving, containers and vending machines, and storing items behind checkout counter."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -38,19 +41,22 @@
       "type": "Anti-Theft Security Tags ",
       "details": [
         "Attach a device to items that will cause an alarm if removed from the store without authorization."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Security Guards",
       "details": [
         "At physical locations, use security guards to identify and deter shoplifting."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Video Surveillance Systems",
       "details": [
         "Monitor video feeds for suspicious activity around high-value items."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

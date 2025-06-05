@@ -18,13 +18,15 @@
       "type": "Software Configuration",
       "details": [
         "Configure email gateway to filter message based on validity checks of sender domain and integrity of messages in combination with phishing email detection capabilities."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Training and Awareness",
       "details": [
         "Utilize consumer fraud awareness and education campaigns, signage, pop-ups and other forms of communication. "
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -32,7 +34,8 @@
       "type": "VoIP Attribute",
       "details": [
         "Monitor for known VoIP numbers that are typically used for fraud."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

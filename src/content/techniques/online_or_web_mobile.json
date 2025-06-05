@@ -18,7 +18,8 @@
       "type": "Online Location Data",
       "details": [
         "Some physical locations should not be able to return items. Some locations may also be the source of repeated fraud attempts. Prevent the ability to return items for funds based on locations."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -26,31 +27,36 @@
       "type": "Transaction data",
       "details": [
         "Monitor and record product serial number of items that are commonly related to fraud."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Network Traffic Attributes",
       "details": [
         "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Time-Based Attributes",
       "details": [
         "Based on the location of your operations, monitor for activities that occur during off hours."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Device Attributes",
       "details": [
         "Monitor device factors such as device type, user agent string, operating system, cookies."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Velocity Attributes",
       "details": [
         "Monitor for number of requests based on a predetermined number of requests over a set amount of time."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

@@ -18,13 +18,15 @@
       "type": "Primary Gift Card Lock-In",
       "details": [
         "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Login Required",
       "details": [
         "For gift cards, require an account before permitting purchase of or transfer."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -32,7 +34,8 @@
       "type": "Transaction Data",
       "details": [
         "Identify suspicious purchases of commonly resold items with potentially illicitly obtained gift cards."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

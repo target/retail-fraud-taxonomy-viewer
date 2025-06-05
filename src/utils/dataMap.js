@@ -24,8 +24,13 @@ export const dataArray = Object.keys(contentFiles).reduce((arr, filePath) => {
   return arr;
 }, []);
 
-export const fetchAllTechniques = () => {
+export const fetchAllTechniques = (customData) => {
+  if(!customData) {
   return techniques;
+  }
+else {
+  return JSON.parse(localStorage.getItem('technique_table'));
+}
 };
 
 export const getUniqueTechniques = () => {
@@ -115,19 +120,37 @@ export const fetchTechnique = (technique) => {
   }
 };
 
-export const hasSubTechnique = (technique) => {
+export const hasSubTechnique = (technique, customData) => {
+  if(!customData){
   const techData = fetchTechnique(technique);
   return techData && techData.sub_techniques.length > 0;
+  } else {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+    const matchedTechnique = storedTechniques.find(item => item.name === technique);
+    return matchedTechnique && matchedTechnique.sub_techniques.length > 0;
+  }
 };
 
-export const fetchTechniqueDetails = (technique) => {
-  const techData = fetchTechnique(technique);
-  return techData
+export const fetchTechniqueDetails = (technique, customData) => {
+  if(!customData){
+    const techData = fetchTechnique(technique);
+    return techData
+    } else {
+      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+      const matchedTechnique = storedTechniques.find(item => item.name === technique);
+      return JSON.parse(matchedTechnique)
+    }
 };
 
-export const fetchTechniqueReferences = (technique) => {
-  const techData = fetchTechnique(technique);
-  return techData && techData.references;
+export const fetchTechniqueReferences = (technique, customData) => {
+  if(!customData){
+    const techData = fetchTechnique(technique);
+    return techData && techData.references;
+    } else {
+      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+      const matchedTechnique = storedTechniques.find(item => item.name === technique);
+      return matchedTechnique && JSON.parse(matchedTechnique.references)
+    }
 };
 
 export const formatData = (inputData) => {
@@ -200,13 +223,14 @@ export const fetchAllDetections = () => {
 export const handleHideToggle = (hideToggleStatus) => {
   if (!hideToggleStatus) {
     const localStorageTechniques = JSON.parse(localStorage?.getItem('techniques'));
+    const localStorageTechniquesTable = JSON.parse(localStorage?.getItem('technique_table'));
 
     // // Filter items where hide is false
     const visibleNames = localStorageTechniques
       .filter(t => t.hide === false)
       .map(t => t.name);
 
-    const updatedArray = techniques.map(item => {
+      const updatedArray = localStorageTechniquesTable.map(item => {
       const updatedItem = {};
 
       Object.entries(item).forEach(([key, val]) => {

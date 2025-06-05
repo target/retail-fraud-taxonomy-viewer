@@ -33,6 +33,8 @@ export const Main = () => {
     setViewCustomContent(false);
     setEditMode(false)
     setShouldRenderTechniques(true);
+    setFilter('')
+    setFilterType('')
   }, []);
 
   const handleValueClick = useCallback((value) => {
@@ -78,6 +80,8 @@ export const Main = () => {
     setHideTechnique(false)
     setShouldRenderTechniques(true);
     setSelectedValue(value)
+    setFilter('')
+    setFilterType('')
   }, []);
 
   const handleCloseSidePanel = useCallback(() => {

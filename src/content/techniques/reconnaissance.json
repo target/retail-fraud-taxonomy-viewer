@@ -19,26 +19,30 @@
       "type": "Training and Awareness",
       "details": [
         "At physical locations, train employees to identify and report suspicious individuals to security."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Document Control",
       "details": [
         "At physical locations, keep all company, store or corporate-related documents, manuals or communication in a non-public or secure area not visible to non-employees."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Security Guards",
       "details": [
         "At physical locations, utilize security guards to identify and deter reconnaissance attempts."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Software Configuration",
       "details": [
         "Fully decommission obsolete login software that may not be protected by current security protocols.",
         "Redirect login requests to obsolete software to follow the approved login flow"
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -46,20 +50,23 @@
       "type": "Network Traffic Attributes",
       "details": [
         "Automated network reconnaissance will scan internet resources in a manner that a normal user typically will not. Monitor for connections to suspicious ports and traversal to suspicious directories such as www.mywebsite.com/admin or www.mywebsite.com/phpadmin"
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Online Identities",
       "details": [
         "When account creation is not a high barrier, often fraudsters will create test accounts to support development of automation or defender rule logic testing.  These test accounts may be identified with false information about identity, but also may be indicators of the capabilities the fraudster is developing. Identifying and monitoring such accounts can reveal important information about the actor's operation and intention.",
         "Monitor account creation endpoints for abnormal behavior. Actors will use account creation as a method to test credential lists to determine whether an account already exists at the targeted site before submitting a login request using those credentials."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Video Surveillance Systems",
       "details": [
         "At physical locations, use video surveillance to identify and report suspicious individuals to security."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

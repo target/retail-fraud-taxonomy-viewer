@@ -17,7 +17,8 @@
       "type": "Behavior Prevention",
       "details": [
         "Block traffic from known proxies, TOR exit nodes and infected machines."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -26,7 +27,8 @@
       "details": [
         "Aggregate IP addresses to identify the common carriers / autonomous system numbers.",
         "Establish normal and abnormal behavior for traffic originating from those networks."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

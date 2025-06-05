@@ -33,8 +33,8 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCus
         setReferences(fetchedDetails.references);
       } else {
         const fetchDetails = async () => {
-          const fetchedDetails = await fetchTechniqueDetails(technique);
-          const fetchedReferences = await fetchTechniqueReferences(technique);
+          const fetchedDetails = await fetchTechniqueDetails(technique, viewCustomMode);
+          const fetchedReferences = await fetchTechniqueReferences(technique, viewCustomMode);
           setDetails(fetchedDetails);
           setReferences(fetchedReferences);
         };

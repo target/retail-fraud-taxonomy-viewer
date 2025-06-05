@@ -19,7 +19,8 @@
       "type": "Password Policy",
       "details": [
         "Encourage using strong passwords with sufficient length and complexity. Discourage reusing passwords."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -27,7 +28,8 @@
       "type": "Online Identities",
       "details": [
         "Subscribe to breach databases and monitor logins for usage of known or publicly compromised credentials."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

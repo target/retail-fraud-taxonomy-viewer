@@ -17,7 +17,8 @@
       "type": "Brute Force Resistant Gift Card Numbers ",
       "details": [
         "Generate long and complicated gift card numbers that are resistant to prediction. "
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -25,7 +26,8 @@
       "type": "Info",
       "details": [
         "This technique cannot be easily detected by organizational controls due to it occurring outside of the organization\u2019s scope."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

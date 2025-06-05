@@ -18,25 +18,29 @@
       "type": "Primary Gift Card Lock-In",
       "details": [
         "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Login Required",
       "details": [
         "At physical locations, keep all company, store or corporate-related documents, manuals or communication in a non-public or secure area not visible to non-employees."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Gift Card Location",
       "details": [
         "Store gift cards behind checkout counter to limit theft."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Video Surveillance System",
       "details": [
         "For in-store gift card displays, consider the placement of a video security camera (CCTV) to monitor the area. Utilize signage to inform customers of CCTV use."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -44,13 +48,15 @@
       "type": "Security Guards",
       "details": [
         "At physical locations, use security guards and/or other store employees to identify instances of fraudsters stealing gift cards and/or returning tampered gift cards."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Video Surveillance Systems",
       "details": [
         "At physical locations, use video surveillance to identify instances of fraudsters stealing gift cards and/or returning tampered gift cards."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

@@ -12,7 +12,8 @@ export const transformKeyValue = (inputJson) => {
     const key = item.type;
     return {
       key: key,
-      values: item.details
+      values: item.details,
+      implemented: item.implemented
     };
   });
 };
@@ -28,7 +29,8 @@ export const transformReference = (inputJson) => {
 export const formatDetails = (inputJson) => {
   const outputJson = inputJson.map(item => ({
     type: item.key,
-    details: item.values
+    details: item.values,
+    implemented: item.implemented
   }));
   return outputJson;
 };

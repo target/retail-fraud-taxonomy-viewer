@@ -18,19 +18,22 @@
       "type": "Behavior Prevention",
       "details": [
         "Do not permit merging of gift cards."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Login Required",
       "details": [
         "Require authentication before permitting transfer of gift card value."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Access Code Required",
       "details": [
         "Require an access code before permitting transfer of gift card value."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -38,13 +41,15 @@
       "type": "Transaction Data",
       "details": [
         "Identify suspicious transfer of value from gift cards to other gift cards."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Velocity Attributes",
       "details": [
         "Identify suspicious transfers from many gift cards to one gift card, for example, if 20 gift cards with value of $5 are added to a single gift card."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

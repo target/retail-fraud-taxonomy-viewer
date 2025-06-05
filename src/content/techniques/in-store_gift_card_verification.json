@@ -17,7 +17,8 @@
       "type": "Access Code Required",
       "details": [
         "Require an access code that is separate from the gift card number before revealing the status and funds on the gift cards."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -25,7 +26,8 @@
       "type": "Velocity Attributes",
       "details": [
         "Monitor for gift cards a person is attempting to verify."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

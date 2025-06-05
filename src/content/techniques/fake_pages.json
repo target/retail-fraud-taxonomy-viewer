@@ -19,13 +19,15 @@
       "type": "Website Takedown Requests",
       "details": [
         "When a fake page is identified file a takedown request with the Website Host and DNS Registrar."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "DNS Registration",
       "details": [
         "Identify potential URLs that may be mistaken for the legitimate website and register them so they cannot be used by fraudsters."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -33,7 +35,8 @@
       "type": "Network Traffic Attributes",
       "details": [
         "Monitor domain registration, certificate transparency logs and phishing sites to identify sites established with your branding but designed to fool your customers into divulging information."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

@@ -3,7 +3,7 @@ import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import './ManageContent.css';
 import { fetchAllTechniques, fetchTechnique, dataArray, getUniqueTechniques } from '../../utils/dataMap';
 import { transformData, transformKeyValue, transformReference, formatDetails, formatFields, formatReferences, handleNewTactic, addTechniqueIfNotExists } from './ManageContentUtils';
-import { RiAddCircleLine, RiDeleteBinLine } from 'react-icons/ri';
+import { RiAddCircleLine, RiCheckboxFill, RiDeleteBinLine } from 'react-icons/ri';
 import { Alert } from '../Alert/Alert'
 
 const ManageContent = (props) => {
@@ -15,9 +15,9 @@ const ManageContent = (props) => {
   });
 
   const [keyValuePairs, setKeyValuePairs] = useState({
-    mitigation: [{ key: '', values: [''] }],
-    detection: [{ key: '', values: [''] }],
-    references: [{ key: '', values: [''] }],
+    mitigation: [{ key: '', values: [''], implemented: false }],
+    detection: [{ key: '', values: [''] , implemented: false}],
+    references: [{ key: '', values: [''], implemented: false}],
   });
 
   const [openSections, setOpenSections] = useState({
@@ -56,9 +56,9 @@ const ManageContent = (props) => {
     })
 
     setKeyValuePairs({
-      mitigation: [{ key: '', values: [''] }],
-      detection: [{ key: '', values: [''] }],
-      references: [{ key: '', values: [''] }],
+      mitigation: [{ key: '', values: [''] , implemented: false}],
+      detection: [{ key: '', values: [''] , implemented: false}],
+      references: [{ key: '', values: [''], implemented: false }],
     })
   }
 
@@ -222,21 +222,28 @@ const ManageContent = (props) => {
     }));
   };
 
+  const handleImplementedChange = (type, index, event) => {
+    const newKeyValuePairs = [...keyValuePairs[type]];
+    newKeyValuePairs[index].implemented = event.target.checked;
+    setKeyValuePairs((prev) => ({
+      ...prev,
+      [type]: newKeyValuePairs,
+    }));
+  };
+
   // Function for rendering key-value pairs
   const addKeyValue = (type) => {
     return (
       <div style={{ marginBottom: '20px' }}>
         {keyValuePairs[type]?.map((pair, keyIndex) => (
-          <div
-            key={keyIndex}
-            className='box-section'
-          >
+          <div key={keyIndex} className='box-section'>
+  
             {/* Remove Key-Value Pair Button */}
             <RiDeleteBinLine
               className='remove-key-value-pair'
               onClick={() => removeKeyValuePair(type, keyIndex)}
             />
-
+  
             {/* Key Input */}
             <div style={{ display: 'flex', marginBottom: '10px' }}>
               <label htmlFor={`key-${keyIndex}`} style={{ color: 'white' }}>
@@ -250,8 +257,26 @@ const ManageContent = (props) => {
                 placeholder={type === 'references' ? `Source ${keyIndex + 1}` : `Type ${keyIndex + 1}`}
                 className='key-text'
               />
+  
+              {/* Checkbox for non-reference types */}
+              {type !== 'references' && (
+                <div style={{ marginLeft: '40px' }}>
+                  Implemented?
+                  <input
+                    type="checkbox"
+                    checked={pair.implemented || false}
+                    onChange={(e) => handleImplementedChange(type, keyIndex, e)}
+                    style={{
+                      transform: 'scale(2)',
+                      accentColor: 'green',
+                      marginLeft: '10px',
+                      cursor: 'pointer'
+                    }}
+                  />
+                </div>
+              )}
             </div>
-
+  
             {/* Value Inputs */}
             <div style={{ marginBottom: '10px' }}>
               {pair?.values?.map((value, valueIndex) => (
@@ -267,7 +292,7 @@ const ManageContent = (props) => {
                     placeholder={`Info ${valueIndex + 1}`}
                     className='text-area-box'
                   />
-
+  
                   {/* Remove Value Button */}
                   {pair?.values?.length > 1 && (
                     <RiDeleteBinLine
@@ -278,7 +303,7 @@ const ManageContent = (props) => {
                 </div>
               ))}
             </div>
-
+  
             {/* Add Value Button */}
             <RiAddCircleLine
               className='add-value'
@@ -286,7 +311,7 @@ const ManageContent = (props) => {
             />
           </div>
         ))}
-
+  
         {/* Add Key-Value Pair Button */}
         <RiAddCircleLine
           className='add-key-value-pair'

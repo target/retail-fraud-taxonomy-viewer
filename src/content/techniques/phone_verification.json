@@ -17,13 +17,15 @@
       "type": "Access Code Required",
       "details": [
         "Require an access code that is separate from the gift card number before revealing the status and funds on the gift cards."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Behavior Prevention",
       "details": [
         "Automatically block phone numbers related to VoIP services and phone numbers that have been known to be used to perpetrate fraud."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -31,13 +33,15 @@
       "type": "Time-Based Attributes",
       "details": [
         "Based on the location of your operations, monitor for activities that occur during off hours."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "VoIP Attribute",
       "details": [
         "Monitor for use of VoIP numbers that are not tied to a physical landline or mobile phone."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

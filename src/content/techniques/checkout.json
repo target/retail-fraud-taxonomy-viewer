@@ -22,25 +22,29 @@
       "type": "Access Code Required",
       "details": [
         "Require an access code that is separate from the gift card before refunding gift card value."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Behavior Prevention",
       "details": [
         "Identify potentially fraudulent returns and do not refund money if fraud is detected."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Restocking Fees",
       "details": [
         "Require a fee for potentially fraudulent returns."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Delayed Reimbursement",
       "details": [
         "Postpone refund by a predetermined amount of time for items that are commonly related to fraud."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -48,7 +52,8 @@
       "type": "Transaction Data ",
       "details": [
         "Monitor for returns of items commonly related to fraud such as gift cards, luxury items and electronics for fraudulent activity."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

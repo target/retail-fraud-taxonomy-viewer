@@ -21,7 +21,8 @@
       "details": [
         "Before permitting account changes, use multiple forms of authentication such as username and password paired with a one-time passcode before permitting access.",
         "If relevant, send confirmatory message to the original contact fields (eg., original email address, phone number, street address)."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -29,25 +30,29 @@
       "type": "Network Traffic Attributes",
       "details": [
         "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Time-Based Attributes",
       "details": [
         "Based on the location of your operations, monitor for activities that occur during off hours."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Device Attributes",
       "details": [
         "Monitor device factors such as device type, user agent string, operating system, cookies."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Velocity Attributes",
       "details": [
         "Monitor for accounts that are created quickly in succession from the same location or with similar features."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

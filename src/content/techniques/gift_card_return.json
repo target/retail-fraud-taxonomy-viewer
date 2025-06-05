@@ -18,7 +18,8 @@
       "type": "Return Limits",
       "details": [
         "Do not exchange gift cards over a pre-determined value."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -26,7 +27,8 @@
       "type": "Transaction Data",
       "details": [
         "Identify suspicious purchases and returns by gift card numbers."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

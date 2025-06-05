@@ -21,26 +21,30 @@
       "type": "Primary Gift Card Lock-In",
       "details": [
         "When a gift card is purchased, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Login Required",
       "details": [
         "Require an account before permitting purchase of or transfer of a gift card."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Gift Card Purchase Limit",
       "details": [
         "Enforce limits of quantity and/or the value that may be purchased by an interaction or person."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Training and Awareness",
       "details": [
         "Consumer fraud awareness and education campaigns, signage, pop-ups and other forms of communication.",
         "Employee education and awareness to ensure proper payment has been received for gift card transactions."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -48,13 +52,15 @@
       "type": "Velocity Attributes",
       "details": [
         "Monitor for the purchase of gift cards by value and quantity from an individual by a predetermined value and/or time frame."
-      ]
+      ],
+      "implemented": false
     },
     {
       "type": "Behavioral Attributes",
       "details": [
         "Monitor for out-of-character purchases of an individual and their lifestyle."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { RiExpandLeftRightFill, RiEdit2Fill } from 'react-icons/ri';
+import { RiExpandLeftRightFill, RiEdit2Fill, RiCheckboxFill, RiCheckboxBlankFill, RiAlarmWarningLine, RiFolderWarningFill } from 'react-icons/ri';
 import {
   fetchTechnique,
   hasSubTechnique,
@@ -16,6 +16,9 @@ const EXPAND = 'expand';
 const COLLAPSE = 'collapse';
 const DYNAMIC_COLUMN_PREFIX = 'New Column';
 const SHOW_ALL = 'Show All';
+const MITIGATION = 'mitigation';
+const SCHEMES = 'schemes';
+const DETECTION = 'detection';
 const FOCUS = '#444';
 const NO_FOCUS = 'transparent';
 
@@ -55,6 +58,12 @@ const TechniquesTable = ({
     onEditClick(technique);
   };
 
+  const fetchTechniques = async () => {
+    const fetchedTechniques = await fetchAllTechniques(viewCustomMode);
+    setAllTechniques(fetchedTechniques);
+    setTableData(fetchedTechniques);
+  };
+
   // Focus the first cell after mount
   useLayoutEffect(() => {
     const checkAndFocus = () => {
@@ -88,11 +97,6 @@ const TechniquesTable = ({
         }
       }
     } else {
-      const fetchTechniques = async () => {
-        const fetchedTechniques = await fetchAllTechniques();
-        setAllTechniques(fetchedTechniques);
-        setTableData(fetchedTechniques);
-      };
       fetchTechniques();
     }
   }, []);
@@ -124,13 +128,7 @@ const TechniquesTable = ({
   }
 
   if(!viewCustomMode){
-    const fetchTechniques = async () => {
-      const fetchedTechniques = await fetchAllTechniques();
-      setAllTechniques(fetchedTechniques);
-      setTableData(fetchedTechniques);
-    };
     fetchTechniques();
-
     setHideTechniques([])
   } else {
     handleHideTechniques()
@@ -148,7 +146,7 @@ const TechniquesTable = ({
   useEffect(() => {
     const fetchTechniques = async () => {
       if (!localStorage.getItem('technique_table')) {
-        const fetchedTechniques = await fetchAllTechniques();
+        const fetchedTechniques = await fetchAllTechniques(viewCustomMode);
         localStorage.setItem('technique_table', JSON.stringify(fetchedTechniques));
         localStorage.setItem('techniques', JSON.stringify(dataArray));
       }
@@ -191,7 +189,7 @@ const TechniquesTable = ({
     if (searchFilter !== '' && searchFilterType !== SHOW_ALL) {
       setFilteredDataMap(filterDataMap(searchFilter, searchFilterType));
     } else {
-      setTableData(fetchAllTechniques());
+      setTableData(fetchAllTechniques(viewCustomMode));
     }
     // eslint-disable-next-line
   }, [searchFilter]);
@@ -211,14 +209,13 @@ const TechniquesTable = ({
         .map(t => t.name);
 
       setHideTechniques(hiddenTechniquesNames)
-
-      setTableData(allTechniques);
+      fetchTechniques()
     }
 
     //When NRF Content is ON, irrespective of Hide/Unhide - Show ALL
     if(!viewCustomMode){
       setHideTechniques([])
-      setTableData(allTechniques);
+      fetchTechniques()
     }
   }
 
@@ -255,7 +252,7 @@ const TechniquesTable = ({
           let headerName = getColumnHeaderByIndex(colIndex);  // Get the header name based on colIndex
           const isProcessed = columnsProcessedRef.current.has(`${rowIndex}-${headerName}`);
 
-          const hasSubTech = item[key] && item[key].length > 0 && hasSubTechnique(item[key]);
+          const hasSubTech = item[key] && item[key].length > 0 && hasSubTechnique(item[key], viewCustomMode);
 
           if (!isProcessed && hasSubTech && searchFilter !== '' && searchFilterType !== SHOW_ALL) {
 
@@ -327,6 +324,10 @@ const TechniquesTable = ({
           })
           .join(' ');
       });
+    }
+
+    if(allTechniques && allTechniques.length === 0) {
+    fetchTechniques();
     }
 
     let filteredTechniques = allTechniques.map((technique) => {
@@ -483,6 +484,25 @@ const TechniquesTable = ({
             >
               {/* {line} */}
               <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
+              {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && line && (
+                      <div
+                      // style={{
+                        // paddingRight: '5px',
+                        // cursor: 'pointer',
+                        // backgroundColor: 'rgb(48, 48, 48)',
+                        // color: 'white'
+                      // }}
+                      style={{
+                        top: '0% !important' ,
+                        left: '0% !important'
+                      }}
+                      >
+                        {fetchImplementationStatus(line)
+                            ? <RiCheckboxFill style={{ color: 'green' }} />
+                            : <RiFolderWarningFill style={{ color: 'orange' }} />}
+                      </div>
+                    )}
+              
               {editStatus && (
                 <>
                   <div
@@ -997,6 +1017,16 @@ const TechniquesTable = ({
 
   }, [riskScoreInfo]);
 
+  function fetchImplementationStatus(selectedTechniqueName) {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+  
+    const technique = storedTechniques.find(item => item.name === selectedTechniqueName);
+    if (!technique) return false;
+  
+    const match = technique[searchFilterType]?.find(dets => dets.type === searchFilter);
+    return match ? match.implemented : false;
+  }
+
   function extractText(node) {
     if (typeof node === 'string' || typeof node === 'number') {
       return node;
@@ -1106,6 +1136,24 @@ const TechniquesTable = ({
                         >
                           {/* {line} */}
                           <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
+                          {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && cellValue && (
+                      <div
+                      // style={{
+                      //   // paddingRight: '5px',
+                      //   cursor: 'pointer',
+                      //   backgroundColor: 'rgb(48, 48, 48)',
+                      //   color: 'white'
+                      // }}
+                      style={{
+                        top: '0% !important' ,
+                        left: '0% !important'
+                      }}
+                      >
+                        {fetchImplementationStatus(cellValue)
+                            ? <RiCheckboxFill style={{ color: 'green' }} />
+                            : <RiFolderWarningFill style={{ color: 'orange' }} />}
+                      </div>
+                    )}
                           {editStatus && (
                             <>
                               <div
@@ -1128,6 +1176,8 @@ const TechniquesTable = ({
                             </>
                           )}
 
+                    
+
                           {/* <RiEdit2Fill/> */}
                         </li>
                       ))}
@@ -1146,13 +1196,23 @@ const TechniquesTable = ({
                         <RiEdit2Fill className="white-icon" />
                       </div>
                     )}
+                     {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && cellValue && (
+                      <div
+                        className="implementationicon"
+                        aria-label="implementation"
+                      >
+                        {fetchImplementationStatus(cellValue)
+                            ? <RiCheckboxFill style={{ color: 'green' }} />
+                            : <RiFolderWarningFill style={{ color: 'orange' }} />}
+                      </div>
+                    )}
                     {cellValue}
                   </>
                 )}
 
                 {/* Expand/collapse if sub-technique is present */}
                 {cellValue &&
-                  hasSubTechnique(cellValue) && (
+                  hasSubTechnique(cellValue, viewCustomMode) && (
                     <div
                       className="sidebar"
                       aria-label="expand collapse"
