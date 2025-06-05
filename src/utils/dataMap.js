@@ -111,12 +111,24 @@ export const filterDataMap = (selectedIcon, filterType) => {
   }
 };
 
-export const fetchTechnique = (technique) => {
+export const fetchTechnique = (technique, customData) => {
   if (!technique) return undefined;
 
-  if(!(technique !== null && typeof technique === 'object' && !Array.isArray(technique))){
-  const key = technique?.toLowerCase().replace(/\s+/g, '_');
-  return dataMap[key];
+  if (!customData) {
+    if (!(technique !== null && typeof technique === 'object' && !Array.isArray(technique))) {
+      const key = technique?.toLowerCase().replace(/\s+/g, '_');
+      return dataMap[key];
+    }
+  } else {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+    const formattedTechnoque = technique.split(' ')
+                                        .map((word) => {
+                                          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+                                        })
+                                        .join(' ');
+
+    const matchedTechnique = storedTechniques.find(item => item.name === formattedTechnoque);
+    return matchedTechnique
   }
 };
 

@@ -44,9 +44,12 @@ export const formatReferences = (inputJson) => {
 };
 
 export const formatFields = (inputJson) => {
-  const outputArray = inputJson.map(item => item.value);
-  return outputArray
-}
+  const hasEmptyValue = inputJson.some(item => !item.value);
+  if (hasEmptyValue) return [];
+  
+  return inputJson.map(item => item.value);
+};
+
 
 const downloadJSON = (data) => {
   const now = new Date();
