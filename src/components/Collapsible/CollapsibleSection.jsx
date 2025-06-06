@@ -8,6 +8,7 @@ import {
   formatData,
 } from '../../utils/dataMap';
 import { RiCheckboxBlankFill, RiCheckLine, RiFolderWarningFill } from 'react-icons/ri';
+import { CircularProgress } from './CircularProgress'
 
 const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCustomMode }) => {
   const [technique, setTechnique] = useState(techniqueName);
@@ -68,6 +69,16 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCus
     setIsVisible(false);
   };
 
+  const getCoverage = (techniqueName, section_header) => {
+      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+      const technique = storedTechniques.find(item => item.name === techniqueName);
+      if (!technique) return false;
+
+      const implementedCount = technique[section_header.toLowerCase()]?.filter(item => item.implemented === true).length;
+      const percentage =  Math.round((implementedCount / technique[section_header.toLowerCase()].length) * 100);
+      return percentage
+  }
+
   const show_details = (details, section_header, type) => {
     const isOpen = type === 'details' ? openSections[section_header] : openReference;
 
@@ -92,12 +103,23 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCus
           </div>
 
           {isOpen && (
-            <div className={`collapsible-details ${isPanelOpen ? 'shrink' : ''}`}>
-              {type === 'details'
-                ? display_details(details, section_header)
-                : display_references(references)}
-            </div>
+              <div className={`collapsible-details ${isPanelOpen ? 'shrink' : ''}`}>
+                {type === 'details' ? (
+                  <>
+                    {viewCustomMode && (section_header === 'Mitigation' || section_header === 'Detection') && (
+                      <div style={{ marginLeft: '40px' }}>
+                        <CircularProgress percentage={getCoverage(techniqueName, section_header)}/>
+                      </div>
+                    )}
+
+                    {display_details(details, section_header)}
+                  </>
+                ) : (
+                  display_references(references)
+                )}
+              </div>
           )}
+
         </div>
       </section>
     );
@@ -132,7 +154,6 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCus
           <div key={index + 1}>
             <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   {item?.type || 'Description'}
-
                   {item?.type && item.type !== 'Description' && viewCustomMode && item?.implemented &&
                     (section_header === 'Detection' || section_header === 'Mitigation') ? (
                       <CustomCheckbox />
@@ -141,10 +162,10 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCus
                         <RiFolderWarningFill style={{ color: 'orange', fontSize: '20px'}} />
                       )
                     )
+                    
                   }
             </h4>
-
-
+            
             <ul className="collapsible-details-list">
               {(item?.details == null ? item : item.details)?.map((line, lineIndex) => {
                 const matches = [...line.matchAll(urlRegex)];
