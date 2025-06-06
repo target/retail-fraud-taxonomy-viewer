@@ -154,6 +154,7 @@ export const Main = () => {
         <SidePanel
           onFilterChange={handleFilterChange}
           onClose={handleCloseSidePanel}
+          viewCustomMode={viewCustomContent}
         />
       )}
 

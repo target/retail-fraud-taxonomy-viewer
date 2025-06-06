@@ -25,19 +25,19 @@ export const dataArray = Object.keys(contentFiles).reduce((arr, filePath) => {
 }, []);
 
 export const fetchAllTechniques = (customData) => {
-  if(!customData) {
-  return techniques;
+  if (!customData) {
+    return techniques;
   }
-else {
-  return JSON.parse(localStorage.getItem('technique_table'));
-}
+  else {
+    return JSON.parse(localStorage.getItem('technique_table'));
+  }
 };
 
 export const getUniqueTechniques = () => {
   let completeTechniques = []
   let customData = localStorage.getItem('technique_table')
 
-  if(customData && customData.length > 0) {
+  if (customData && customData.length > 0) {
     completeTechniques = JSON.parse(customData)
   } else {
     completeTechniques = techniques
@@ -51,7 +51,7 @@ export const getUniqueTechniques = () => {
 
 export const formDataMapfromLocalStorage = () => {
   const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
-  
+
   const dataMap = storedTechniques.reduce((acc, item) => {
     const key = item.name.toLowerCase().replace(/\s+/g, '_');
     acc[key] = item;
@@ -101,12 +101,12 @@ export const filterDataMap = (selectedIcon, filterType) => {
     dataMap = formDataMapfromLocalStorage()
 
     const filteredDataMap = Object.keys(dataMap).reduce((filteredMap, key) => {
-        if (dataMap[key].risk_score >= selectedIcon.minScore && dataMap[key].risk_score <= selectedIcon.maxScore) {
+      if (dataMap[key].risk_score >= selectedIcon.minScore && dataMap[key].risk_score <= selectedIcon.maxScore) {
         filteredMap[key] = dataMap[key];
       }
       return filteredMap;
     }, {});
-  
+
     return filteredDataMap;
   }
 };
@@ -121,21 +121,21 @@ export const fetchTechnique = (technique, customData) => {
     }
   } else {
     const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
-    const formattedTechnoque = technique.split(' ')
-                                        .map((word) => {
-                                          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-                                        })
-                                        .join(' ');
+    const formattedTechnique = technique.split(' ')
+      .map((word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join(' ');
 
-    const matchedTechnique = storedTechniques.find(item => item.name === formattedTechnoque);
+    const matchedTechnique = storedTechniques.find(item => item.name === formattedTechnique);
     return matchedTechnique
   }
 };
 
 export const hasSubTechnique = (technique, customData) => {
-  if(!customData){
-  const techData = fetchTechnique(technique);
-  return techData && techData.sub_techniques.length > 0;
+  if (!customData) {
+    const techData = fetchTechnique(technique);
+    return techData && techData.sub_techniques.length > 0;
   } else {
     const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
     const matchedTechnique = storedTechniques.find(item => item.name === technique);
@@ -144,25 +144,25 @@ export const hasSubTechnique = (technique, customData) => {
 };
 
 export const fetchTechniqueDetails = (technique, customData) => {
-  if(!customData){
+  if (!customData) {
     const techData = fetchTechnique(technique);
     return techData
-    } else {
-      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
-      const matchedTechnique = storedTechniques.find(item => item.name === technique);
-      return JSON.parse(matchedTechnique)
-    }
+  } else {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+    const matchedTechnique = storedTechniques.find(item => item.name === technique);
+    return JSON.parse(matchedTechnique)
+  }
 };
 
 export const fetchTechniqueReferences = (technique, customData) => {
-  if(!customData){
+  if (!customData) {
     const techData = fetchTechnique(technique);
     return techData && techData.references;
-    } else {
-      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
-      const matchedTechnique = storedTechniques.find(item => item.name === technique);
-      return matchedTechnique && JSON.parse(matchedTechnique.references)
-    }
+  } else {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+    const matchedTechnique = storedTechniques.find(item => item.name === technique);
+    return matchedTechnique && JSON.parse(matchedTechnique.references)
+  }
 };
 
 export const formatData = (inputData) => {
@@ -184,52 +184,103 @@ export const formatData = (inputData) => {
   return '';
 };
 
-export const fetchAllMitigations = () => {
+export const fetchAllMitigations = (viewCustomMode) => {
   const allMitigationKeys = new Map();
 
-  Object.keys(dataMap).forEach((key) => {
-    dataMap[key].mitigation.forEach((mitigationItem) => {
-      // Normalize the type for uniqueness check (lowercase)
-      const normalizedType = mitigationItem.type.trim().toLowerCase();
+  if (!viewCustomMode) {
+    Object.keys(dataMap).forEach((key) => {
+      dataMap[key].mitigation.forEach((mitigationItem) => {
+        // Normalize the type for uniqueness check (lowercase)
+        const normalizedType = mitigationItem.type.trim().toLowerCase();
 
-      // Only add the first occurrence of the normalized type
-      if (!allMitigationKeys.has(normalizedType)) {
-        allMitigationKeys.set(normalizedType, mitigationItem.type);
-      }
+        // Only add the first occurrence of the normalized type
+        if (!allMitigationKeys.has(normalizedType)) {
+          allMitigationKeys.set(normalizedType, mitigationItem.type);
+        }
+      });
     });
-  });
 
-  const uniqueMitigationKeys = [...allMitigationKeys.values()].sort();
-  return uniqueMitigationKeys;
+    const uniqueMitigationKeys = [...allMitigationKeys.values()].sort();
+    return uniqueMitigationKeys;
+  } else {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+    storedTechniques.forEach((technique) => {
+      technique.mitigation.forEach((mitigationItem) => {
+        // Normalize the type for uniqueness check (lowercase)
+        const normalizedType = mitigationItem.type.trim().toLowerCase();
+
+        // Only add the first occurrence of the normalized type
+        if (!allMitigationKeys.has(normalizedType)) {
+          allMitigationKeys.set(normalizedType, mitigationItem.type);
+        }
+      });
+    });
+
+    const uniqueMitigationKeys = [...allMitigationKeys.values()].sort();
+    return uniqueMitigationKeys;
+  }
 };
 
-export const fetchAllSchemes = () => {
-  const uniqueSchemes = Object.keys(dataMap).reduce((schemesSet, key) => {
-    dataMap[key].schemes.forEach((scheme) => schemesSet.add(scheme));
-    return schemesSet;
-  }, new Set());
+export const fetchAllSchemes = (viewCustomMode) => {
+  if (!viewCustomMode) {
+    const uniqueSchemes = Object.keys(dataMap).reduce((schemesSet, key) => {
+      dataMap[key].schemes.forEach((scheme) => schemesSet.add(scheme));
+      return schemesSet;
+    }, new Set());
 
-  const uniqueSchemesArray = [...uniqueSchemes].sort();
-  return uniqueSchemesArray;
+    const uniqueSchemesArray = [...uniqueSchemes].sort();
+    return uniqueSchemesArray;
+  } else {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+    const uniqueSchemes = storedTechniques.reduce((schemesSet, technique) => {
+      technique.schemes.forEach((scheme) => schemesSet.add(scheme));
+      return schemesSet;
+    }, new Set());
+
+    const uniqueSchemesArray = [...uniqueSchemes].sort();
+    return uniqueSchemesArray;
+  }
 };
 
-export const fetchAllDetections = () => {
+export const fetchAllDetections = (viewCustomMode) => {
   const allDetectionKeys = new Map();
 
-  Object.keys(dataMap).forEach((key) => {
-    dataMap[key].detection.forEach((detectionItem) => {
-      // Normalize the type for uniqueness check (lowercase)
-      const normalizedType = detectionItem.type.trim().toLowerCase();
+  if (!viewCustomMode) {
+    Object.keys(dataMap).forEach((key) => {
+      dataMap[key].detection.forEach((detectionItem) => {
+        // Normalize the type for uniqueness check (lowercase)
+        const normalizedType = detectionItem.type.trim().toLowerCase();
 
-      // Only add the first occurrence of the normalized type
-      if (!allDetectionKeys.has(normalizedType)) {
-        allDetectionKeys.set(normalizedType, detectionItem.type);
-      }
+        // Only add the first occurrence of the normalized type
+        if (!allDetectionKeys.has(normalizedType)) {
+          allDetectionKeys.set(normalizedType, detectionItem.type);
+        }
+      });
     });
-  });
 
-  const uniqueDetectionKeys = [...allDetectionKeys.values()].sort();
-  return uniqueDetectionKeys;
+    const uniqueDetectionKeys = [...allDetectionKeys.values()].sort();
+    return uniqueDetectionKeys;
+  } else {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+    storedTechniques.forEach((technique) => {
+      technique.detection.forEach((detectionItem) => {
+
+        // Normalize the type for uniqueness check (lowercase)
+        const normalizedType = detectionItem.type.trim().toLowerCase();
+
+        // Only add the first occurrence of the normalized type
+        if (!allDetectionKeys.has(normalizedType)) {
+          allDetectionKeys.set(normalizedType, detectionItem.type);
+        }
+      });
+    });
+
+    const uniqueDetectionKeys = [...allDetectionKeys.values()].sort();
+    return uniqueDetectionKeys;
+  }
 };
 
 export const handleHideToggle = (hideToggleStatus) => {
@@ -242,7 +293,7 @@ export const handleHideToggle = (hideToggleStatus) => {
       .filter(t => t.hide === false)
       .map(t => t.name);
 
-      const updatedArray = localStorageTechniquesTable.map(item => {
+    const updatedArray = localStorageTechniquesTable.map(item => {
       const updatedItem = {};
 
       Object.entries(item).forEach(([key, val]) => {

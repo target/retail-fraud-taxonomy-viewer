@@ -311,6 +311,7 @@ const TechniquesTable = ({
   };
 
   useEffect(() => {
+    setAddedColumns([]);
     setColumnsProcessed(new Set());
     columnsProcessedRef.current = new Set();
 
@@ -788,6 +789,7 @@ const TechniquesTable = ({
                   !insertedNewColumn
                 ) {
                   const techniqueName = fetchTechnique(technique, viewCustomMode);
+
                   let sub_tech = []
                   if (searchFilterType === '' || searchFilterType === SHOW_ALL) {
                     sub_tech = techniqueName['sub_techniques']

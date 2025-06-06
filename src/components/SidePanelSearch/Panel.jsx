@@ -13,14 +13,14 @@ const DETECTION = 'detection';
 const RISK_SCORE = 'risk_score';
 const SHOW_ALL = 'Show All';
 
-const SidePanel = ({ onFilterChange, onClose }) => {
+const SidePanel = ({ onFilterChange, onClose, viewCustomMode }) => {
   const handleFilterChange = (filterValue, filterType) => {
     onFilterChange(filterValue, filterType);
   };
 
-  const mitigations = fetchAllMitigations();
-  const schemes = fetchAllSchemes();
-  const detections = fetchAllDetections();
+  const mitigations = fetchAllMitigations(viewCustomMode);
+  const schemes = fetchAllSchemes(viewCustomMode);
+  const detections = fetchAllDetections(viewCustomMode);
   const risk_score = ['<= 50', '> 50']
   const [minRiskScore, setMinRiskScore] = useState(0);
   const [maxRiskScore, setMaxRiskScore] = useState(100);
