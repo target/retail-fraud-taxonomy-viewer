@@ -7,6 +7,7 @@ import {
   fetchTechniqueReferences,
   formatData,
 } from '../../utils/dataMap';
+import { RiCheckboxBlankFill, RiCheckLine, RiFolderWarningFill } from 'react-icons/ri';
 
 const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCustomMode }) => {
   const [technique, setTechnique] = useState(techniqueName);
@@ -93,7 +94,7 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCus
           {isOpen && (
             <div className={`collapsible-details ${isPanelOpen ? 'shrink' : ''}`}>
               {type === 'details'
-                ? display_details(details)
+                ? display_details(details, section_header)
                 : display_references(references)}
             </div>
           )}
@@ -102,14 +103,48 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCus
     );
   }
 
-  const display_details = (tdetails) => {
+   const CustomCheckbox = () => {
+      return (
+        <div style={{ position: 'relative', width: '10px', height: '10px', top: '-3px' }}>
+          {/* Green box */}
+          <RiCheckboxBlankFill style={{ color: 'green', fontSize: '20px' }} />
+  
+          {/* White checkmark */}
+          <RiCheckLine
+            style={{
+              color: 'white',
+              position: 'absolute',
+              top: '5%',
+              left: '0px',
+              fontSize: '20px',
+            }}
+          />
+        </div>
+      );
+    };
+
+  const display_details = (tdetails, section_header) => {
     const urlRegex =
       /https?:\/\/(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+(?:\/[a-zA-Z0-9-_.~!*'();:@&=+$,/?#[\]]*)*|(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+(?:\/[a-zA-Z0-9-_.~!*'();:@&=+$,/?#[\]]*)*/g;
     if (tdetails) {
       return tdetails.map((item, index) => (
         <div key={index}>
           <div key={index + 1}>
-            <h4>{item?.type ? item.type : 'Description'}</h4>
+            <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  {item?.type || 'Description'}
+
+                  {item?.type && item.type !== 'Description' && viewCustomMode && item?.implemented &&
+                    (section_header === 'Detection' || section_header === 'Mitigation') ? (
+                      <CustomCheckbox />
+                    ) : (
+                      item?.type && item.type !== 'Description' && viewCustomMode && (
+                        <RiFolderWarningFill style={{ color: 'orange', fontSize: '20px'}} />
+                      )
+                    )
+                  }
+            </h4>
+
+
             <ul className="collapsible-details-list">
               {(item?.details == null ? item : item.details)?.map((line, lineIndex) => {
                 const matches = [...line.matchAll(urlRegex)];
