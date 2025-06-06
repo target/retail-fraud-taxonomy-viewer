@@ -50,6 +50,43 @@ export const formatFields = (inputJson) => {
   return inputJson.map(item => item.value);
 };
 
+export const consolidateData = (data) => {
+  // Step 0: Remove rows where all keys have empty string values
+  const filteredData = data.filter(row => {
+    return Object.values(row).some(value => value !== '');
+  });
+
+  // Step 1: Collect all non-empty values for each column
+  const nonEmptyValues = {};
+
+  filteredData.forEach((row) => {
+    Object.entries(row).forEach(([key, value]) => {
+      if (value !== '') {
+        if (!nonEmptyValues[key]) {
+          nonEmptyValues[key] = [];
+        }
+        nonEmptyValues[key].push(value);
+      }
+    });
+  });
+
+  // Step 2: Reconstruct rows with consolidated non-empty values
+  return filteredData.map((row) => {
+    const newRow = {};
+
+    Object.keys(row).forEach((key) => {
+      if (nonEmptyValues[key] && nonEmptyValues[key].length > 0) {
+        newRow[key] = nonEmptyValues[key].shift();
+      } else {
+        newRow[key] = '';
+      }
+    });
+
+    return newRow;
+  });
+};
+
+
 
 const downloadJSON = (data) => {
   const now = new Date();

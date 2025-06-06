@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { FaChevronUp, FaChevronDown } from 'react-icons/fa';
 import './ManageContent.css';
 import { fetchAllTechniques, fetchTechnique, dataArray, getUniqueTechniques } from '../../utils/dataMap';
-import { transformData, transformKeyValue, transformReference, formatDetails, formatFields, formatReferences, handleNewTactic, addTechniqueIfNotExists } from './ManageContentUtils';
+import { transformData, transformKeyValue, transformReference, formatDetails, formatFields, formatReferences, handleNewTactic, addTechniqueIfNotExists, consolidateData } from './ManageContentUtils';
 import { RiAddCircleLine, RiCheckboxFill, RiDeleteBinLine } from 'react-icons/ri';
 import { Alert } from '../Alert/Alert'
 
@@ -351,7 +351,7 @@ const ManageContent = (props) => {
         handleNewTactic(techniqueName, tactics)
         let inputJSON = localStorage.getItem('technique_table') ? JSON.parse(localStorage.getItem('technique_table')) : [];
         addedTechnique = addTechniqueIfNotExists(inputJSON, tactics, techniqueName)
-        localStorage.setItem('technique_table', JSON.stringify(addedTechnique));
+        localStorage.setItem('technique_table', JSON.stringify(consolidateData(addedTechnique)));
       }
 
       // Now, update the localStorage based on techniqueName
