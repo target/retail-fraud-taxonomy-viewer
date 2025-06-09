@@ -152,6 +152,8 @@ const TechniquesTable = ({
         localStorage.setItem('techniques', JSON.stringify(dataArray));
       }
 
+      console.log('selectedTechnique', selectedTechnique)
+
       if (selectedTechnique) {
         const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
 
@@ -1114,7 +1116,9 @@ const TechniquesTable = ({
                     {sub_techniques &&
                       sub_techniques.map((line, index) => (
                         <li
-                          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                            color: hiddenTechniques?.includes(line) ? 'grey' : 'white',
+                           }}
                           tabIndex={0}
                           key={index}
                           onFocus={() => {
