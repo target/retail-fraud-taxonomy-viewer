@@ -400,7 +400,7 @@ const ManageContent = (props) => {
   return (
     <div>
       {/* Collapsible Technique Section */}
-      <section className="collapsible-section">
+      <section className="collapsible-section1">
         <div>
           {showFailAlert && (
             <Alert
@@ -428,7 +428,7 @@ const ManageContent = (props) => {
             </div>
           )}
           <div
-            className={`Collapsible__trigger ${openSections.technique ? 'open' : ''}`}
+            className={`Collapsible__trigger1 ${openSections.technique ? 'open' : ''}`}
             onClick={() => handleToggle('technique')}
           >
             <h4>Technique Description</h4>
@@ -440,7 +440,7 @@ const ManageContent = (props) => {
           </div>
 
           {openSections.technique && (
-            <div className="collapsible-details">
+            <div className="collapsible-details1">
               <form>
                 <div>
                   <label htmlFor="name" style={{ color: 'white', marginRight: '5px' }}>
@@ -470,7 +470,7 @@ const ManageContent = (props) => {
                 >
                   <h4 style={{ color: 'white' }}>Description</h4>
                   {fields.description.map((field, index) => (
-                    <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', width: '100%' }}>
                       <textarea
                         value={field.value}
                         onChange={(e) => handleFieldChange('description', index, e)}
@@ -561,10 +561,10 @@ const ManageContent = (props) => {
       </section>
 
       {/* Collapsible Mitigation Section */}
-      <section className="collapsible-section">
+      <section className="collapsible-section1">
         <div>
           <div
-            className={`Collapsible__trigger ${openSections.mitigation ? 'open' : ''}`}
+            className={`Collapsible__trigger1 ${openSections.mitigation ? 'open' : ''}`}
             onClick={() => handleToggle('mitigation')}
           >
             <h4>Mitigation</h4>
@@ -576,7 +576,7 @@ const ManageContent = (props) => {
           </div>
 
           {openSections.mitigation && (
-            <div className="collapsible-details">
+            <div className="collapsible-details1">
               <form>{addKeyValue('mitigation')}</form>
             </div>
           )}
@@ -584,10 +584,10 @@ const ManageContent = (props) => {
       </section>
 
       {/* Collapsible Detection Section */}
-      <section className="collapsible-section">
+      <section className="collapsible-section1">
         <div>
           <div
-            className={`Collapsible__trigger ${openSections.detection ? 'open' : ''}`}
+            className={`Collapsible__trigger1 ${openSections.detection ? 'open' : ''}`}
             onClick={() => handleToggle('detection')}
           >
             <h4>Detection</h4>
@@ -599,7 +599,7 @@ const ManageContent = (props) => {
           </div>
 
           {openSections.detection && (
-            <div className="collapsible-details">
+            <div className="collapsible-details1">
               <form>{addKeyValue('detection')}</form>
             </div>
           )}
@@ -607,10 +607,10 @@ const ManageContent = (props) => {
       </section>
 
       {/* Collapsible References Section */}
-      <section className="collapsible-section">
+      <section className="collapsible-section1">
         <div>
           <div
-            className={`Collapsible__trigger ${openSections.references ? 'open' : ''}`}
+            className={`Collapsible__trigger1 ${openSections.references ? 'open' : ''}`}
             onClick={() => handleToggle('references')}
           >
             <h4>References</h4>
@@ -622,7 +622,7 @@ const ManageContent = (props) => {
           </div>
 
           {openSections.references && (
-            <div className="collapsible-details">
+            <div className="collapsible-details1">
               <form>{addKeyValue('references')}</form>
             </div>
           )}

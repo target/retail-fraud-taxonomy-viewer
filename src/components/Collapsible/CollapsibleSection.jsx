@@ -103,21 +103,26 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCus
           </div>
 
           {isOpen && (
-              <div className={`collapsible-details ${isPanelOpen ? 'shrink' : ''}`}>
-                {type === 'details' ? (
-                  <>
-                    {viewCustomMode && (section_header === 'Mitigation' || section_header === 'Detection') && (
-                      <div style={{ marginLeft: '40px' }}>
-                        <CircularProgress percentage={getCoverage(techniqueName, section_header)}/>
-                      </div>
-                    )}
-
+              <div className={`collapsible-details ${isPanelOpen ? 'shrink' : ''}`} style={{ display: 'flex', width: '100%', flexWrap: 'nowrap' }}>
+              {type === 'details' ? (
+                <>
+                  {/* First section for Display Details (takes 70% of width) */}
+                  <div className="details-section1">
                     {display_details(details, section_header)}
-                  </>
-                ) : (
-                  display_references(references)
-                )}
-              </div>
+                  </div>
+            
+                  {/* Second section for CircularProgress (takes 30% of width) */}
+                  <div className="circular-progress-section">
+                    {viewCustomMode && (section_header === 'Mitigation' || section_header === 'Detection') && (
+                      <CircularProgress percentage={getCoverage(techniqueName, section_header)} />
+                    )}
+                  </div>
+                </>
+              ) : (
+                display_references(references)
+              )}
+            </div>
+            
           )}
 
         </div>

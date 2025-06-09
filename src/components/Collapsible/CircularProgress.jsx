@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const CircularProgress = ({ percentage = 65, size = 120, strokeWidth = 12 }) => {
+export const CircularProgress = ({ percentage = 65, size = 150, strokeWidth = 13 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = circumference * (1 - percentage / 100);
@@ -37,7 +37,7 @@ export const CircularProgress = ({ percentage = 65, size = 120, strokeWidth = 12
         y="50%"
         dominantBaseline="central"
         textAnchor="middle"
-        fontSize="24"
+        fontSize="30"
         fontWeight="bold"
         fill="#4caf50"
       >
@@ -48,7 +48,7 @@ export const CircularProgress = ({ percentage = 65, size = 120, strokeWidth = 12
         y="70%"
         dominantBaseline="central"
         textAnchor="middle"
-        fontSize="12"
+        fontSize="18"
         fill="white"
       >
         Coverage

@@ -35,8 +35,6 @@ h3, h4 {
 }
 
 .Collapsible__trigger .collapse-icon {
-  /* just a little tweak to get it to optically align with the technique name's
-     close icon */
   margin-right: 4px;
 }
 
@@ -44,7 +42,7 @@ h3, h4 {
   --collapsible-details-rhythm: calc(var(--gap) / 4);
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;         
   justify-content: flex-start;
   
   box-sizing: border-box;
@@ -66,7 +64,7 @@ h3, h4 {
   width: 80%;
 }
 
-/* collapsible details ubheadings */
+/* collapsible details headings */
 h4 {
   font-weight: bold;
 }
@@ -79,12 +77,14 @@ h4 {
   margin-bottom: var(--collapsible-details-rhythm);
 }
 
-/* most list content is formatted like paragraphs, with a little indent */
+/* Most list content is formatted with a little indent */
 .collapsible-details-list > li {
   list-style-type: disc;
   margin-left: var(--gap);
   border-bottom: none;
+  margin-bottom: var(--gap); /* Add gap between <li> items */
 }
+
 .collapsible-details-list > li:not(:last-of-type) {
   margin-bottom: calc(var(--gap) / 4);
 }
@@ -95,8 +95,40 @@ h4 {
   border-bottom: none;
 }
 
+.collapsible-details {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  box-sizing: border-box; 
+}
 
+/* Details section and circular progress section widths */
+.details-section1 {
+  width: 70%; /* 70% of the width */
+  padding-right: 20px; /* Optional: space between the sections */
+  box-sizing: border-box; /* Ensures padding is included in the width calculation */
+}
 
+.circular-progress-section {
+  width: 30%; /* 30% of the width */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px; /* Optional: space between the sections */
+  box-sizing: border-box; /* Ensures padding is included in the width calculation */
+}
 
+/* Media Queries for responsive design */
+@media (max-width: 1024px) { /* Tablet and below */
+  .details-section1,
+  .circular-progress-section {
+    width: 50%; /* On medium screens, each section will take 50% */
+  }
+}
 
-
+@media (max-width: 600px) { /* Mobile and below */
+  .details-section1,
+  .circular-progress-section {
+    width: 100%; /* Each section takes 100% on mobile screens */
+  }
+}
