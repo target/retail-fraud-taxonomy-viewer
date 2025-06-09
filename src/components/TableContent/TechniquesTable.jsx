@@ -152,8 +152,6 @@ const TechniquesTable = ({
         localStorage.setItem('techniques', JSON.stringify(dataArray));
       }
 
-      console.log('selectedTechnique', selectedTechnique)
-
       if (selectedTechnique) {
         const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
 
