@@ -105,6 +105,7 @@ const Header = ({
       const newValue = !hide;
       setHide(newValue);
       onHideClick(newValue);
+      onViewCustomContent(true);
     } else if (iconName === 'RiPaletteLine') {
       setShowPopup(!showPopup);
     } else if (iconName === 'RiBarChartFill') {
