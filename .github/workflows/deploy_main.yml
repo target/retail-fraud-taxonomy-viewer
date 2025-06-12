@@ -62,6 +62,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           clean: true  # Clear root before deploying main
       
+      - name: Set up Git user
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+      - name: Set up GH_TOKEN for release
+        run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
       - name: Release
         run: npm run release
 
