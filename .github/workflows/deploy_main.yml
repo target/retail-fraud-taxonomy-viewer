@@ -76,8 +76,8 @@ jobs:
           git log --oneline -n 5
           git tag
 
-      - name: Show auto info
-        run: npx auto info
+      # - name: Show auto info
+      #   run: npx auto info
         
       - name: Release with auto
         if: github.ref == 'refs/heads/main'
