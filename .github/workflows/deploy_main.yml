@@ -70,6 +70,15 @@ jobs:
           git config --global user.email "actions@github.com"
       - name: Set up GH_TOKEN for release
         run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+
+      - name: Show recent commits and tags
+        run: |
+          git log --oneline -n 5
+          git tag
+
+      - name: Show auto info
+        run: npx auto info
+        
       - name: Release
         run: npm run release
 
