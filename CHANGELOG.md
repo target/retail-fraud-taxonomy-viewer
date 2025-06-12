@@ -1,3 +1,15 @@
+# v2.0.3 (Thu Jun 12 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: Streamlined version ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 1
+
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
 # v1.5.9 (Thu Jun 12 2025)
 
 ### Release Notes
