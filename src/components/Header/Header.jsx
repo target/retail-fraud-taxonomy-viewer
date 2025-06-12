@@ -202,8 +202,6 @@ const Header = ({
   return (
     <header>
       <img width="250" height="50" className="logo" alt="NRF Logo" src={NRFLogo} />
-      <span>Dev Build v1.0</span>
-
       {showFailAlert && <Alert classStyle="alert-fail" heading={alertHeading} value={alertVal} />}
       {responseSubmit && <Alert classStyle="alert-success" heading={alertHeading} value={alertVal} />}
 
