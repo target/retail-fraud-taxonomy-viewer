@@ -53,17 +53,6 @@ jobs:
           else
             npm run build:prod
           fi
-
-      - name: Deploy main to root
-        if: github.ref == 'refs/heads/main'
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: dist  # Use the production build folder
-          target-folder: ''  # Deploy to the root folder
-          token: ${{ secrets.GITHUB_TOKEN }}
-          clean: true  # Clear root before deploying main
-      
       - name: Set up Git user
         run: |
           git config --global user.name "GitHub Actions"
@@ -84,6 +73,17 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run release
+      - name: Deploy main to root
+        if: github.ref == 'refs/heads/main'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist  # Use the production build folder
+          target-folder: ''  # Deploy to the root folder
+          token: ${{ secrets.GITHUB_TOKEN }}
+          clean: true  # Clear root before deploying main
+      
+
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
