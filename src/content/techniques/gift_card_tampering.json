@@ -1,66 +1,75 @@
 {
-    "code": "FT1203",
-    "name": "Gift Card Tampering",
-    "parent_technique": "",
-    "tactics": [
-        "Control"
-    ],
-    "schemes": [
-        "Gift Card Fraud"
-    ],
-    "sub_techniques": [],
-    "technique_description": [
-        "Fraudster takes physical possession of an unactivated gift card and takes the information that allows them to control the gift card when it is funded and activated.",
-        "An example is if a fraudster steals gift cards from a store. They copy down the pertinent information needed to control the gift card and verify funds such as gift card number and security PIN. The fraudster then repackages the gift card and returns it to the store. When a victim purchases the gift card and loads value, the fraudster can spend the funds on the gift card without the victim\u2019s awareness."
-    ],
-    "mitigation": [
-        {
-            "type": "Primary Gift Card Lock-In",
-            "details": [
-                "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
-            ]
-        },
-        {
-            "type": "Login Required",
-            "details": [
-                "At physical locations, keep all company, store or corporate-related documents, manuals or communication in a non-public or secure area not visible to non-employees."
-            ]
-        },
-        {
-            "type": "Gift Card Location",
-            "details": [
-                "Store gift cards behind checkout counter to limit theft."
-            ]
-        },
-        {
-            "type": "Video Surveillance System",
-            "details": [
-                "For in-store gift card displays, consider the placement of a video security camera (CCTV) to monitor the area. Utilize signage to inform customers of CCTV use."
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "Security Guard",
-            "details": [
-                "At physical locations, use security guards and/or other store employees to identify instances of fraudsters stealing gift cards and/or returning tampered gift cards."
-            ]
-        },
-        {
-            "type": "Video Surveillance Systems",
-            "details": [
-                "At physical locations, use video surveillance to identify instances of fraudsters stealing gift cards and/or returning tampered gift cards."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "Industry Partner Collaboration",
-            "source": ""
-        },
-        {
-            "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
-            "source": "https://www.acams.org/en/media/document/29436"
-        }
-    ]
+  "code": "FT1203",
+  "name": "Gift Card Tampering",
+  "parent_technique": "",
+  "tactics": [
+    "Control"
+  ],
+  "schemes": [
+    "Gift Card Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "Fraudster takes physical possession of an unactivated gift card and takes the information that allows them to control the gift card when it is funded and activated.",
+    "An example is if a fraudster steals gift cards from a store. They copy down the pertinent information needed to control the gift card and verify funds such as gift card number and security PIN. The fraudster then repackages the gift card and returns it to the store. When a victim purchases the gift card and loads value, the fraudster can spend the funds on the gift card without the victim\u2019s awareness."
+  ],
+  "mitigation": [
+    {
+      "type": "Primary Gift Card Lock-In",
+      "details": [
+        "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Login Required",
+      "details": [
+        "At physical locations, keep all company, store or corporate-related documents, manuals or communication in a non-public or secure area not visible to non-employees."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Gift Card Location",
+      "details": [
+        "Store gift cards behind checkout counter to limit theft."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Video Surveillance System",
+      "details": [
+        "For in-store gift card displays, consider the placement of a video security camera (CCTV) to monitor the area. Utilize signage to inform customers of CCTV use."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Security Guards",
+      "details": [
+        "At physical locations, use security guards and/or other store employees to identify instances of fraudsters stealing gift cards and/or returning tampered gift cards."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Video Surveillance Systems",
+      "details": [
+        "At physical locations, use video surveillance to identify instances of fraudsters stealing gift cards and/or returning tampered gift cards."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    },
+    {
+      "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
+      "source": "https://www.acams.org/en/media/document/29436"
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
 }

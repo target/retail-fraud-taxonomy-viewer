@@ -19,7 +19,8 @@
       "type": "Password Policy",
       "details": [
         "Encourage using strong passwords with sufficient length and complexity. Discourage reusing passwords."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "detection": [
@@ -27,7 +28,8 @@
       "type": "Online Identities",
       "details": [
         "Subscribe to breach databases and monitor logins for usage of known or publicly compromised credentials."
-      ]
+      ],
+      "implemented": false
     }
   ],
   "references": [
@@ -43,5 +45,8 @@
       "name": "Authentication and Access to Financial Institution Services and Systems",
       "source": "https://www.ffiec.gov/guidance/Authentication-and-Access-to-Financial-Institution-Services-and-Systems.pdf"
     }
-  ]
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
 }

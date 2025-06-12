@@ -1,6 +1,6 @@
 {
   "name": "retail-fraud-taxonomy-viewer",
-  "version": "1.5.8",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "dependencies": {
@@ -13,6 +13,7 @@
     "build": "vite build --mode $BUILD_MODE",
     "build:prod": "vite build --mode production",
     "build:dev": "vite build --mode development",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "release": "auto shipit --message 'Update CHANGELOG.md'",
     "test": "vitest",

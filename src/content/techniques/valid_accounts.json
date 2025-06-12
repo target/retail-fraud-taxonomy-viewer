@@ -1,79 +1,88 @@
 {
-    "code": "FT1104",
-    "name": "Valid Accounts",
-    "parent_technique": "",
-    "tactics": [
-        "Initial Access"
-    ],
-    "schemes": [
-        "Gift Card Fraud",
-        "Account Take Over"
-    ],
-    "sub_techniques": [
-        "Fraudulent Account",
-        "Fraudulent Account Update"
-    ],
-    "technique_description": [
-        "The fraudster may obtain, create and abuse accounts to gain access, elevate access or control a resource. Since these credentials are generally legitimate, they may be used to bypass access controls in place to protect resources. This can also be used to achieve persistence in a system.",
-        "One example of this is if a fraudster gains control over a loyalty account. The fraudster can control the spending of loyalty points to buy items to support monetization. If gift cards are tied to the accounts, this may also be a method to control gift card use."
-    ],
-    "mitigation": [
-        {
-            "type": "Multi-Factor Authentication",
-            "details": [
-                "Use multiple forms of authentication such as username and password paired with a one-time passcode before permitting access.",
-                "Require identity verification upon detection of access requests that are significantly different than what is expected for the individual."
-            ]
-        },
-        {
-            "type": "Password Policy",
-            "details": [
-                "Encourage using strong passwords with sufficient length and complexity. Discourage reusing passwords."
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "Network Traffic Attributes",
-            "details": [
-                "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
-            ]
-        },
-        {
-            "type": "Time-Based Attributes",
-            "details": [
-                "Based on the location of your operations, monitor for activities that occur during off hours."
-            ]
-        },
-        {
-            "type": "Device Attributes",
-            "details": [
-                "Monitor device factors such as device type, user agent string, operating system, cookies."
-            ]
-        },
-        {
-            "type": "Behavioral Attributes ",
-            "details": [
-                "Monitor for access attempts and purchases that are significantly different from known good behavior for each customer."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "MITRE ATT&CK",
-            "source": "https://attack.mitre.org/techniques/T1078/"
-        },
-        {
-            "name": "Top 10 Digital Commerce Account Risks & How to Mitigate Them by Gunnar Peterson",
-            "source": "https://www.forter.com/blog/rh-isac-account-risk-mitigation/"
-        },
-        {
-            "name": "Authentication and Access to Financial Institution Services and Systems",
-            "source": "https://www.ffiec.gov/guidance/Authentication-and-Access-to-Financial-Institution-Services-and-Systems.pdf"
-        },
-        {
-            "name": "NIST Digital Identity Guidelines 800-63",
-            "source": "https://pages.nist.gov/800-63-3/"
-        }
-    ]
+  "code": "FT1104",
+  "name": "Valid Accounts",
+  "parent_technique": "",
+  "tactics": [
+    "Initial Access"
+  ],
+  "schemes": [
+    "Gift Card Fraud",
+    "Account Take Over"
+  ],
+  "sub_techniques": [
+    "Fraudulent Account",
+    "Fraudulent Account Update"
+  ],
+  "technique_description": [
+    "The fraudster may obtain, create and abuse accounts to gain access, elevate access or control a resource. Since these credentials are generally legitimate, they may be used to bypass access controls in place to protect resources. This can also be used to achieve persistence in a system.",
+    "One example of this is if a fraudster gains control over a loyalty account. The fraudster can control the spending of loyalty points to buy items to support monetization. If gift cards are tied to the accounts, this may also be a method to control gift card use."
+  ],
+  "mitigation": [
+    {
+      "type": "Multi-Factor Authentication",
+      "details": [
+        "Use multiple forms of authentication such as username and password paired with a one-time passcode before permitting access.",
+        "Require identity verification upon detection of access requests that are significantly different than what is expected for the individual."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Password Policy",
+      "details": [
+        "Encourage using strong passwords with sufficient length and complexity. Discourage reusing passwords."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Network Traffic Attributes",
+      "details": [
+        "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Time-Based Attributes",
+      "details": [
+        "Based on the location of your operations, monitor for activities that occur during off hours."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Device Attributes",
+      "details": [
+        "Monitor device factors such as device type, user agent string, operating system, cookies."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavioral Attributes ",
+      "details": [
+        "Monitor for access attempts and purchases that are significantly different from known good behavior for each customer."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "MITRE ATT&CK",
+      "source": "https://attack.mitre.org/techniques/T1078/"
+    },
+    {
+      "name": "Top 10 Digital Commerce Account Risks & How to Mitigate Them by Gunnar Peterson",
+      "source": "https://www.forter.com/blog/rh-isac-account-risk-mitigation/"
+    },
+    {
+      "name": "Authentication and Access to Financial Institution Services and Systems",
+      "source": "https://www.ffiec.gov/guidance/Authentication-and-Access-to-Financial-Institution-Services-and-Systems.pdf"
+    },
+    {
+      "name": "NIST Digital Identity Guidelines 800-63",
+      "source": "https://pages.nist.gov/800-63-3/"
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
 }

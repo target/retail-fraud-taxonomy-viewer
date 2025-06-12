@@ -6,6 +6,7 @@
   width: 250px;
   height: 100%;
   background-color: #333;
+  overflow-y: auto;
   color: white;
   padding: 20px;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
@@ -31,7 +32,6 @@
 .filter-section {
   margin-bottom: 20px;
   border: 2px solid white; 
-  height: 270px;
   padding: 10px;
 }
 
@@ -78,6 +78,16 @@
   height: 40px;
   color: white;
   padding: 0 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-button {
+  background-color: #0099cc !important;
+  height: 40px;
+  color: white;
+  margin-top: 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;

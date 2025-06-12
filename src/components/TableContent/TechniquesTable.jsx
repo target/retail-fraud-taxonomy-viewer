@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { RiExpandLeftRightFill } from 'react-icons/ri';
+import { RiExpandLeftRightFill, RiEdit2Fill, RiCheckboxBlankFill, RiCheckLine, RiFolderWarningFill } from 'react-icons/ri';
 import {
   fetchTechnique,
   hasSubTechnique,
   filterDataMap,
   fetchAllTechniques,
+  dataArray,
+  handleHideToggle
 } from '../../utils/dataMap';
 import './Table.css';
 import './subtechnique.css';
@@ -14,6 +16,9 @@ const EXPAND = 'expand';
 const COLLAPSE = 'collapse';
 const DYNAMIC_COLUMN_PREFIX = 'New Column';
 const SHOW_ALL = 'Show All';
+const MITIGATION = 'mitigation';
+const SCHEMES = 'schemes';
+const DETECTION = 'detection';
 const FOCUS = '#444';
 const NO_FOCUS = 'transparent';
 
@@ -22,8 +27,20 @@ const TechniquesTable = ({
   searchFilter,
   searchFilterType,
   isPanelOpen,
+  onEditClick,
+  editStatus,
+  importContent,
+  viewCustomMode,
+  selectedTechnique,
+  hideStatus,
+  hideToggleStatus,
+  selectedColor,
+  riskScoreInfo
 }) => {
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState(() => {
+    const savedData = localStorage.getItem('technique_table');
+    return savedData ? JSON.parse(savedData) : [];
+  });
   const [addedColumns, setAddedColumns] = useState([]);
   const [filteredDataMap, setFilteredDataMap] = useState([]);
   const [allTechniques, setAllTechniques] = useState([]);
@@ -34,55 +51,180 @@ const TechniquesTable = ({
   const hasFocused = useRef(false);
   const [columnsProcessed, setColumnsProcessed] = useState(new Set());
   const columnsProcessedRef = useRef(new Set(columnsProcessed));
+  const [hiddenTechniques, setHideTechniques] = useState([]);
+  const [cellColors, setCellColors] = useState({});
 
+  const handleEdit = (technique) => {
+    onEditClick(technique);
+  };
+
+  const fetchTechniques = async () => {
+    const fetchedTechniques = await fetchAllTechniques(viewCustomMode);
+    setAllTechniques(fetchedTechniques);
+    setTableData(fetchedTechniques);
+  };
+
+  // Focus the first cell after mount
   useLayoutEffect(() => {
-    // Wait until the table and its td elements are rendered
     const checkAndFocus = () => {
       if (hasFocused.current) return;
-
       const table = tableRef.current;
       if (table) {
         const cells = table.querySelectorAll('td');
         if (cells.length > 0) {
-          const initialCell = cells[0];
-
-          if (initialCell) {
-            initialCell.focus();
-            hasFocused.current = true;
-          }
+          cells[0].focus();
+          hasFocused.current = true;
         }
       }
     };
-
     setTimeout(checkAndFocus, 100);
-
     return () => {
       hasFocused.current = false;
     };
   }, []);
 
   useEffect(() => {
+    if (viewCustomMode) {
+      const local = localStorage.getItem("technique_table");
+      if (local) {
+        try {
+          const parsed = JSON.parse(local);
+          if (Array.isArray(parsed)) {
+            setTableData(parsed);
+          }
+        } catch (e) {
+          console.error("Error parsing localStorage on mount", e);
+        }
+      }
+    } else {
+      fetchTechniques();
+    }
+  }, []);
+
+  // Handle importContent updates
+  useEffect(() => {
+    if (importContent?.technique_table) {
+      localStorage.setItem('technique_table', JSON.stringify(importContent.technique_table));
+      localStorage.setItem('techniques', JSON.stringify(importContent.techniques));
+      handleHideTechniques()
+    }
+  }, [importContent]);
+
+  useEffect(() => {
+    setAddedColumns([])
+    if (!importContent) {
+      if (viewCustomMode) {
+        const local = localStorage.getItem("technique_table");
+        try {
+          const parsed = local ? JSON.parse(local) : [];
+          if (Array.isArray(parsed)) {
+            setTableData(parsed);
+          }
+        } catch (e) {
+          console.error("Error loading custom content from localStorage", e);
+        }
+      } else {
+        setTableData(allTechniques);
+      }
+    }
+
+    if (!viewCustomMode) {
+      fetchTechniques();
+      setHideTechniques([])
+    } else {
+      handleHideTechniques()
+    }
+
+
+  }, [viewCustomMode]);
+
+  useEffect(() => {
+    if (!viewCustomMode) {
+      setTableData(allTechniques);
+    }
+  }, [allTechniques]);
+
+  useEffect(() => {
     const fetchTechniques = async () => {
-      const fetchedTechniques = await fetchAllTechniques();
-      setAllTechniques(fetchedTechniques);
+      if (!localStorage.getItem('technique_table')) {
+        const fetchedTechniques = await fetchAllTechniques(viewCustomMode);
+        localStorage.setItem('technique_table', JSON.stringify(fetchedTechniques));
+        localStorage.setItem('techniques', JSON.stringify(dataArray));
+      }
+
+      if (selectedTechnique) {
+        const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+        const updatedTechniques = storedTechniques.map(item => {
+          if (item.name === selectedTechnique) {
+            return { ...item, hide: hideStatus };
+          }
+          return item;
+        });
+
+        localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
+
+        setHideTechniques(prev => {
+          const list = prev ?? []; // default to empty array if prev is undefined
+          const alreadyExists = list.includes(selectedTechnique);
+
+          if (hideStatus && !alreadyExists) {
+            return [...list, selectedTechnique];
+          } else if (!hideStatus && alreadyExists) {
+            return list.filter(item => item !== selectedTechnique);
+          }
+
+          return list;
+        });
+
+
+      }
     };
 
     fetchTechniques();
-  }, []);
 
-  useEffect(() => {
-    setTableData(allTechniques);
-  }, [allTechniques]);
+  }, [hideStatus]);
 
   useEffect(() => {
     setAddedColumns([]);
     if (searchFilter !== '' && searchFilterType !== SHOW_ALL) {
       setFilteredDataMap(filterDataMap(searchFilter, searchFilterType));
     } else {
-      setTableData(fetchAllTechniques());
+      setTableData(fetchAllTechniques(viewCustomMode));
     }
     // eslint-disable-next-line
   }, [searchFilter]);
+
+
+  const handleHideTechniques = () => {
+    setAddedColumns([]);
+    if (!hideToggleStatus) {
+      const matchedTechniques = handleHideToggle(hideToggleStatus);
+      const result = consolidateData(matchedTechniques);
+      setTableData(result)
+    } else {
+      const localStorageTechniques = JSON.parse(localStorage?.getItem('techniques'));
+      // Find hidden techniques
+      const hiddenTechniquesNames = localStorageTechniques
+        ?.filter(t => t.hide === true)
+        .map(t => t.name);
+
+      setHideTechniques(hiddenTechniquesNames)
+      fetchTechniques()
+    }
+
+    //When NRF Content is ON, irrespective of Hide/Unhide - Show ALL
+    if (!viewCustomMode) {
+      setHideTechniques([])
+      fetchTechniques()
+    }
+  }
+
+  useEffect(() => {
+    setAddedColumns([]);
+    handleHideTechniques()
+    // eslint-disable-next-line
+  }, [hideToggleStatus]);
 
   useEffect(() => {
     // Update the ref with the latest state combining rowIndex and columnsProcessed
@@ -111,9 +253,9 @@ const TechniquesTable = ({
           let headerName = getColumnHeaderByIndex(colIndex);  // Get the header name based on colIndex
           const isProcessed = columnsProcessedRef.current.has(`${rowIndex}-${headerName}`);
 
-          const hasSubTech = item[key] && item[key].length > 0 && hasSubTechnique(item[key]);
+          const hasSubTech = item[key] && item[key].length > 0 && hasSubTechnique(item[key], viewCustomMode);
 
-          if (!isProcessed && hasSubTech && searchFilter !== '' && searchFilterType !== SHOW_ALL ) {
+          if (!isProcessed && hasSubTech && searchFilter !== '' && searchFilterType !== SHOW_ALL) {
 
             if (item[key])
               manage_columns(item[key].toLowerCase(), rowIndex, colIndex);
@@ -128,6 +270,8 @@ const TechniquesTable = ({
     }
     // Trigger the process when tableData or addedColumns change
     processColumns();
+
+    handleCellColoring()
   }, [tableData, columnsProcessed]);
 
   const consolidateData = (data) => {
@@ -167,6 +311,7 @@ const TechniquesTable = ({
   };
 
   useEffect(() => {
+    setAddedColumns([]);
     setColumnsProcessed(new Set());
     columnsProcessedRef.current = new Set();
 
@@ -183,7 +328,11 @@ const TechniquesTable = ({
       });
     }
 
-    const filteredTechniques = allTechniques.map((technique) => {
+    if (allTechniques && allTechniques.length === 0) {
+      fetchTechniques();
+    }
+
+    let filteredTechniques = allTechniques.map((technique) => {
       const updatedTechnique = { ...technique };
       Object.keys(updatedTechnique).forEach((key) => {
         if (!filteredKeys.includes(updatedTechnique[key])) {
@@ -193,9 +342,77 @@ const TechniquesTable = ({
       return updatedTechnique;
     });
 
+    const isValueEmpty = value =>
+      value === "" || value === null || value === undefined;
+
+    const allKeysEmptyInAllObjects = (jsonArray) => {
+      return jsonArray.every(obj =>
+        Object.values(obj).every(isValueEmpty)
+      );
+    };
+
+    let tableIsEmpty = allKeysEmptyInAllObjects(filteredTechniques)
+
+    if ((searchFilterType === 'risk_score' || tableIsEmpty) && filteredKeys && filteredKeys.length > 0) {
+      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+      // Get keys from the first object once to create fresh empty entries dynamically
+      const baseKeys = Object.keys(filteredTechniques[0]);
+      const createEmptyEntry = () =>
+        baseKeys.reduce((acc, key) => {
+          acc[key] = '';
+          return acc;
+        }, {});
+
+      const updatedTechniques = [...filteredTechniques];
+
+      filteredKeys.forEach(name => {
+        const technique = storedTechniques.find(t => t.name.toLowerCase() === name.toLowerCase());
+        if (!technique) return;
+
+        let tactics;
+        try {
+          // If tactics is a JSON string, parse it. Otherwise, assume it's an array.
+          tactics = typeof technique.tactics === 'string' ? JSON.parse(technique.tactics) : technique.tactics;
+        } catch (err) {
+          return;
+        }
+
+        tactics.forEach(tactic => {
+          const tacticKey = tactic.toLowerCase().replace(/\s+/g, '_'); // normalize key
+
+          // Check if tacticKey exists
+          if (!(tacticKey in updatedTechniques[0])) {
+            return;
+          }
+
+          // Check if this technique.name already exists in any entry's tacticKey to avoid duplicates
+          const isDuplicate = updatedTechniques.some(entry => entry[tacticKey] === technique.name);
+          if (isDuplicate) {
+            return;
+          }
+
+          // Assign to first available object with empty slot
+          let assigned = false;
+          for (let i = 0; i < updatedTechniques.length; i++) {
+            if (!updatedTechniques[i][tacticKey]) {
+              updatedTechniques[i][tacticKey] = technique.name;
+              assigned = true;
+              break;
+            }
+          }
+          // If none available, create new entry
+          if (!assigned) {
+            const newEntry = createEmptyEntry();
+            newEntry[tacticKey] = technique.name;
+            updatedTechniques.push(newEntry);
+          }
+        });
+      });
+    }
+
     if (filteredTechniques.length > 0) {
       const result = consolidateData(filteredTechniques);
-
       if (result !== null && result.length > 0) {
         let index = Object.keys(result[0]).findIndex(key => result[0][key] !== '');
         setFocusedCell({ row: 0, col: index })
@@ -233,48 +450,146 @@ const TechniquesTable = ({
     const stringWithBreaks = (
       <ul>
         {sub_techniques &&
-          sub_techniques.map((line, index) => (
-            <li
-              tabIndex={0}
-              key={index}
-              onFocus={() => {
-                let row = rowIndex;
-                let col = colIndex;
-                const currentCell = tableRef.current?.querySelector(
-                  `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`,
-                );
-
-                if (!currentCell) return;
-
-                const subCells = currentCell.querySelectorAll('li');
-                const isSubcell = subCells.length > 0;
-
-                if (isSubcell) {
-                  for (let i = 0; i < subCells.length; i++) {
-                    if (i === index) {
-                      subCells[i]?.focus();
-                      subCells[i].style.backgroundColor = FOCUS;
-                    } else {
-                      subCells[i].style.backgroundColor = NO_FOCUS;
+          sub_techniques.map((line, index) => {
+            // Check if the line should be included
+            if (!hideToggleStatus && !hiddenTechniques?.includes(line)) {
+              return (
+                <li
+                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                  tabIndex={0}
+                  key={index}
+                  onFocus={() => {
+                    let row = rowIndex;
+                    let col = colIndex;
+                    const currentCell = tableRef.current?.querySelector(
+                      `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`
+                    );
+  
+                    if (!currentCell) return;
+  
+                    const subCells = currentCell.querySelectorAll('li');
+                    const isSubcell = subCells.length > 0;
+  
+                    if (isSubcell) {
+                      for (let i = 0; i < subCells.length; i++) {
+                        if (i === index) {
+                          subCells[i]?.focus();
+                          subCells[i].style.backgroundColor = FOCUS;
+                        } else {
+                          subCells[i].style.backgroundColor = NO_FOCUS;
+                        }
+                      }
                     }
-                  }
-                }
-              }}
-              onClick={(e) => {
-                e.stopPropagation(); // Prevents the event from bubbling up to the <td>
-                // onValueClick(line); // Trigger the onValueClick function
-                handleSubCellClick(rowIndex, colIndex, line, index);
-              }}
-            >
-              {line}
-            </li>
-          ))}
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevents the event from bubbling up to the <td>
+                    handleSubCellClick(rowIndex, colIndex, line, index);
+                  }}
+                >
+                  <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
+  
+                  {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && line && (
+                    <div>
+                      {fetchImplementationStatus(line)
+                        ? CustomCheckbox()
+                        : <RiFolderWarningFill style={{ color: 'orange' }} />}
+                    </div>
+                  )}
+  
+                  {editStatus && (
+                    <div
+                      style={{
+                        paddingRight: '10px',
+                        cursor: 'pointer',
+                        backgroundColor: 'rgb(48, 48, 48)',
+                        color: 'white'
+                      }}
+                      aria-label="edit"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(line);
+                      }}
+                    >
+                      <RiEdit2Fill className="white-icon" />
+                    </div>
+                  )}
+                </li>
+              );
+            } 
+            
+            if (hideToggleStatus) {
+              return (
+                <li
+                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+                  tabIndex={0}
+                  key={index}
+                  onFocus={() => {
+                    let row = rowIndex;
+                    let col = colIndex;
+                    const currentCell = tableRef.current?.querySelector(
+                      `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`
+                    );
+          
+                    if (!currentCell) return;
+          
+                    const subCells = currentCell.querySelectorAll('li');
+                    const isSubcell = subCells.length > 0;
+          
+                    if (isSubcell) {
+                      for (let i = 0; i < subCells.length; i++) {
+                        if (i === index) {
+                          subCells[i]?.focus();
+                          subCells[i].style.backgroundColor = FOCUS;
+                        } else {
+                          subCells[i].style.backgroundColor = NO_FOCUS;
+                        }
+                      }
+                    }
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevents the event from bubbling up to the <td>
+                    handleSubCellClick(rowIndex, colIndex, line, index);
+                  }}
+                >
+                  <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
+          
+                  {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && line && (
+                    <div>
+                      {fetchImplementationStatus(line)
+                        ? CustomCheckbox()
+                        : <RiFolderWarningFill style={{ color: 'orange' }} />}
+                    </div>
+                  )}
+          
+                  {editStatus && (
+                    <div
+                      style={{
+                        paddingRight: '10px',
+                        cursor: 'pointer',
+                        backgroundColor: 'rgb(48, 48, 48)',
+                        color: 'white'
+                      }}
+                      aria-label="edit"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(line);
+                      }}
+                    >
+                      <RiEdit2Fill className="white-icon" />
+                    </div>
+                  )}
+                </li>
+              );
+            }
+            // If condition not met, return null (i.e., don't render this item)
+            return null;
+          })}
       </ul>
     );
-
+  
     return stringWithBreaks;
   };
-
+  
   const rename_headers = (updatedData, operation, other_columns) => {
     let headers = [];
 
@@ -378,6 +693,13 @@ const TechniquesTable = ({
             });
           }
         }
+
+        if (focusedCell.col + 1 > columnNumber) {
+          setFocusedCell((prev) => {
+            const newCol = prev ? prev.col - 1 : 0;
+            return { row: prev.row, col: newCol };
+          });
+        }
         setTableData(updatedData);
       } else {
         // operation == add
@@ -393,6 +715,13 @@ const TechniquesTable = ({
           // setTableData(updatedData);
         } else {
           setAddedColumns([...addedColumns, newColumnIndex]);
+        }
+
+        if (focusedCell.col + 1 > columnNumber) {
+          setFocusedCell((prev) => {
+            const newCol = prev ? prev.col + 1 : 0;
+            return { row: prev.row, col: newCol };
+          });
         }
       }
     });
@@ -449,7 +778,7 @@ const TechniquesTable = ({
                     updatedRow[new_column_name] = '';
                     data_present_in_column = false;
                   } else {
-                    const techniqueName = fetchTechnique(technique);
+                    const techniqueName = fetchTechnique(technique, viewCustomMode);
                     let sub_tech = []
                     if (searchFilterType === '' || searchFilterType === SHOW_ALL) {
                       sub_tech = techniqueName['sub_techniques']
@@ -465,7 +794,7 @@ const TechniquesTable = ({
                       );
                       data_present_in_column = true;
                     }
-                    
+
                   }
                 }
                 if (tableRowIndex === tableData.length - 1) {
@@ -494,7 +823,7 @@ const TechniquesTable = ({
                   delete updatedRow[existingColumnName];
                 }
                 if (tableRowIndex === rowIndex) {
-                  const techniqueName = fetchTechnique(technique);
+                  const techniqueName = fetchTechnique(technique, viewCustomMode);
                   let sub_tech = []
                   if (searchFilterType === '' || searchFilterType === SHOW_ALL) {
                     sub_tech = techniqueName['sub_techniques']
@@ -524,7 +853,8 @@ const TechniquesTable = ({
                   rowIndex === tableRowIndex &&
                   !insertedNewColumn
                 ) {
-                  const techniqueName = fetchTechnique(technique);
+                  const techniqueName = fetchTechnique(technique, viewCustomMode);
+
                   let sub_tech = []
                   if (searchFilterType === '' || searchFilterType === SHOW_ALL) {
                     sub_tech = techniqueName['sub_techniques']
@@ -646,7 +976,14 @@ const TechniquesTable = ({
         if (subCells.length > 0) {
           subCells[index]?.focus(); // Focus the first <li> element
           // Set the background color of the newly focused subcell
-          subCells[index].style.backgroundColor = FOCUS;
+          for (let i = 0; i < subCells.length; i++) {
+
+            if (i == index) {
+              subCells[i].style.backgroundColor = FOCUS;
+            } else {
+              subCells[i].style.backgroundColor = NO_FOCUS;
+            }
+          }
         }
       }
       onValueClick(line);
@@ -659,7 +996,7 @@ const TechniquesTable = ({
       // Reset previously focused subcell's background color (if any)
       if (focusedCell) {
         const previousCell = tableRef.current?.querySelector(
-          `tr:nth-child(${focusedCell.row + 1}) td:nth-child(${focusedCell.col + 1})`,
+          `tbody tr:nth-child(${focusedCell.row + 1}) td:nth-child(${focusedCell.col})`,
         );
         if (previousCell) {
           // If the previous cell had subcells, reset their background color
@@ -702,54 +1039,265 @@ const TechniquesTable = ({
     }
   }, [focusedLiIndex]);
 
+  useEffect(() => {
+    if (!selectedTechnique) return;
+
+    if (selectedColor === 'rgba(0, 0, 0, 1)') {
+      setCellColors(prev =>
+        Object.fromEntries(
+          Object.keys(prev).map(key => [key, 'rgba(0, 0, 0, 1)'])
+        )
+      );
+    } else {
+      setCellColors(prev => ({
+        ...prev,
+        [selectedTechnique]: selectedColor
+      }));
+    }
+  }, [selectedColor]);
+
+  useEffect(() => {
+    if (!selectedTechnique) return;
+    //Update the risk score value of the technique
+    if (selectedTechnique && riskScoreInfo !== null) {
+      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+      const updatedTechniques = storedTechniques.map(item => {
+        if (item.name === selectedTechnique) {
+          return { ...item, risk_score: parseInt(riskScoreInfo) };
+        }
+        return item;
+      });
+
+      localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
+    }
+
+  }, [riskScoreInfo]);
+
+  function fetchImplementationStatus(selectedTechniqueName) {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+    const technique = storedTechniques.find(item => item.name === selectedTechniqueName);
+    if (!technique) return false;
+
+    const match = technique[searchFilterType]?.find(dets => dets.type === searchFilter);
+    return match ? match.implemented : false;
+  }
+
+  function extractText(node) {
+    if (typeof node === 'string' || typeof node === 'number') {
+      return node;
+    }
+    if (Array.isArray(node)) {
+      return node.map(extractText).join('');
+    }
+    if (node?.props?.children) {
+      return extractText(node.props.children);
+    }
+    return '';
+  }
+
+  function extractLiValues(reactUlElement) {
+    const children = reactUlElement?.props?.children;
+    if (!children) return [];
+
+    const liElements = Array.isArray(children) ? children : [children];
+
+    return liElements
+      .filter(child => child?.type === 'li')
+      .map(li => extractText(li.props.children));
+  }
+
+  const CustomCheckbox = () => {
+    return (
+      <div style={{ position: 'relative', width: '20px', height: '20px' }}>
+        {/* Green box */}
+        <RiCheckboxBlankFill style={{ color: 'green', fontSize: '20px' }} />
+
+        {/* White checkmark */}
+        <RiCheckLine
+          style={{
+            color: 'white',
+            position: 'absolute',
+            top: '0%',
+            left: '0px',
+            fontSize: '20px',
+          }}
+        />
+      </div>
+    );
+  };
+
   const renderRows = () => {
+    if (tableData && tableData.length === 0) {
+      if (viewCustomMode) {
+        const savedData = localStorage.getItem('technique_table');
+        if (savedData) setTableData(JSON.parse(savedData));
+      }
+    }
+
     return (
       tableData &&
       tableData.map((item, rowIndex) => (
         <tr key={rowIndex}>
-          {Object.keys(item).map((key, colIndex) => (
-            <td
-              key={rowIndex + '-' + colIndex}
-              className={item[key] === '' ? 'emptycell' : 'tabledata'}
-              tabIndex={0}
-              style={{
-                backgroundColor:
-                  focusedCell.row === rowIndex &&
-                    focusedCell.col === colIndex &&
-                    focusedLiIndex == null
-                    ? FOCUS
-                    : NO_FOCUS,
-                outline: 'none',
-              }}
-              onClick={() => {
-                if (item[key] !== '') {
-                  handleCellClick(rowIndex, colIndex, item, key);
-                }
-              }}
-            >
-              {item[key]}
-              {item[key] &&
-                item[key].length > 0 &&
-                hasSubTechnique(item[key]) && (
+          {Object.keys(item).map((key, colIndex) => {
+            const cellValue = item[key];
+
+            let isSubcell = false
+            let sub_techniques = []
+
+            if (cellValue !== null && typeof cellValue === 'object' && !Array.isArray(cellValue)) { //Sub Techniques
+              isSubcell = true
+              sub_techniques = extractLiValues(cellValue)
+            }
+
+            return (
+              <td
+                key={rowIndex + '-' + colIndex}
+                className={cellValue === '' ? 'emptycell' : 'tabledata'}
+                tabIndex={0}
+                style={{
+                  backgroundColor:
+                    cellColors[cellValue] ??
+                    (focusedCell.row === rowIndex &&
+                      focusedCell.col === colIndex &&
+                      focusedLiIndex == null
+                      ? FOCUS
+                      : NO_FOCUS),
+                  outline: 'none',
+                  color: hiddenTechniques?.includes(cellValue) ? 'grey' : 'white',
+                }}
+                onClick={() => {
+                  if (cellValue !== '') {
+                    handleCellClick(rowIndex, colIndex, item, key);
+                  }
+                }}
+              >
+                {/* Subcell rendering */}
+                {isSubcell ? (
+                  <ul>
+                    {sub_techniques &&
+                      sub_techniques.map((line, index) => (
+                        <li
+                          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                            color: hiddenTechniques?.includes(line) ? 'grey' : 'white',
+                           }}
+                          tabIndex={0}
+                          key={index}
+                          onFocus={() => {
+                            let row = rowIndex;
+                            let col = colIndex;
+                            const currentCell = tableRef.current?.querySelector(
+                              `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`,
+                            );
+
+                            if (!currentCell) return;
+
+                            const subCells = currentCell.querySelectorAll('li');
+                            const isSubcell = subCells.length > 0;
+
+                            if (isSubcell) {
+                              for (let i = 0; i < subCells.length; i++) {
+                                if (i === index) {
+                                  subCells[i]?.focus();
+                                  subCells[i].style.backgroundColor = FOCUS;
+                                } else {
+                                  subCells[i].style.backgroundColor = NO_FOCUS;
+                                }
+                              }
+                            }
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevents the event from bubbling up to the <td>
+                            // onValueClick(line); // Trigger the onValueClick function
+                            handleSubCellClick(rowIndex, colIndex, line, index);
+                          }}
+                        >
+                          <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
+                          {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && cellValue && (
+                            <div>
+                              {fetchImplementationStatus(cellValue)
+                                ? CustomCheckbox()
+                                : <RiFolderWarningFill style={{ color: 'orange' }} />}
+                            </div>
+                          )}
+                          {editStatus && (
+                            <>
+                              <div
+                                // className="sub-technique-editicon"
+                                style={{
+                                  paddingRight: '10px',
+                                  cursor: 'pointer',
+                                  backgroundColor: 'rgb(48, 48, 48)',
+                                  color: 'white'
+                                }}
+                                aria-label="edit"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  // e.preventDefault();
+                                  handleEdit(line);
+                                }}
+                              >
+                                <RiEdit2Fill className="white-icon" />
+                              </div>
+                            </>
+                          )}
+
+
+
+                          {/* <RiEdit2Fill/> */}
+                        </li>
+                      ))}
+                  </ul>
+                ) : (
                   <>
+                    {editStatus && cellValue && (
+                      <div
+                        className="editicon"
+                        aria-label="edit"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEdit(cellValue);
+                        }}
+                      >
+                        <RiEdit2Fill className="white-icon" />
+                      </div>
+                    )}
+                    {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && cellValue && (
+                      <div
+                        className="implementationicon"
+                        aria-label="implementation"
+                      >
+                        {fetchImplementationStatus(cellValue)
+                          ? CustomCheckbox()
+                          : <RiFolderWarningFill style={{ color: 'orange' }} />}
+                      </div>
+                    )}
+                    {cellValue}
+                  </>
+                )}
+
+                {/* Expand/collapse if sub-technique is present */}
+                {cellValue &&
+                  hasSubTechnique(cellValue, viewCustomMode) && (
                     <div
                       className="sidebar"
                       aria-label="expand collapse"
                       onClick={(e) => {
                         e.stopPropagation();
                         manage_columns(
-                          item[key].toLowerCase(),
+                          typeof cellValue === 'string' ? cellValue.toLowerCase() : '',
                           rowIndex,
-                          colIndex,
+                          colIndex
                         );
                       }}
                     >
                       <RiExpandLeftRightFill />
                     </div>
-                  </>
-                )}
-            </td>
-          ))}
+                  )}
+              </td>
+            );
+          })}
         </tr>
       ))
     );
@@ -868,8 +1416,36 @@ const TechniquesTable = ({
         }
       }
     }
-  }, [focusedCell, focusedLiIndex]);
 
+    handleCellColoring()
+  }, [focusedCell, focusedLiIndex, cellColors]);
+
+  const handleCellColoring = () => {
+    if (tableData && tableData.length > 0) {
+      const headers = Object.keys(tableData[0]);
+
+      for (let rowIndex = 0; rowIndex < tableData.length; rowIndex++) {
+        for (let colIndex = 0; colIndex < headers.length; colIndex++) {
+          const currentCell = tableRef.current?.querySelector(
+            `tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`,
+          );
+
+          if (!currentCell) return;
+
+          const subCells = currentCell.querySelectorAll('li');
+          const isSubcell = subCells.length > 0;
+
+          if (isSubcell) {
+            for (let i = 0; i < subCells.length; i++) {
+              subCells[i].style.backgroundColor = cellColors[subCells[i]?.textContent]
+            }
+          } else {
+            currentCell.style.backgroundColor = cellColors[tableData[rowIndex][colIndex]];
+          }
+        }
+      }
+    }
+  }
   return (
     <nav tabIndex={0} onKeyDown={handleKeyDown} ref={tableRef}>
       <table className={`table-container ${isPanelOpen ? 'shrink' : ''}`}>

@@ -7,8 +7,10 @@ import {
   fetchTechniqueReferences,
   formatData,
 } from '../../utils/dataMap';
+import { RiCheckboxBlankFill, RiCheckLine, RiFolderWarningFill } from 'react-icons/ri';
+import { CircularProgress } from './CircularProgress'
 
-const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
+const CollapsibleSection = ({ isPanelOpen, techniqueName, importContent, viewCustomMode }) => {
   const [technique, setTechnique] = useState(techniqueName);
   const [isVisible, setIsVisible] = useState(true);
   const [details, setDetails] = useState(null);
@@ -25,16 +27,35 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
 
   useEffect(() => {
     if (technique) {
-      const fetchDetails = async () => {
-        const fetchedDetails = await fetchTechniqueDetails(technique);
-        const fetchedReferences = await fetchTechniqueReferences(technique);
+      if (viewCustomMode) {
+        const fetchedDetails = JSON.parse(localStorage.getItem('techniques')).find(item =>
+          item.name === technique
+        );
         setDetails(fetchedDetails);
-        setReferences(fetchedReferences);
-      };
-
-      fetchDetails();
+        setReferences(fetchedDetails?.references);
+      } else {
+        const fetchDetails = async () => {
+          const fetchedDetails = await fetchTechniqueDetails(technique, viewCustomMode);
+          const fetchedReferences = await fetchTechniqueReferences(technique, viewCustomMode);
+          setDetails(fetchedDetails);
+          setReferences(fetchedReferences);
+        };
+        fetchDetails();
+      }
     }
-  }, [technique]);
+  }, [technique, viewCustomMode]);
+
+  useEffect(() => {
+
+    if (importContent) {
+      const result = importContent.techniques.filter(tq => tq.name === technique);
+
+      if (result && result.length > 0) {
+        setDetails(result[0]);
+        setReferences(result[0].references);
+      }
+    }
+  }, [importContent]);
 
   const handleToggle = (sectionKey) => {
     setOpenSections((prevState) => ({
@@ -47,6 +68,16 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
     setTechnique('');
     setIsVisible(false);
   };
+
+  const getCoverage = (techniqueName, section_header) => {
+      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+      const technique = storedTechniques.find(item => item.name === techniqueName);
+      if (!technique) return false;
+
+      const implementedCount = technique[section_header.toLowerCase()]?.filter(item => item.implemented === true).length;
+      const percentage =  Math.round((implementedCount / technique[section_header.toLowerCase()].length) * 100);
+      return percentage
+  }
 
   const show_details = (details, section_header, type) => {
     const isOpen = type === 'details' ? openSections[section_header] : openReference;
@@ -72,25 +103,74 @@ const CollapsibleSection = ({ isPanelOpen, techniqueName }) => {
           </div>
 
           {isOpen && (
-            <div className={`collapsible-details ${isPanelOpen ? 'shrink' : ''}`}>
-              {type === 'details'
-                ? display_details(details)
-                : display_references(references)}
+              <div className={`collapsible-details ${isPanelOpen ? 'shrink' : ''}`} style={{ display: 'flex', width: '100%', flexWrap: 'nowrap' }}>
+              {type === 'details' ? (
+                <>
+                  {/* First section for Display Details (takes 70% of width) */}
+                  <div className="details-section1">
+                    {display_details(details, section_header)}
+                  </div>
+            
+                  {/* Second section for CircularProgress (takes 30% of width) */}
+                  <div className="circular-progress-section">
+                    {viewCustomMode && (section_header === 'Mitigation' || section_header === 'Detection') && (
+                      <CircularProgress percentage={getCoverage(techniqueName, section_header)} />
+                    )}
+                  </div>
+                </>
+              ) : (
+                display_references(references)
+              )}
             </div>
+            
           )}
+
         </div>
       </section>
     );
   }
 
-  const display_details = (tdetails) => {
+   const CustomCheckbox = () => {
+      return (
+        <div style={{ position: 'relative', width: '10px', height: '10px', top: '-3px' }}>
+          {/* Green box */}
+          <RiCheckboxBlankFill style={{ color: 'green', fontSize: '20px' }} />
+  
+          {/* White checkmark */}
+          <RiCheckLine
+            style={{
+              color: 'white',
+              position: 'absolute',
+              top: '5%',
+              left: '0px',
+              fontSize: '20px',
+            }}
+          />
+        </div>
+      );
+    };
+
+  const display_details = (tdetails, section_header) => {
     const urlRegex =
       /https?:\/\/(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+(?:\/[a-zA-Z0-9-_.~!*'();:@&=+$,/?#[\]]*)*|(?:www\.)?[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+(?:\/[a-zA-Z0-9-_.~!*'();:@&=+$,/?#[\]]*)*/g;
     if (tdetails) {
       return tdetails.map((item, index) => (
         <div key={index}>
           <div key={index + 1}>
-            <h4>{item?.type ? item.type : 'Description'}</h4>
+            <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  {item?.type || 'Description'}
+                  {item?.type && item.type !== 'Description' && viewCustomMode && item?.implemented &&
+                    (section_header === 'Detection' || section_header === 'Mitigation') ? (
+                      <CustomCheckbox />
+                    ) : (
+                      item?.type && item.type !== 'Description' && viewCustomMode && (
+                        <RiFolderWarningFill style={{ color: 'orange', fontSize: '20px'}} />
+                      )
+                    )
+                    
+                  }
+            </h4>
+            
             <ul className="collapsible-details-list">
               {(item?.details == null ? item : item.details)?.map((line, lineIndex) => {
                 const matches = [...line.matchAll(urlRegex)];

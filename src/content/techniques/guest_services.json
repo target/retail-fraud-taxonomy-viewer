@@ -1,68 +1,78 @@
 {
-    "code": "FT1303.2",
-    "name": "Guest Services",
-    "parent_technique": "Checkout",
-    "tactics": [
-        "Monetization"
-    ],
-    "schemes": [
-        "Gift Card Fraud",
-        "Account Take Over"
-    ],
-    "sub_techniques": [],
-    "technique_description": [
-        "The fraudster uses the guest services in-store to convert illicit resources into liquid funds."
-    ],
-    "mitigation": [
-        {
-            "type": "Access Code Required",
-            "details": [
-                "Require an access code that is separate from the gift card before refunding gift card value."
-            ]
-        },
-        {
-            "type": "Behavior Prevention",
-            "details": [
-                "Identify potentially fraudulent returns and do not refund money if fraud is detected."
-            ]
-        },
-        {
-            "type": "Restocking Fees",
-            "details": [
-                "Require a fee for potentially fraudulent returns."
-            ]
-        },
-        {
-            "type": "Delayed Reimbursement",
-            "details": [
-                "Postpone refund by a predetermined amount of time for items that are commonly related to fraud."
-            ]
-        },
-        {
-            "type": "Training and Awareness",
-            "details": [
-                "Train customer service representatives to identify potential fraud situations and deny refund."
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "Transaction data",
-            "details": [
-                "Monitor and record product serial number of items that are commonly related to fraud."
-            ]
-        },
-        {
-            "type": "Velocity Attributes",
-            "details": [
-                "Monitor returns for total amount and total value of items returned."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "Industry Partner Collaboration",
-            "source": ""
-        }
-    ]
+  "code": "FT1303.2",
+  "name": "Guest Services",
+  "parent_technique": "Checkout",
+  "tactics": [
+    "Monetization"
+  ],
+  "schemes": [
+    "Gift Card Fraud",
+    "Account Take Over"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "The fraudster uses the guest services in-store to convert illicit resources into liquid funds."
+  ],
+  "mitigation": [
+    {
+      "type": "Access Code Required",
+      "details": [
+        "Require an access code that is separate from the gift card before refunding gift card value."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavior Prevention",
+      "details": [
+        "Identify potentially fraudulent returns and do not refund money if fraud is detected."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Restocking Fees",
+      "details": [
+        "Require a fee for potentially fraudulent returns."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Delayed Reimbursement",
+      "details": [
+        "Postpone refund by a predetermined amount of time for items that are commonly related to fraud."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Training and Awareness",
+      "details": [
+        "Train customer service representatives to identify potential fraud situations and deny refund."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction data",
+      "details": [
+        "Monitor and record product serial number of items that are commonly related to fraud."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Velocity Attributes",
+      "details": [
+        "Monitor returns for total amount and total value of items returned."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
 }

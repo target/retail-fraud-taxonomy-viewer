@@ -1,48 +1,54 @@
 {
-    "code": "FT1002",
-    "name": "Social Engineering",
-    "parent_technique": "",
-    "tactics": [
-        "Pre-Compromise"
-    ],
-    "schemes": [
-        "Gift Card Fraud",
-        "Account Take Over"
-    ],
-    "sub_techniques": [],
-    "technique_description": [
-        "The fraudster will use various means such as phishing or phone calls to fool victims into divulging resource information. Fraudsters may also target helpdesk or customer support to divulge resources or information or fraudulently update an account. This information can be used to support other tactics and future operations."
-    ],
-    "mitigation": [
-        {
-            "type": "Software Configuration",
-            "details": [
-                "Configure email gateway to filter message based on validity checks of sender domain and integrity of messages in combination with phishing email detection capabilities."
-            ]
-        },
-        {
-            "type": "Training and Awareness",
-            "details": [
-                "Utilize consumer fraud awareness and education campaigns, signage, pop-ups and other forms of communication. "
-            ]
-        }
-    ],
-    "detection": [
-        {
-            "type": "VoIP Attribute",
-            "details": [
-                "Monitor for known VoIP numbers that are typically used for fraud."
-            ]
-        }
-    ],
-    "references": [
-        {
-            "name": "MITRE ATT&CK",
-            "source": "https://attack.mitre.org"
-        },
-        {
-            "name": "Avoiding and Reporting Gift Card Scams",
-            "source": "https://consumer.ftc.gov/articles/avoiding-and-reporting-gift-card-scams#commonscams"
-        }
-    ]
+  "code": "FT1002",
+  "name": "Social Engineering",
+  "parent_technique": "",
+  "tactics": [
+    "Pre-Compromise"
+  ],
+  "schemes": [
+    "Gift Card Fraud",
+    "Account Take Over"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "The fraudster will use various means such as phishing or phone calls to fool victims into divulging resource information. Fraudsters may also target helpdesk or customer support to divulge resources or information or fraudulently update an account. This information can be used to support other tactics and future operations."
+  ],
+  "mitigation": [
+    {
+      "type": "Software Configuration",
+      "details": [
+        "Configure email gateway to filter message based on validity checks of sender domain and integrity of messages in combination with phishing email detection capabilities."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Training and Awareness",
+      "details": [
+        "Utilize consumer fraud awareness and education campaigns, signage, pop-ups and other forms of communication. "
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "VoIP Attribute",
+      "details": [
+        "Monitor for known VoIP numbers that are typically used for fraud."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "MITRE ATT&CK",
+      "source": "https://attack.mitre.org"
+    },
+    {
+      "name": "Avoiding and Reporting Gift Card Scams",
+      "source": "https://consumer.ftc.gov/articles/avoiding-and-reporting-gift-card-scams#commonscams"
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
 }

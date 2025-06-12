@@ -1,57 +1,182 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Header from './components/Header/Header';
 import TechniquesTable from './components/TableContent/TechniquesTable';
 import CollapsibleSection from './components/Collapsible/CollapsibleSection';
 import SidePanel from './components/SidePanelSearch/Panel';
+import ManageContent from './components/ContentManager/ManageContent';
 
 export const Main = () => {
   const [selectedValue, setSelectedValue] = useState(null);
   const [renderKey, setRenderKey] = useState(0);
+  const [shouldRenderTechniques, setShouldRenderTechniques] = useState(true);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState('');
   const [isSidePanelVisible, setIsSidePanelVisible] = useState(false);
+  const [editContent, setEditContent] = useState(null);
+  const [addContent, setAddContent] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [importContent, setImportContent] = useState(null);
+  const [viewCustomContent, setViewCustomContent] = useState(false);
+  const [hide, setHide] = useState(false);
+  const [hideTechnique, setHideTechnique] = useState(null);
+  const [colorSelect, setColorSelect] = useState(null);
+  const [riskScoreContent, setRiskScoreContent] = useState(null);
+  const [hideToggleVal, setHideToggleVal] = useState(true);
 
-  const toggleControl = () => {
-    handleOpenSidePanel();
-  };
+  useEffect(() => {
+    setViewCustomContent(false);
+  }, []);
 
-  const handleValueClick = (value) => {
+  const handleBackClick = useCallback(() => {
+    setAddContent(null);
+    setEditContent(null);
+    setViewCustomContent(false);
+    setEditMode(false)
+    setShouldRenderTechniques(true);
+    setFilter('')
+    setFilterType('')
+  }, []);
+
+  const handleValueClick = useCallback((value) => {
     if (value === selectedValue) {
-      setRenderKey((prevKey) => prevKey + 1);
+      setRenderKey(prevKey => prevKey + 1);
     } else {
       setSelectedValue(value);
+      setHide(false)
     }
-  };
-  const handleCloseSidePanel = () => {
+  }, [selectedValue]);
+
+  const handleHideClick = useCallback((value) => {
+    setHideTechnique(selectedValue)
+    setHide(value);
+  }, []);
+
+  const handleEditClick = useCallback((value) => {
+    setEditContent(value);
+  }, []);
+
+  const handleAddClick = useCallback((value) => {
+    setAddContent(value);
+  }, []);
+
+  const handleColorClick = useCallback((value) => {
+    setColorSelect(value);
+  }, []);
+
+  const handleRiskScore = useCallback((value) => {
+    setRiskScoreContent(value);
+  }, []);
+
+  const handleImportClick = useCallback((value) => {
+    setImportContent(value);
+    setViewCustomContent(true);
+  }, []);
+
+  const handleSubmitContent = useCallback((value) => {
+    setAddContent(null);
+    setEditContent(null);
+    setViewCustomContent(true);
+    setEditMode(false)
+    setHideTechnique(false)
+    setShouldRenderTechniques(true);
+    setSelectedValue(value)
+    setFilter('')
+    setFilterType('')
+  }, []);
+
+  const handleCloseSidePanel = useCallback(() => {
     setIsSidePanelVisible(false);
-  };
-  const handleOpenSidePanel = () => {
+  }, []);
+
+  const handleOpenSidePanel = useCallback(() => {
     setIsSidePanelVisible(true);
-  };
-  const handleFilterChange = (filterValue, filterType) => {
+  }, []);
+
+  const handleFilterChange = useCallback((filterValue, filterType) => {
     setFilter(filterValue);
     setFilterType(filterType);
-  };
+  }, []);
+
+  const handleEditModeChange = useCallback((editStatus) => {
+    setEditMode(editStatus);
+  }, []);
+
+  const handleHideToggle = useCallback((hideToggleStatus) => {
+    setHideToggleVal(hideToggleStatus);
+  }, []);
+
+  const handleViewCustomContent = useCallback((viewCustomContentMode) => {
+    setViewCustomContent(viewCustomContentMode);
+  }, []);
+
   return (
     <>
-      <Header toggleControl={toggleControl} />
-      <TechniquesTable
-        onValueClick={handleValueClick}
-        searchFilter={filter}
-        searchFilterType={filterType}
-        isPanelOpen={isSidePanelVisible}
+      <Header
+        toggleControl={handleOpenSidePanel}
+        onAddClick={handleAddClick}
+        onEditMode={handleEditModeChange}
+        onImportClick={handleImportClick}
+        onViewCustomContent={handleViewCustomContent}
+        editStatus={editMode}
+        editContent={editContent}
+        onBackClick={handleBackClick}
+        addContent={addContent}
+        onHideClick={handleHideClick}
+        hideStatus={hide}
+        onHideToggle={handleHideToggle}
+        hideToggleStatus={hideToggleVal}
+        onColorClick={handleColorClick}
+        onRiskScore={handleRiskScore}
+        selectedTechnique={selectedValue}
+        viewCustomMode={viewCustomContent}
       />
+
+      {shouldRenderTechniques && !addContent && !editContent && !hideTechnique && (
+        <TechniquesTable
+          onValueClick={handleValueClick}
+          onEditClick={handleEditClick}
+          onImportClick={handleImportClick}
+          searchFilter={filter}
+          searchFilterType={filterType}
+          isPanelOpen={isSidePanelVisible}
+          editStatus={editMode}
+          importContent={importContent}
+          viewCustomMode={viewCustomContent}
+          selectedTechnique={selectedValue}
+          hideStatus={hide}
+          hideToggleStatus={hideToggleVal}
+          selectedColor={colorSelect}
+          riskScoreInfo={riskScoreContent}
+        />
+      )}
+
       {isSidePanelVisible && (
         <SidePanel
           onFilterChange={handleFilterChange}
           onClose={handleCloseSidePanel}
+          viewCustomMode={viewCustomContent}
         />
       )}
-      {selectedValue && (
+
+      {selectedValue && !addContent && !editContent && (
         <CollapsibleSection
           isPanelOpen={isSidePanelVisible}
           techniqueName={selectedValue}
           key={renderKey}
+          importContent={importContent}
+          viewCustomMode={viewCustomContent}
+        />
+      )}
+
+      {(addContent || editContent) && (
+        <ManageContent
+          technique={editContent}
+          importContent={importContent}
+          viewCustomMode={viewCustomContent}
+          onViewCustomContent={handleViewCustomContent}
+          onBackClick={handleBackClick}
+          addContent={addContent}
+          onContentSubmit={handleSubmitContent}
         />
       )}
     </>

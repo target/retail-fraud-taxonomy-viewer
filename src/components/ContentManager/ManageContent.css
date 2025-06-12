@@ -1,0 +1,202 @@
+.collapsible-section1 {
+    margin: var(--gap) 0;
+  }
+  
+  .collapsible-content1 {
+    background-color: #2b2d31;
+    border: 1px solid #ddd;
+    color: white;
+    margin-left: 0;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .key-text {
+    width: 20%; 
+    height:30px;
+    font-size: medium;
+    font-style: normal;
+    margin-bottom: 20px;
+    margin-right: 10px; 
+  }
+
+  .text-area-box {
+    width: 95%;
+    padding: 5px;
+    font-size: large !important;
+    font-style: normal !important;
+    margin-right: 10px;
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  .box-section {
+    border: 1px solid white;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .add-key-value-pair {
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  .add-key-value-pair:hover {
+    color: green;
+  }
+
+  .remove-key-value-pair {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    cursor: pointer;
+  }
+  
+  .remove-key-value-pair:hover {   
+    color: red;
+  }
+
+  .add-value {
+    font-size: 25px;
+    cursor: pointer;
+  }
+
+  .add-value:hover {
+    color: green;
+  }
+
+  .remove-value {
+      margin-top: 10px;
+      font-size: 20px;
+      cursor: pointer;
+  }
+
+  .remove-value:hover {   
+    color: red;
+  }
+
+  .remove-value-info {
+    padding-bottom: 20px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.remove-value-info:hover {   
+  color: red;
+}
+  
+.save-button {
+  background-color: #0099cc;
+  height: 40px;
+  width: 100px !important;
+  color: white;
+  margin-left: 10px !important;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px !important;
+}
+  
+
+.Collapsible__trigger1 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  padding: calc(var(--gap) / 3) var(--gap);
+
+  cursor: pointer;
+  color: white;
+  background-color: #0099cc;
+  border-radius: 4px 4px 0 0;
+}
+
+/* collapsible trigger heading, sub-heading */
+h3, h4 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: normal;
+}
+
+.Collapsible__trigger1:not(.open) {
+  border-radius: 4px;
+}
+
+.Collapsible__trigger1.shrink {
+  width: 80%; /* Shrink the details to 80% when RightPanel is open */
+}
+
+.Collapsible__trigger1 .collapse-text {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.Collapsible__trigger1 .collapse-icon {
+  /* just a little tweak to get it to optically align with the technique name's
+     close icon */
+  margin-right: 4px;
+}
+
+.collapsible-details1 {
+  --collapsible-details1-rhythm: calc(var(--gap) / 4);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+  padding: calc(var(--gap) * 0.8) var(--gap);
+  margin-left: 0;
+  margin-bottom: var(--v-rhythm);
+  border: 1px solid #ddd;
+  border-top: none;
+
+  line-height: 1.3;
+  background-color: #2b2d31;
+  color: white;
+}
+
+/* when the side drawer is open */
+.collapsible-details1.shrink {
+  width: 80%;
+}
+
+/* collapsible details ubheadings */
+h4 {
+  font-weight: bold;
+}
+.collapsible-details1 > div:not(:first-of-type) h4 {
+  margin-top: var(--gap);
+  margin-bottom: var(--collapsible-details1-rhythm);
+}
+
+.collapsible-details1 > div h4 {
+  margin-bottom: var(--collapsible-details1-rhythm);
+}
+
+/* most list content is formatted like paragraphs, with a little indent */
+.collapsible-details1-list > li {
+  list-style-type: disc;
+  margin-left: var(--gap);
+  border-bottom: none;
+}
+.collapsible-details1-list > li:not(:last-of-type) {
+  margin-bottom: calc(var(--gap) / 4);
+}
+
+/* references list is numbered */
+.collapsible-details1-references > li {
+  list-style-type: decimal;
+  border-bottom: none;
+}

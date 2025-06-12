@@ -2,7 +2,13 @@
     margin-bottom: var(--v-rhythm);
   }
 
+  table {
+    table-layout: auto; /* allows cell width to be based on content */
+    width: auto; /* do not force full width */
+  }
+
   .table-container {
+    table-layout: auto;
     width: 100%;
     transition: width 0.3s ease-in-out;
     border-collapse: collapse;
@@ -35,17 +41,6 @@
     background-color: rgb(0, 255, 200);
   }
   
-  .tabledata {
-    text-align: center;
-    border: 1px solid #ddd;
-    color: white;
-    background-color: rgba(20, 19, 19, 0.9);
-    font-size: 20px;
-    position: relative;
-    box-sizing: border-box;
-    cursor: pointer;
-  }
-  
   .sidebar {
     width: 30px;
     height: 100%;
@@ -60,3 +55,81 @@
     transition: background-color 0.3s ease, z-index 0.3s ease;
   }
 
+  .editicon {
+    width: 30px;
+    height: 100%;
+    background-color: rgb(48, 48, 48);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute; 
+    top: 0;
+    right: 25px;
+    z-index: 999;
+    transition: background-color 0.3s ease, z-index 0.3s ease;
+  }
+
+  .sub-technique-editicon {
+    width: 30px;
+    height: 33%;
+    background-color: rgb(48, 48, 48);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute; 
+    top: 0;
+    right: 5px;
+    z-index: 999;
+    transition: background-color 0.3s ease, z-index 0.3s ease;
+  }
+
+  .white-icon {
+    color: white !important;
+  }
+
+  .sub-technique-implementationicon{
+    width: 30px;
+    height: 33%;
+    /* background-color: rgb(48, 48, 48); */
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    position: absolute; 
+    top: 0;
+    /* right: 10px; */
+    left: 0%;
+    z-index: 999;
+    transition: background-color 0.3s ease, z-index 0.3s ease;
+  }
+
+  .tabledata {
+    white-space: normal;       /* allow wrapping */
+    word-wrap: break-word;     /* break long words */
+    word-break: break-word;    /* better word breaking */
+    overflow-wrap: break-word; /* fallback */
+    
+    position: relative;
+    cursor: pointer;
+    font-size: 20px;
+    color: white;
+    background-color: rgba(20, 19, 19, 0.9);
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .implementationicon {
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 100%;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    z-index: 999;
+    transition: background-color 0.3s ease, z-index 0.3s ease;
+  }
+  
+  

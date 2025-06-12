@@ -1,0 +1,29 @@
+.popup {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #222;  /* darker background */
+  padding: 12px;
+  border-radius: 6px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 30px); /* 4 squares per row */
+  grid-gap: 8px;
+}
+
+.color-square {
+  width: 30px;
+  height: 30px;
+  border: 2px solid black;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.color-square:hover {
+  transform: scale(1.1);
+}
