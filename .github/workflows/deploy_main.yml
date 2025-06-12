@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pages Prod
 
 on:
   push:
@@ -52,16 +52,6 @@ jobs:
             npm run build:prod
           fi
 
-      # - name: Deploy dev to /dev/
-      #   if: github.ref == 'refs/heads/dev'
-      #   uses: JamesIves/github-pages-deploy-action@v4
-      #   with:
-      #     branch: gh-pages
-      #     folder: dist/dev  # Ensure this matches your dev build output
-      #     target-folder: dev  # Deploy to /dev folder
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     clean: false  # Don't overwrite root or /dev folder
-
       - name: Deploy main to root
         if: github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@v4
@@ -74,7 +64,7 @@ jobs:
       
       - name: Release
         run: npm run release
-        
+
       # - name: Deploy to GitHub Pages
       #   uses: JamesIves/github-pages-deploy-action@v4
       #   with:
