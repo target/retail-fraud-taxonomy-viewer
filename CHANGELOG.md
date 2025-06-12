@@ -1,3 +1,64 @@
+# v2.0.3 (Thu Jun 12 2025)
+
+#### ⚠️ Pushed to `main`
+
+- fix: Streamlined version ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 1
+
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
+# v1.5.9 (Thu Jun 12 2025)
+
+### Release Notes
+
+#### fix:Release automation fix ([#40](https://github.com/target/retail-fraud-taxonomy-viewer/pull/40))
+
+
+
+#### Deployment streamlining ([#39](https://github.com/target/retail-fraud-taxonomy-viewer/pull/39))
+
+
+
+#### Major Release of new features ([#38](https://github.com/target/retail-fraud-taxonomy-viewer/pull/38))
+
+Below new features are added
+1. To add/edit/clone techniques.
+2. To Hide/unhide techniques.
+3. Color coding/risk scoring for each technique.
+4. Ability to export/import the content from the browser.
+5. Capture and display of mitigation/detection coverage stats.
+6. Ability to view NRF Content vs switch to Custom Content.
+7. New Filter By criteria added.
+
+---
+
+#### 🐛 Bug Fix
+
+- fix:Release automation fix [#40](https://github.com/target/retail-fraud-taxonomy-viewer/pull/40) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Deployment streamlining [#39](https://github.com/target/retail-fraud-taxonomy-viewer/pull/39) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Major Release of new features [#38](https://github.com/target/retail-fraud-taxonomy-viewer/pull/38) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### ⚠️ Pushed to `main`
+
+- fix: release automation ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- fix: release automation configured ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- fix: Release automation fix ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- feat: Updated ReadMe ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- fix:Update deploy_main.yml ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Update deploy_main.yml ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Update reconnaissance.json ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Updated the deployment strategy ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Update deploy.yml ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 1
+
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
 # v1.5.8 (Fri Apr 25 2025)
 
 #### ⚠️ Pushed to `main`
