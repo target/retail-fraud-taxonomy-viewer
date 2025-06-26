@@ -2,6 +2,37 @@
 
 ### Release Notes
 
+#### Dev ([#42](https://github.com/target/retail-fraud-taxonomy-viewer/pull/42))
+
+
+
+#### Fix:The pop up now disappears on click of anywhere on the browser ([#41](https://github.com/target/retail-fraud-taxonomy-viewer/pull/41))
+
+
+
+---
+
+#### 🐛 Bug Fix
+
+- Dev [#42](https://github.com/target/retail-fraud-taxonomy-viewer/pull/42) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Fix:The pop up now disappears on click of anywhere on the browser [#41](https://github.com/target/retail-fraud-taxonomy-viewer/pull/41) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### ⚠️ Pushed to `main`
+
+- Update CHANGELOG.md ([@actions-user](https://github.com/actions-user))
+- fix: Streamlined version ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 2
+
+- [@actions-user](https://github.com/actions-user)
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
+# v2.0.3 (Thu Jun 26 2025)
+
+### Release Notes
+
 #### Fix:The pop up now disappears on click of anywhere on the browser ([#41](https://github.com/target/retail-fraud-taxonomy-viewer/pull/41))
 
 
