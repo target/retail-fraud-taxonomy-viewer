@@ -40,6 +40,7 @@ const Header = ({
   const [selectedColor, setSelectedColor] = useState(null);
   const [showRiskScore, setShowRiskScore] = useState(false);
   const [riskScore, setRiskScore] = useState('');
+  const iconContainerRef = useRef(null);
 
   const handleRiskScoreChange = (e) => {
     const val = e.target.value;
@@ -99,6 +100,24 @@ const Header = ({
       setTimeout(() => setShowFailAlert(false), 2000);
     }
   };
+
+   // Hide on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        iconContainerRef.current &&
+        !iconContainerRef.current.contains(event.target)
+      ) {
+        setActiveControl(false);
+        setShowPopup(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const toggleHide = (iconName) => {
     if (iconName === 'RiEyeLine') {
@@ -219,7 +238,7 @@ const Header = ({
             Import Data
           </button>
 
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative' }} ref={iconContainerRef}>
             <button className="header-button" onClick={() => setActiveControl(!activeControl)}>
               <RiSettings5Fill style={{ fontSize: '30px' }} />
               Technique Controls
