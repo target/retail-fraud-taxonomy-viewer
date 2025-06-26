@@ -101,7 +101,7 @@ const Header = ({
     }
   };
 
-   // Hide on outside click
+  // Hide on outside click on anywhere on browser
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
