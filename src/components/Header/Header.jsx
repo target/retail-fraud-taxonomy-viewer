@@ -226,8 +226,8 @@ const Header = ({
       <span>Dev Build</span>
        <div className="header-controls">
           <button className="header-button" onClick={handleSynclick}>
-            <RiRefreshFill style={{ fontSize: '35px' }}/>
-            Sync NRF Content
+            <RiRefreshFill style={{ fontSize: '40px' }}/>
+            Sync with NRF Content
           </button>
       </div>
 
