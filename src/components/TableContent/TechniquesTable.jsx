@@ -11,6 +11,7 @@ import {
 import './Table.css';
 import './subtechnique.css';
 import './more_details.css';
+import { Alert } from '../Alert/Alert'
 
 const EXPAND = 'expand';
 const COLLAPSE = 'collapse';
@@ -35,7 +36,9 @@ const TechniquesTable = ({
   hideStatus,
   hideToggleStatus,
   selectedColor,
-  riskScoreInfo
+  riskScoreInfo,
+  shouldSync,
+  onSyncCompletion
 }) => {
   const [tableData, setTableData] = useState(() => {
     const savedData = localStorage.getItem('technique_table');
@@ -54,12 +57,18 @@ const TechniquesTable = ({
   const [hiddenTechniques, setHideTechniques] = useState([]);
   const [cellColors, setCellColors] = useState({});
 
+  const [alertVal, setAlertVal] = useState('')
+  const [showFailAlert, setShowFailAlert] = useState(false)
+  const [alertHeading, setAlertHeading] = useState('')
+  const [responseSubmit, setResponseSubmit] = useState(false)
+
   const handleEdit = (technique) => {
     onEditClick(technique);
   };
 
   const fetchTechniques = async () => {
     const fetchedTechniques = await fetchAllTechniques(viewCustomMode);
+
     setAllTechniques(fetchedTechniques);
     setTableData(fetchedTechniques);
   };
@@ -83,6 +92,9 @@ const TechniquesTable = ({
     };
   }, []);
 
+
+
+
   useEffect(() => {
     if (viewCustomMode) {
       const local = localStorage.getItem("technique_table");
@@ -100,6 +112,73 @@ const TechniquesTable = ({
       fetchTechniques();
     }
   }, []);
+
+  //Sync TechniquesTable
+  function syncTechniquesTable(array1, array2) {
+    const result = array2.map(row => ({ ...row }));
+
+    array1.forEach(sourceItem => {
+      const match = result.find(targetItem => {
+        // Match on stable keys (exclude empty fields from matching)
+        return Object.keys(targetItem).every(key => {
+          const targetValue = targetItem[key];
+          const sourceValue = sourceItem[key];
+
+          // If target value is empty, don't use it to match
+          if (targetValue === '' || targetValue === undefined) return true;
+
+          // Otherwise, values must match
+          return targetValue === sourceValue;
+        });
+      });
+
+      if (match) {
+        // Fill only missing/empty fields
+        Object.entries(sourceItem).forEach(([key, value]) => {
+          if (
+            !match.hasOwnProperty(key) ||
+            match[key] === '' ||
+            match[key] === undefined
+          ) {
+            match[key] = value;
+          }
+        });
+      }
+    });
+
+    return result;
+  }
+
+  // Handle Sync Content
+  useEffect(() => {
+    if (shouldSync) {
+      onSyncCompletion('synccompleted')
+
+      //Sync TechniqueTable
+      const NRFTechniqueTable = fetchAllTechniques(false);
+      const customTechniqueTable = JSON.parse(localStorage.getItem('technique_table')) || [];
+      const mergedTechniqueTable = syncTechniquesTable(NRFTechniqueTable, customTechniqueTable);
+      localStorage.setItem('technique_table', JSON.stringify(mergedTechniqueTable));
+
+      const NRFTechniques = dataArray
+      const customTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+      
+      //Sync Techniques
+      const techniqueNamesList = new Set(customTechniques.map(item => item.name));
+      const syncedArray = [
+        ...customTechniques,
+        ...NRFTechniques.filter(item => !techniqueNamesList.has(item.name)),
+      ];
+      localStorage.setItem('techniques', JSON.stringify(syncedArray));
+
+      setResponseSubmit(true)
+      setAlertVal('Data synced successfully')
+      setTimeout(() => {
+        setResponseSubmit(false)
+      }, 2000)
+    }
+
+  }, [shouldSync]);
 
   // Handle importContent updates
   useEffect(() => {
@@ -464,12 +543,12 @@ const TechniquesTable = ({
                     const currentCell = tableRef.current?.querySelector(
                       `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`
                     );
-  
+
                     if (!currentCell) return;
-  
+
                     const subCells = currentCell.querySelectorAll('li');
                     const isSubcell = subCells.length > 0;
-  
+
                     if (isSubcell) {
                       for (let i = 0; i < subCells.length; i++) {
                         if (i === index) {
@@ -487,7 +566,7 @@ const TechniquesTable = ({
                   }}
                 >
                   <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
-  
+
                   {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && line && (
                     <div>
                       {fetchImplementationStatus(line)
@@ -495,7 +574,7 @@ const TechniquesTable = ({
                         : <RiFolderWarningFill style={{ color: 'orange' }} />}
                     </div>
                   )}
-  
+
                   {editStatus && (
                     <div
                       style={{
@@ -515,8 +594,8 @@ const TechniquesTable = ({
                   )}
                 </li>
               );
-            } 
-            
+            }
+
             if (hideToggleStatus) {
               return (
                 <li
@@ -529,12 +608,12 @@ const TechniquesTable = ({
                     const currentCell = tableRef.current?.querySelector(
                       `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`
                     );
-          
+
                     if (!currentCell) return;
-          
+
                     const subCells = currentCell.querySelectorAll('li');
                     const isSubcell = subCells.length > 0;
-          
+
                     if (isSubcell) {
                       for (let i = 0; i < subCells.length; i++) {
                         if (i === index) {
@@ -552,7 +631,7 @@ const TechniquesTable = ({
                   }}
                 >
                   <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
-          
+
                   {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && line && (
                     <div>
                       {fetchImplementationStatus(line)
@@ -560,7 +639,7 @@ const TechniquesTable = ({
                         : <RiFolderWarningFill style={{ color: 'orange' }} />}
                     </div>
                   )}
-          
+
                   {editStatus && (
                     <div
                       style={{
@@ -586,10 +665,10 @@ const TechniquesTable = ({
           })}
       </ul>
     );
-  
+
     return stringWithBreaks;
   };
-  
+
   const rename_headers = (updatedData, operation, other_columns) => {
     let headers = [];
 
@@ -1179,9 +1258,10 @@ const TechniquesTable = ({
                     {sub_techniques &&
                       sub_techniques.map((line, index) => (
                         <li
-                          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                          style={{
+                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                             color: hiddenTechniques?.includes(line) ? 'grey' : 'white',
-                           }}
+                          }}
                           tabIndex={0}
                           key={index}
                           onFocus={() => {
@@ -1447,7 +1527,25 @@ const TechniquesTable = ({
     }
   }
   return (
+    <>
+    <div>
+      {showFailAlert && (
+                  <Alert
+                    classStyle="alert-fail"
+                    heading={alertHeading}
+                    value={alertVal}
+                  />
+                )}
+                {responseSubmit && (
+                  <Alert
+                    classStyle="alert-success"
+                    heading={alertHeading}
+                    value={alertVal}
+                  />
+                )}
+    </div>
     <nav tabIndex={0} onKeyDown={handleKeyDown} ref={tableRef}>
+    
       <table className={`table-container ${isPanelOpen ? 'shrink' : ''}`}>
         <thead>
           <tr>{renderHeaders() || <th colSpan={4}>Loading...</th>}</tr>
@@ -1455,6 +1553,7 @@ const TechniquesTable = ({
         <tbody>{renderRows()}</tbody>
       </table>
     </nav>
+    </>
   );
 };
 

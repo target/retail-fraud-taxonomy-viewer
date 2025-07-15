@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   RiAddCircleLine, RiImportLine, RiArrowLeftLine,
   RiExportLine, RiDeleteBin5Line, RiEyeLine, RiPaletteLine,
-  RiFilterFill, RiSettings5Fill, RiBarChartFill
+  RiFilterFill, RiSettings5Fill, RiBarChartFill, RiRefreshFill
 } from 'react-icons/ri';
 import { handleExport } from '../ContentManager/ManageContentUtils';
 import { Alert } from '../Alert/Alert';
@@ -23,7 +23,7 @@ const Header = ({
   toggleControl, onAddClick, onEditMode, onImportClick,
   onViewCustomContent, editStatus, editContent, onBackClick,
   addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus,
-  onColorClick, onRiskScore, selectedTechnique, viewCustomMode
+  onColorClick, onRiskScore, selectedTechnique, viewCustomMode, onSyncClick
 }) => {
   const [isToggled, setIsToggled] = useState(editStatus);
   const [viewCustomContent, setViewCustomContent] = useState(viewCustomMode);
@@ -49,6 +49,8 @@ const Header = ({
   };
 
   const handleAddClick = () => onAddClick('add');
+
+  const handleSynclick = () => onSyncClick('sync')
 
   const handleBackClick = () => {
     setViewCustomContent(false);
@@ -222,6 +224,12 @@ const Header = ({
     <header>
       <img width="250" height="50" className="logo" alt="NRF Logo" src={NRFLogo} />
       <span>Dev Build</span>
+       <div className="header-controls">
+          <button className="header-button" onClick={handleSynclick}>
+            <RiRefreshFill style={{ fontSize: '35px' }}/>
+            Sync NRF Content
+          </button>
+      </div>
 
       {showFailAlert && <Alert classStyle="alert-fail" heading={alertHeading} value={alertVal} />}
       {responseSubmit && <Alert classStyle="alert-success" heading={alertHeading} value={alertVal} />}

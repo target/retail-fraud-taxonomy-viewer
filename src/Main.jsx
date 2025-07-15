@@ -22,6 +22,7 @@ export const Main = () => {
   const [colorSelect, setColorSelect] = useState(null);
   const [riskScoreContent, setRiskScoreContent] = useState(null);
   const [hideToggleVal, setHideToggleVal] = useState(true);
+  const [syncContent, setSyncContent] = useState(null);
 
   useEffect(() => {
     setViewCustomContent(false);
@@ -57,6 +58,11 @@ export const Main = () => {
 
   const handleAddClick = useCallback((value) => {
     setAddContent(value);
+  }, []);
+  
+    const handleSyncClick = useCallback((value) => {
+      console.log('inside handleSyncClick')
+    setSyncContent(true);
   }, []);
 
   const handleColorClick = useCallback((value) => {
@@ -109,6 +115,11 @@ export const Main = () => {
     setViewCustomContent(viewCustomContentMode);
   }, []);
 
+    const handleSyncCompletion = useCallback(() => {
+    console.log('inside handleSyncCompletion')
+    setSyncContent(null);
+  }, []);
+
   return (
     <>
       <Header
@@ -129,6 +140,7 @@ export const Main = () => {
         onRiskScore={handleRiskScore}
         selectedTechnique={selectedValue}
         viewCustomMode={viewCustomContent}
+        onSyncClick={handleSyncClick}
       />
 
       {shouldRenderTechniques && !addContent && !editContent && !hideTechnique && (
@@ -147,6 +159,8 @@ export const Main = () => {
           hideToggleStatus={hideToggleVal}
           selectedColor={colorSelect}
           riskScoreInfo={riskScoreContent}
+          onSyncCompletion={handleSyncCompletion}
+          shouldSync={syncContent}
         />
       )}
 
