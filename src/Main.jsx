@@ -61,7 +61,6 @@ export const Main = () => {
   }, []);
   
     const handleSyncClick = useCallback((value) => {
-      console.log('inside handleSyncClick')
     setSyncContent(true);
   }, []);
 
@@ -116,7 +115,6 @@ export const Main = () => {
   }, []);
 
     const handleSyncCompletion = useCallback(() => {
-    console.log('inside handleSyncCompletion')
     setSyncContent(null);
   }, []);
 
