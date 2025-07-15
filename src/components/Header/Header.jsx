@@ -226,8 +226,8 @@ const Header = ({
       <span>Dev Build</span>
        <div className="header-controls">
           <button className="header-button" onClick={handleSynclick}>
-            <RiRefreshFill style={{ fontSize: '40px' }}/>
-            Sync with NRF Content
+            <RiRefreshFill style={{ fontSize: '50px' }}/>
+            Sync NRF Content
           </button>
       </div>
 
@@ -237,18 +237,18 @@ const Header = ({
       {!editContent && !addContent && (
         <div className="header-controls">
           <button className="header-button" onClick={handleAddClick}>
-            <RiAddCircleLine style={{ fontSize: '30px' }} />
+            <RiAddCircleLine style={{ fontSize: '35px' }} />
             Add Technique
           </button>
 
           <button className="header-button" onClick={handleImportClick}>
-            <RiImportLine style={{ fontSize: '30px' }} />
+            <RiImportLine style={{ fontSize: '35px' }} />
             Import Data
           </button>
 
           <div style={{ position: 'relative' }} ref={iconContainerRef}>
             <button className="header-button" onClick={() => setActiveControl(!activeControl)}>
-              <RiSettings5Fill style={{ fontSize: '30px' }} />
+              <RiSettings5Fill style={{ fontSize: '40px' }} />
               Technique Controls
             </button>
             {activeControl && (
@@ -327,12 +327,12 @@ const Header = ({
                 />
 
                 <button className="header-button" onClick={handleExport}>
-                  <RiExportLine style={{ fontSize: '30px' }} />
+                  <RiExportLine style={{ fontSize: '40px' }} />
                   Export Custom Content
                 </button>
 
                 <button className="header-button" onClick={deleteCustomContent}>
-                  <RiDeleteBin5Line style={{ fontSize: '30px' }} />
+                  <RiDeleteBin5Line style={{ fontSize: '40px' }} />
                   Delete Custom Content
                 </button>
               </>

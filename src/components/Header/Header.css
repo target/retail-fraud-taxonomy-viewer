@@ -34,9 +34,9 @@ header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 4px; 
+  gap: 2px; 
   padding: 8px 15px;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   background-color: #0099cc;
   color: white;
