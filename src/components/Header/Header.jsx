@@ -224,18 +224,17 @@ const Header = ({
     <header>
       <img width="250" height="50" className="logo" alt="NRF Logo" src={NRFLogo} />
       <span>Dev Build</span>
-       <div className="header-controls">
-          <button className="header-button" onClick={handleSynclick}>
-            <RiRefreshFill style={{ fontSize: '50px' }}/>
-            Sync NRF Content
-          </button>
-      </div>
 
       {showFailAlert && <Alert classStyle="alert-fail" heading={alertHeading} value={alertVal} />}
       {responseSubmit && <Alert classStyle="alert-success" heading={alertHeading} value={alertVal} />}
 
       {!editContent && !addContent && (
         <div className="header-controls">
+          <button className="header-button" onClick={handleSynclick}>
+            <RiRefreshFill style={{ fontSize: '50px' }}/>
+            Sync NRF Content
+          </button>
+
           <button className="header-button" onClick={handleAddClick}>
             <RiAddCircleLine style={{ fontSize: '35px' }} />
             Add Technique
