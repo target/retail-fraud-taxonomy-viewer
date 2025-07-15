@@ -115,39 +115,71 @@ const TechniquesTable = ({
 
   //Sync TechniquesTable
   function syncTechniquesTable(array1, array2) {
-    const result = array2.map(row => ({ ...row }));
+  // Result starts as a deep clone of array2
+  const result = [];
 
-    array1.forEach(sourceItem => {
-      const match = result.find(targetItem => {
-        // Match on stable keys (exclude empty fields from matching)
-        return Object.keys(targetItem).every(key => {
-          const targetValue = targetItem[key];
-          const sourceValue = sourceItem[key];
+  array1.forEach(sourceRow => {
+    // Try to find a matching row in array2 (based on identifying fields)
+    const match = array2.find(targetRow =>
+      Object.keys(sourceRow).every(key =>
+        key in targetRow && (
+          targetRow[key] === sourceRow[key] ||
+          (targetRow[key] === '' || targetRow[key] === undefined) // allow merge
+        )
+      )
+    );
 
-          // If target value is empty, don't use it to match
-          if (targetValue === '' || targetValue === undefined) return true;
-
-          // Otherwise, values must match
-          return targetValue === sourceValue;
-        });
+    if (match) {
+      // Merge only empty/missing fields
+      const merged = { ...match };
+      Object.entries(sourceRow).forEach(([key, value]) => {
+        if (
+          !(key in merged) ||
+          merged[key] === '' ||
+          merged[key] === undefined
+        ) {
+          merged[key] = value;
+        }
       });
+      result.push(merged);
+    } else {
+      // No match in array2 → add this row
+      result.push({ ...sourceRow });
+    }
+  });
 
-      if (match) {
-        // Fill only missing/empty fields
-        Object.entries(sourceItem).forEach(([key, value]) => {
-          if (
-            !match.hasOwnProperty(key) ||
-            match[key] === '' ||
-            match[key] === undefined
-          ) {
-            match[key] = value;
-          }
-        });
-      }
-    });
+  // Final result = rows matched or added from array1 only
+  return result;
+}
 
-    return result;
-  }
+function syncTechniques(NRFTechniques, customTechniques) {
+  const result = [];
+
+  NRFTechniques.forEach(sourceItem => {
+    const match = customTechniques.find(item => item.name === sourceItem.name);
+
+    if (match) {
+      // Merge missing or empty fields from source
+      const merged = { ...match };
+      Object.entries(sourceItem).forEach(([key, value]) => {
+        if (
+          !(key in merged) ||
+          merged[key] === '' ||
+          merged[key] === undefined
+        ) {
+          merged[key] = value;
+        }
+      });
+      result.push(merged);
+    } else {
+      // Add missing item from source
+      result.push({ ...sourceItem });
+    }
+  });
+
+  return result;
+}
+
 
   // Handle Sync Content
   useEffect(() => {
@@ -160,15 +192,10 @@ const TechniquesTable = ({
       const mergedTechniqueTable = syncTechniquesTable(NRFTechniqueTable, customTechniqueTable);
       localStorage.setItem('technique_table', JSON.stringify(mergedTechniqueTable));
 
+      //Sync Techniques
       const NRFTechniques = dataArray
       const customTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
-      
-      //Sync Techniques
-      const techniqueNamesList = new Set(customTechniques.map(item => item.name));
-      const syncedArray = [
-        ...customTechniques,
-        ...NRFTechniques.filter(item => !techniqueNamesList.has(item.name)),
-      ];
+      const syncedArray = syncTechniques(NRFTechniques, customTechniques)
       localStorage.setItem('techniques', JSON.stringify(syncedArray));
 
       setResponseSubmit(true)
