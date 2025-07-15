@@ -115,71 +115,75 @@ const TechniquesTable = ({
 
   //Sync TechniquesTable
   function syncTechniquesTable(array1, array2) {
-  // Result starts as a deep clone of array2
-  const result = [];
+    // Collect all columns
+    const allKeys = new Set([
+      ...array1.flatMap(row => Object.keys(row)),
+      ...array2.flatMap(row => Object.keys(row))
+    ]);
 
-  array1.forEach(sourceRow => {
-    // Try to find a matching row in array2 (based on identifying fields)
-    const match = array2.find(targetRow =>
-      Object.keys(sourceRow).every(key =>
-        key in targetRow && (
-          targetRow[key] === sourceRow[key] ||
-          (targetRow[key] === '' || targetRow[key] === undefined) // allow merge
-        )
-      )
-    );
+    // Step 1: collect unique values per column from both arrays
+    const valuesByColumn = {};
+    allKeys.forEach(key => valuesByColumn[key] = new Set());
 
-    if (match) {
-      // Merge only empty/missing fields
-      const merged = { ...match };
-      Object.entries(sourceRow).forEach(([key, value]) => {
-        if (
-          !(key in merged) ||
-          merged[key] === '' ||
-          merged[key] === undefined
-        ) {
-          merged[key] = value;
+    array2.forEach(row => {
+      allKeys.forEach(key => {
+        const val = row[key];
+        if (val !== undefined && val !== '') {
+          valuesByColumn[key].add(val);
         }
       });
-      result.push(merged);
-    } else {
-      // No match in array2 → add this row
-      result.push({ ...sourceRow });
-    }
-  });
+    });
 
-  // Final result = rows matched or added from array1 only
-  return result;
-}
-
-function syncTechniques(NRFTechniques, customTechniques) {
-  const result = [];
-
-  NRFTechniques.forEach(sourceItem => {
-    const match = customTechniques.find(item => item.name === sourceItem.name);
-
-    if (match) {
-      // Merge missing or empty fields from source
-      const merged = { ...match };
-      Object.entries(sourceItem).forEach(([key, value]) => {
-        if (
-          !(key in merged) ||
-          merged[key] === '' ||
-          merged[key] === undefined
-        ) {
-          merged[key] = value;
+    array1.forEach(row => {
+      allKeys.forEach(key => {
+        const val = row[key];
+        if (val !== undefined && val !== '' && !valuesByColumn[key].has(val)) {
+          valuesByColumn[key].add(val);
         }
       });
-      result.push(merged);
-    } else {
-      // Add missing item from source
-      result.push({ ...sourceItem });
-    }
-  });
+    });
 
-  return result;
-}
+    // Step 2: build rows to ensure all values per column exist
+    const maxColumnValueCount = Math.max(...Object.values(valuesByColumn).map(set => set.size));
+    const newRows = Array.from({ length: maxColumnValueCount }, () => ({}));
 
+    allKeys.forEach(key => {
+      const values = Array.from(valuesByColumn[key]);
+      values.forEach((val, idx) => {
+        newRows[idx][key] = val;
+      });
+    });
+
+    return newRows;
+  }
+
+  function syncTechniques(NRFTechniques, customTechniques) {
+    const result = [];
+
+    NRFTechniques.forEach(sourceItem => {
+      const match = customTechniques.find(item => item.name === sourceItem.name);
+
+      if (match) {
+        // Merge missing or empty fields from source
+        const merged = { ...match };
+        Object.entries(sourceItem).forEach(([key, value]) => {
+          if (
+            !(key in merged) ||
+            merged[key] === '' ||
+            merged[key] === undefined
+          ) {
+            merged[key] = value;
+          }
+        });
+        result.push(merged);
+      } else {
+        // Add missing item from source
+        result.push({ ...sourceItem });
+      }
+    });
+
+    return result;
+  }
 
   // Handle Sync Content
   useEffect(() => {
@@ -1555,31 +1559,31 @@ function syncTechniques(NRFTechniques, customTechniques) {
   }
   return (
     <>
-    <div>
-      {showFailAlert && (
-                  <Alert
-                    classStyle="alert-fail"
-                    heading={alertHeading}
-                    value={alertVal}
-                  />
-                )}
-                {responseSubmit && (
-                  <Alert
-                    classStyle="alert-success"
-                    heading={alertHeading}
-                    value={alertVal}
-                  />
-                )}
-    </div>
-    <nav tabIndex={0} onKeyDown={handleKeyDown} ref={tableRef}>
-    
-      <table className={`table-container ${isPanelOpen ? 'shrink' : ''}`}>
-        <thead>
-          <tr>{renderHeaders() || <th colSpan={4}>Loading...</th>}</tr>
-        </thead>
-        <tbody>{renderRows()}</tbody>
-      </table>
-    </nav>
+      <div>
+        {showFailAlert && (
+          <Alert
+            classStyle="alert-fail"
+            heading={alertHeading}
+            value={alertVal}
+          />
+        )}
+        {responseSubmit && (
+          <Alert
+            classStyle="alert-success"
+            heading={alertHeading}
+            value={alertVal}
+          />
+        )}
+      </div>
+      <nav tabIndex={0} onKeyDown={handleKeyDown} ref={tableRef}>
+
+        <table className={`table-container ${isPanelOpen ? 'shrink' : ''}`}>
+          <thead>
+            <tr>{renderHeaders() || <th colSpan={4}>Loading...</th>}</tr>
+          </thead>
+          <tbody>{renderRows()}</tbody>
+        </table>
+      </nav>
     </>
   );
 };
