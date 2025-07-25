@@ -113,77 +113,82 @@ const TechniquesTable = ({
     }
   }, []);
 
-  //Sync TechniquesTable
+  //Sync TechniqueTable
   function syncTechniquesTable(array1, array2) {
-    // Collect all columns
-    const allKeys = new Set([
-      ...array1.flatMap(row => Object.keys(row)),
-      ...array2.flatMap(row => Object.keys(row))
-    ]);
+  // Step 1: Collect all keys (columns)
+  const allKeys = new Set([
+    ...array1.flatMap(row => Object.keys(row)),
+    ...array2.flatMap(row => Object.keys(row))
+  ]);
 
-    // Step 1: collect unique values per column from both arrays
-    const valuesByColumn = {};
-    allKeys.forEach(key => valuesByColumn[key] = new Set());
+  // Step 2: Collect valid values per column FROM array1 (source of truth)
+  const validValuesByColumn = {};
+  allKeys.forEach(key => validValuesByColumn[key] = new Set());
 
-    array2.forEach(row => {
-      allKeys.forEach(key => {
-        const val = row[key];
-        if (val !== undefined && val !== '') {
-          valuesByColumn[key].add(val);
-        }
-      });
-    });
-
-    array1.forEach(row => {
-      allKeys.forEach(key => {
-        const val = row[key];
-        if (val !== undefined && val !== '' && !valuesByColumn[key].has(val)) {
-          valuesByColumn[key].add(val);
-        }
-      });
-    });
-
-    // Step 2: build rows to ensure all values per column exist
-    const maxColumnValueCount = Math.max(...Object.values(valuesByColumn).map(set => set.size));
-    const newRows = Array.from({ length: maxColumnValueCount }, () => ({}));
-
+  array1.forEach(row => {
     allKeys.forEach(key => {
-      const values = Array.from(valuesByColumn[key]);
-      values.forEach((val, idx) => {
-        newRows[idx][key] = val;
-      });
-    });
-
-    return newRows;
-  }
-
-  function syncTechniques(NRFTechniques, customTechniques) {
-    const result = [];
-
-    NRFTechniques.forEach(sourceItem => {
-      const match = customTechniques.find(item => item.name === sourceItem.name);
-
-      if (match) {
-        // Merge missing or empty fields from source
-        const merged = { ...match };
-        Object.entries(sourceItem).forEach(([key, value]) => {
-          if (
-            !(key in merged) ||
-            merged[key] === '' ||
-            merged[key] === undefined
-          ) {
-            merged[key] = value;
-          }
-        });
-        result.push(merged);
-      } else {
-        // Add missing item from source
-        result.push({ ...sourceItem });
+      const val = row[key];
+      if (val !== undefined && val !== '') {
+        validValuesByColumn[key].add(val);
       }
     });
+  });
 
-    return result;
+  // Step 3: Build rows based only on allowed values
+  const maxLength = Math.max(...Object.values(validValuesByColumn).map(set => set.size));
+  const result = Array.from({ length: maxLength }, () => ({}));
+
+  for (const key of allKeys) {
+    const values = Array.from(validValuesByColumn[key]);
+    values.forEach((val, idx) => {
+      result[idx][key] = val;
+    });
   }
+
+  // Step 4: Normalize all rows with all keys
+  result.forEach(row => {
+    for (const key of allKeys) {
+      if (!(key in row)) {
+        row[key] = '';
+      }
+    }
+  });
+
+  return result;
+}
+
+//Sync Techniques
+function syncTechniques(NRFTechniques, customTechniques) {
+  const result = [];
+
+  const customMap = new Map(customTechniques.map(item => [item.name, item]));
+
+  // Step 1: Add or merge from NRFTechniques (source of truth)
+  NRFTechniques.forEach(sourceItem => {
+    const existing = customMap.get(sourceItem.name);
+
+    if (existing) {
+      const merged = { ...existing };
+      Object.entries(sourceItem).forEach(([key, value]) => {
+        if (
+          !(key in merged) ||
+          merged[key] === '' ||
+          merged[key] === undefined
+        ) {
+          merged[key] = value;
+        }
+      });
+      result.push(merged);
+    } else {
+      // New item from NRFTechniques
+      result.push({ ...sourceItem });
+    }
+  });
+
+  // ✅ No need to preserve custom-only techniques: they are deleted
+
+  return result;
+}
 
   // Handle Sync Content
   useEffect(() => {
