@@ -1,27 +1,24 @@
 {
-  "code": "FT1104.1",
-  "name": "Fraudulent Account",
+  "code": "FT 1104.03",
+  "name": "Authorized Account Abuse",
   "parent_technique": "Valid Accounts",
   "tactics": [
-    "Pre-Compromise",
-    "Initial Access"
+    "Defense Evasion"
   ],
   "schemes": [
     "Gift Card Fraud",
-    "Account Take Over",
-    "Return Fraud"
+    "Account Take Over"
   ],
   "sub_techniques": [],
   "technique_description": [
-    "The fraudster uses a legitimate resource to create an account for malicious usage. These accounts may be used for reconnaissance and to probe the defenses of the victim\u2019s applications.",
-    "One example of this is if a fraudster creates an account with fake information. Using this as a foothold the fraudster may gather information on the application itself such as naming convention, loyalty points and other information that may be used to monetize the account."
+    "The fraudster persuades a legitimate customer to grant access to their account, enabling the fraudster to leverage a seasoned profile with an established purchase history and associated metadata. This tactic helps bypass or weaken fraud detection controls."
   ],
   "mitigation": [
     {
       "type": "Multi-Factor Authentication",
       "details": [
-        "Before permitting account changes, use multiple forms of authentication such as username and password paired with a one-time passcode before permitting access.",
-        "If relevant, send confirmatory message to the original contact fields (eg., original email address, phone number, street address)."
+        "Before permitting account changes, use multiple forms of authentication such as username and password paired with a Onetime Passcode before permitting access.",
+        "If relevant, send confirmatory message to the original contact fields (eg., original email address, phone number, street address)"
       ],
       "implemented": false
     }
@@ -30,7 +27,7 @@
     {
       "type": "Network Traffic Attributes",
       "details": [
-        "Monitor for network traffic attributes such as IP address, DNS name, ASN and other digital location attributes, especially if some of these sources have known fraud activity or have a high risk of fraud activity."
+        "Monitor for the Network Traffic Attributes such as IP Address, DNS Name, ASN, and other digital location attributes especially if some of these sources have known fraud activity or has a high risk of fraud activity."
       ],
       "implemented": false
     },
@@ -59,7 +56,7 @@
   "references": [
     {
       "name": "Top 10 Digital Commerce Account Risks & How to Mitigate Them by Gunnar Peterson",
-      "source": "https://www.forter.com/blog/rh-isac-account-risk-mitigation/"
+      "source": "https://www.forter.com/blog/rh-isac-account-risk-mitigation"
     }
   ],
   "hide": false,

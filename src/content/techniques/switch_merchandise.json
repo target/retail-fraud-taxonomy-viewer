@@ -1,0 +1,103 @@
+{
+  "code": "FT 1206.002",
+  "name": "Switch Merchandise",
+  "parent_technique": "Item Manipulation",
+  "tactics": [
+    "Control"
+  ],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "A fraudster returns a different item or a broken item, counterfeit for resources such as gift cards, store credit, or cash.",
+    "For example, a fraudster may purchase an item they already own that is broken. They then keep the new merchandise and put the broken item into the box of the new purchase. They return the broken item for full monetary value.",
+    "Another example is that a fraudster may purchase an item online. Begin an online return and ship a different item, or other material that is similar in weight or size. The fraudster then keeps the purchased item and receives monetary value of the returned item."
+  ],
+  "mitigation": [
+    {
+      "type": "Anti-theft Protection",
+      "details": [
+        "Use unique serial numbers or RFID tags tied to the original transaction record.",
+        "Verify serial numbers / digital product IDs upon return.",
+        "Apply tamper-proof seals or packaging that are difficult to replicate."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Return Limit",
+      "details": [
+        "Require original packaging in return policy for high-value items. Shorten return windows for high-risk categories (electronics, luxury goods).",
+        "Deny returns to guests or tenders with a history of abuse or suspected abuse."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Proof of Purchase",
+      "details": [
+        "Require receipts and ID for high-value returns."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Restocking Fees",
+      "details": [
+        "Charge fees for returning high-risk categories."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Training and Awareness",
+      "details": [
+        "Train associates spotting mismatched logos, misspelled labels or damaged packaging."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Escalation",
+      "details": [
+        "Implement Escalation paths for suspicious returns."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction Data",
+      "details": [
+        "Match returned product identifiers (IMEI, serial, RFID) to the original purchase record."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Identify accounts or tenders with repeated returns in high-counterfeit categories."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Device Attributes",
+      "details": [
+        "Use graph or link analysis to find connected devices, IP addresses, or payment tenders and label them as suspicious for future tracking."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Online Identities",
+      "details": [
+        "Use graph or link analysis to find connected accounts."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

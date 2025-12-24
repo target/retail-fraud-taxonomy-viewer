@@ -1,0 +1,61 @@
+{
+  "code": "FT 1206",
+  "name": "Wardrobing",
+  "parent_technique": "",
+  "tactics": [
+    "Control"
+  ],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "A fraudster buys merchandise (often apparel, footwear, or accessories) intending to temporarily use or wear the item for an event, photo shoot, or short-term need. After use, the fraudster returns the item, exploiting return policies. The retailer incurs losses through inventory depreciation, sanitation costs, and resale markdowns, as returned items often cannot be sold as new.",
+    "For example, a fraudster has an upcoming special event such as a wedding. They purchase expensive dresses, jewelry, and other accessories with no intent of keeping them. After they wear the merchandise to their event, they return the items to the store for a refund."
+  ],
+  "mitigation": [
+    {
+      "type": "Return Limit",
+      "details": [
+        "Deny returns on worn, washed, or tag-removed items.",
+        "Shorten return windows for seasonal / fashion merchandise."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Restocking Fees",
+      "details": [
+        "Apply Restocking Fees high-value apparel items."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Velocity Attributes",
+      "details": [
+        "Profiles or tenders with high rates of returns in specific categories"
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Item Condition & Tag Checks",
+      "details": [
+        "Inspect the item being returned for missing original packaging, tags, or signs of use (stains, scuffs)."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Anti-theft Prevention",
+      "details": [
+        "Use tamper proof tagging that would leave a detectible residue that the item has been worn.",
+        "RFID tagging to validate item being returned was purchased within the return window (prevents purchasing a new item and returning old)."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

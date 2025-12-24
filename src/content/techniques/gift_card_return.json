@@ -15,7 +15,7 @@
   ],
   "mitigation": [
     {
-      "type": "Return Limits",
+      "type": "Return Limit",
       "details": [
         "Do not exchange gift cards over a pre-determined value."
       ],

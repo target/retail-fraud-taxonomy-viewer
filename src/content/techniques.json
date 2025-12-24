@@ -1,9 +1,14 @@
  [
-    { "pre_compromise": "Reconnaissance", "initial_access": "Shoplifting", "control":"Gift Card Extortion", "monetization": "Resale"},
-    { "pre_compromise": "Social Engineering","initial_access": "Social Engineering","control":"Valid Accounts", "monetization": "Checkout" },
-    { "pre_compromise": "Fake Pages","initial_access": "Gift Card Extortion", "control":"Gift Card Return", "monetization": "" },
-    { "pre_compromise": "Acquire Database","initial_access": "Check Gift Card Balance", "control":"Gift Card Merging", "monetization": "" },
-    { "pre_compromise": "Gift Card Number Generation","initial_access": "Valid Accounts", "control":"Gift Card Tampering", "monetization": "" },
-    { "pre_compromise": "Password Reset","initial_access": "Password Reset", "control":"Gift Card Redemption", "monetization": "" },
-    { "pre_compromise": "Proxy Abuse","initial_access": "Credential Stuffing", "control":"Loyalty Points Abuse", "monetization": "" }
+    { "pre_compromise": "Reconnaissance", "initial_access": "Shoplifting", "defense_evasion": "Valid Accounts", "control":"Gift Card Extortion", "monetization": "Resale"},
+    { "pre_compromise": "Social Engineering","initial_access": "Social Engineering", "defense_evasion": "VOIP Abuse", "control":"Valid Accounts", "monetization": "Checkout" },
+    { "pre_compromise": "Fake Pages","initial_access": "Gift Card Extortion",  "defense_evasion": "Digital Wallet Apps", "control":"Gift Card Return", "monetization": "Fraudulent Refund" },
+    { "pre_compromise": "Acquire Database","initial_access": "Check Gift Card Balance",  "defense_evasion": "Crypto Currency", "control":"Gift Card Merging", "monetization": "Social Engineering" },
+    { "pre_compromise": "Gift Card Number Generation","initial_access": "Valid Accounts",  "defense_evasion": "Gift Cards As Defense Evasion", "control":"Gift Card Tampering", "monetization": "Crypto Currency" },
+    { "pre_compromise": "Password Reset","initial_access": "Password Reset",  "defense_evasion": "", "control":"Gift Card Redemption", "monetization": "" },
+    { "pre_compromise": "Proxy Abuse","initial_access": "Credential Stuffing",  "defense_evasion": "", "control":"Loyalty Points Abuse", "monetization": "" },
+    { "pre_compromise": "Third Party Supplier Manipulation","initial_access": "Insider Recruitment",  "defense_evasion": "", "control":"Wardrobing", "monetization": "" },
+    { "pre_compromise": "Fake Receipt Generation","initial_access": "Impersonation of Retail Employee",  "defense_evasion": "", "control":"Item Manipulation", "monetization": "" },
+    { "pre_compromise": "Insider Recruitment","initial_access": "",  "defense_evasion": "", "control": "Returns Process Exploitation", "monetization": "" },
+    { "pre_compromise": "Impersonation of Retail Employee","initial_access": "",  "defense_evasion": "", "control":"Marketplace Exploitation", "monetization": "" },
+    { "pre_compromise": "","initial_access": "",  "defense_evasion": "", "control":"Crypto Currency", "monetization": "" }
   ]

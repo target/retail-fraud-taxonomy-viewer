@@ -1,0 +1,67 @@
+{
+  "code": "FT 1011",
+  "name": "Impersonation of Retail Employee",
+  "parent_technique": "",
+  "tactics": [
+    "Pre-Compromise",
+    "Initial Access"
+  ],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "A form of social engineering, this technique in returns fraud involves fraudsters posing as store staff, either physically, over the phone, or online, to manipulate return processes and bypass verification protocols. They may dress like employees, use fake IDs, or spoof contact details to gain trust and access, often requesting unauthorized refunds or overrides. In more advanced schemes, real employees are recruited to impersonate others or approve fraudulent returns, making fraud harder to detect and more scalable."
+  ],
+  "mitigation": [
+    {
+      "type": "Identity Verification",
+      "details": [
+        "Establish identification and authentication procedures to prove someone is an employee in person or remotely."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Training and Awareness",
+      "details": [
+        "Train employees in stores to recognize impersonation attempts, posing as an employee, someone from headquarters, or a legitimate third-party such as contractors."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Escalation",
+      "details": [
+        "Require secondary approvals for sensitive actions that the fraudster may ask you to perform."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Monitor employees’ interactions with other employees and discussions regarding potential payment or other ways to receive value for fraudulent activity. (Correct)",
+        "Insiders may attempt to hire employees to support their activity. Identify employees’ excessive referrals and the quality of those referrals. (Correct)",
+        "For call center or chat-based customer service operations, recruiters will often engage with many customer service representatives to find one who is willing or vulnerable. Identify customer attempts to offer money, jobs, or other reimbursements for actions taken at the retail store."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Video Surveillance Systems",
+      "details": [
+        "Use video surveillance systems to identify and record suspicious activity for correlation, as fraudsters may commit actions over a long period.",
+        "Correlate suspicious individuals across multiple stores to identify fraudsters."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

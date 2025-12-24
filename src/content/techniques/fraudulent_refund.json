@@ -1,0 +1,112 @@
+{
+  "code": "FT 1304",
+  "name": "Fraudulent Refund",
+  "parent_technique": "",
+  "tactics": [
+    "Monetization"
+  ],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": ["Refund to Gift Card", "Double Refund", "Non-Receipted Returns"],
+  "technique_description": [
+    "Deliberate exploitation of a retailer's refund process to obtain financial gain or store credit without legitimate grounds. The fraudster initiates a return, often under false pretenses such as claiming damage, misrepresentation, or leveraging policy loopholes, and secures cash refunds, gift cards, or store credit."
+  ],
+  "mitigation": [
+    {
+      "type": "Return Limit",
+      "details": [
+        "Link each order to an individual refund.",
+        "Restrict how many times a refund can be requested per order.",
+        "Limit the number and total amount of non-receipted returns per customer.",
+        "Limit the types of items that can be returned without a receipt.",
+        "Only allow instore credit or gift cards as a refund tender"
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Stop refunds if the same order ID is already refunded."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Escalation",
+      "details": [
+        "Escalate suspicious repeat attempts to returns."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Identity Verification",
+      "details": [
+        "Require government-issued ID.",
+        "Tie return transaction to customer profile for monitoring."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Restocking Fees",
+      "details": [
+        "Impose fees on items being returned."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Redemption Limits",
+      "details": [
+        "Limit the amount of store credit that can be used on a single transaction."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction Data",
+      "details": [
+        "Identify multiple refund requests for the same order.",
+        "Check if item identifiers (IMEI, serial, RFID) can be associated with a prior purchase.",
+        "Identify the same return in multiple stores and online."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Flag accounts that are doing frequent gift card refunds.",
+        "Identify in person or Online Identities attempting gift card refund.",
+        "Flag accounts attempting frequent non-receipted returns.",
+        "Monitor for invalid Government-Id usage.",
+        "Track items frequently returned without receipts at locations associated with high rates of theft.",
+        "Compare items against inventory shortage reports."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Device Attributes",
+      "details": [
+        "Detect repeat attempts from the same computer or phone submitting duplicate requests."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Velocity Attributes",
+      "details": [
+        "Identify accounts requesting several refunds in a short time."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Credit Redemption Behavior",
+      "details": [
+        "Monitor for the consolidation of instore credit gift cards to purchase high value items or issued to multiple identities (e.g. electronics)"
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

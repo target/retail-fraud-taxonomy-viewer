@@ -1,0 +1,71 @@
+{
+  "code": "FT 1304.001",
+  "name": "Refund to Gift Card",
+  "parent_technique": "Fraudulent Refund",
+  "tactics": [
+    "Monetization"
+  ],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "Exploiting a retailer’s refund process by requesting that the refund value be issued as a gift card or store credit rather than returned to the original payment method. Fraudsters favor gift cards because they are highly liquid, easily transferable, and often lack the same fraud detection or traceability controls for credit or debit card refunds. Once obtained, these gift cards can be resold on secondary markets, exchanged for cash, or used to purchase high-value goods for sale, effectively converting fraudulent returns into fungible currency."
+  ],
+  "mitigation": [
+    {
+      "type": "Access Code Required",
+      "details": [
+        "Require an access code before permitting access to resources."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Return Limit",
+      "details": [
+        "Limit the amount of money that can be refunded."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Escalation",
+      "details": [
+        "Based on value require Escalation to manager."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction Data",
+      "details": [
+        "Record serial numbers for refunded gift cards."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Flag accounts doing frequent gift card refunds.",
+        "Identify in person or Online Identities attempting gift card refund."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Device Attributes",
+      "details": [
+        "Detect repeat attempts from the same computer or phone"
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

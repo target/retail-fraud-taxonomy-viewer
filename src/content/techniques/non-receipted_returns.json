@@ -1,0 +1,83 @@
+{
+  "code": "FT 1304.003",
+  "name": "Non-Receipted Returns",
+  "parent_technique": "Fraudulent Refund",
+  "tactics": [
+    "Control"
+  ],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "Fraudster intentionally misuses the returns process without a valid receipt (or other proof of purchase) to obtain cash refunds, store credit, gift cards, or replacements. The actor exploits no receipt allowances, low evidence thresholds, and minimal inspection."
+  ],
+  "mitigation": [
+    {
+      "type": "Return Limit",
+      "details": [
+        "Limit the number and total amount of non-receipted returns per customer.",
+        "Limit the types of items that can be returned without a receipt.",
+        "Only allow instore credit or gift cards as a refund tender"
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Identity Verification",
+      "details": [
+        "Require government-issued ID.",
+        "Tie return transaction to customer profile for monitoring."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Restocking Fees",
+      "details": [
+        "Impose fees on items being returned that have no proof of purchase."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Redemption Limits",
+      "details": [
+        "Limit the amount of store credit that can be used on a single transaction."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Flag accounts attempting frequent non-receipted returns.",
+        "Monitor for invalid Government-Id usage.",
+        "Track items frequently returned without receipts at locations associated with high rates of theft.",
+        "Compare against inventory shortage reports."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Transaction Data",
+      "details": [
+        "Check if item identifiers (IMEI, serial, RFID) can be associated with a prior purchase."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Credit Redemption Behavior",
+      "details": [
+        "Monitor for the consolidation of instore credit gift cards to purchase high value items or issued to multiple identities (e.g. electronics)"
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

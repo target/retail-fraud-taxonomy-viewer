@@ -8,7 +8,8 @@
   ],
   "schemes": [
     "Gift Card Fraud",
-    "Account Take Over"
+    "Account Take Over",
+    "Return Fraud"
   ],
   "sub_techniques": [],
   "technique_description": [
