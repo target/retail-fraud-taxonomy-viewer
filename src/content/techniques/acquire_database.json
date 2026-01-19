@@ -11,7 +11,7 @@
   ],
   "sub_techniques": [],
   "technique_description": [
-    "Fraudster will, through legitimate or illegal means, acquire databases that may be used for future operations. These databases may range from legitimate marketing information sold by reputable companies to data stolen from victims",
+    "Fraudster will, through legitimate or illegal means, acquire databases that may be used for future operations. These databases may range from legitimate marketing information sold by reputable companies to data stolen from victims.",
     "Some examples of databases that can be acquired to support operations are account databases, marketing information, gift card numbers and personally identifiable information (PII)."
   ],
   "mitigation": [
