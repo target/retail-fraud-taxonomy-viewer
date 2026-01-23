@@ -250,7 +250,21 @@ function syncTechniques(NRFTechniques, customTechniques) {
       handleHideTechniques()
     }
 
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
 
+setCellColors(prev => {
+  const updated = { ...prev };
+
+  storedTechniques.forEach(item => {
+    if (item.color && item.color !== "") {
+      updated[item.name] = item.color;
+    }
+  });
+
+  return updated;
+});
+
+  handleCellColoring()
   }, [viewCustomMode]);
 
   useEffect(() => {
@@ -1169,6 +1183,21 @@ function syncTechniques(NRFTechniques, customTechniques) {
         [selectedTechnique]: selectedColor
       }));
     }
+
+     if (selectedTechnique && selectedColor !== null) {
+      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+      const updatedTechniques = storedTechniques.map(item => {
+        if (item.name === selectedTechnique) {
+          return { ...item, color: selectedColor};
+        }
+        return item;
+      });
+
+      localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
+    }
+
+    
   }, [selectedColor]);
 
   useEffect(() => {
