@@ -41,6 +41,7 @@ const Header = ({
   const [showRiskScore, setShowRiskScore] = useState(false);
   const [riskScore, setRiskScore] = useState('');
   const iconContainerRef = useRef(null);
+  const popupRef = useRef(null);
 
   const handleRiskScoreChange = (e) => {
     const val = e.target.value;
@@ -106,10 +107,11 @@ const Header = ({
   // Hide on outside click on anywhere on browser
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        iconContainerRef.current &&
-        !iconContainerRef.current.contains(event.target)
-      ) {
+      // if click is neither inside iconContainer nor inside popup, close
+      const clickedInsideIcon = iconContainerRef.current && iconContainerRef.current.contains(event.target);
+      const clickedInsidePopup = popupRef.current && popupRef.current.contains(event.target);
+
+      if (!clickedInsideIcon && !clickedInsidePopup) {
         setActiveControl(false);
         setShowPopup(false);
       }
@@ -177,7 +179,7 @@ const Header = ({
 
     return (
       showPopup && (
-        <div className="popup">
+        <div className="popup" ref={popupRef}>
           <div className="color-grid">
             {colors.map((color, index) => {
               const NO_COLOR = 'rgba(0, 0, 0, 0)';
@@ -187,7 +189,6 @@ const Header = ({
               // Add extra spacing between the special color boxes
               const isLastSpecial = color === REMOVE_COLOR;
               const isFirstSpecial = color === NO_COLOR;
-
               return (
                 <div
                   key={index}
@@ -206,18 +207,18 @@ const Header = ({
                     marginBottom: '8px', // General spacing
                   }}
                   onClick={() => handleColorClick(color)}
+                  // optional: ensure mousedown doesn't bubble if you still see trouble
+                  onMouseDown={(e) => e.stopPropagation()}
                 >
-                  {color === NO_COLOR && 'No Color'}
-                  {color === REMOVE_COLOR && 'Remove All'}
+                  {color === 'rgba(0, 0, 0, 0)' && 'No Color'}
+                  {color === 'rgba(0, 0, 0, 1)' && 'Remove All'}
                 </div>
               );
             })}
-
-
           </div>
         </div>
       )
-    );
+    )
   };
 
   return (
@@ -231,7 +232,7 @@ const Header = ({
       {!editContent && !addContent && (
         <div className="header-controls">
           <button className="header-button" onClick={handleSynclick}>
-            <RiRefreshFill style={{ fontSize: '50px' }}/>
+            <RiRefreshFill style={{ fontSize: '50px' }} />
             Sync NRF Content
           </button>
 
@@ -359,7 +360,7 @@ const Header = ({
         </div>
       )}
 
-      <ColorPopup showPopup={showPopup} togglePopup={() => setShowPopup(!showPopup)} />
+      <ColorPopup showPopup={showPopup} popupRef={popupRef} togglePopup={() => setShowPopup(!showPopup)} />
     </header>
   );
 };
