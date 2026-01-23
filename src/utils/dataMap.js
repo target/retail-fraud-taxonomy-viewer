@@ -29,6 +29,12 @@ export const fetchAllTechniques = (customData) => {
     return techniques;
   }
   else {
+    if (!localStorage.getItem('technique_table')){
+        localStorage.setItem('technique_table', JSON.stringify(techniques));
+    }
+    if(!localStorage.getItem('techniques')){
+      localStorage.setItem('techniques', JSON.stringify(dataArray));
+    }
     return JSON.parse(localStorage.getItem('technique_table'));
   }
 };
