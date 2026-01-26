@@ -1171,10 +1171,6 @@ const TechniquesTable = ({
     onValueClick(item[key]);
   };
 
-
-
-
-
   // Track the focusedLiIndexRef after the state is updated
   useEffect(() => {
     if (focusedLiIndex !== null) {
