@@ -22,6 +22,7 @@ const SCHEMES = 'schemes';
 const DETECTION = 'detection';
 const FOCUS = '#444';
 const NO_FOCUS = 'transparent';
+const BLACK_BACKGROUND = 'rgb(0, 0, 0)'
 
 const TechniquesTable = ({
   onValueClick,
@@ -115,80 +116,80 @@ const TechniquesTable = ({
 
   //Sync TechniqueTable
   function syncTechniquesTable(array1, array2) {
-  // Step 1: Collect all keys (columns)
-  const allKeys = new Set([
-    ...array1.flatMap(row => Object.keys(row)),
-    ...array2.flatMap(row => Object.keys(row))
-  ]);
+    // Step 1: Collect all keys (columns)
+    const allKeys = new Set([
+      ...array1.flatMap(row => Object.keys(row)),
+      ...array2.flatMap(row => Object.keys(row))
+    ]);
 
-  // Step 2: Collect valid values per column FROM array1 (source of truth)
-  const validValuesByColumn = {};
-  allKeys.forEach(key => validValuesByColumn[key] = new Set());
+    // Step 2: Collect valid values per column FROM array1 (source of truth)
+    const validValuesByColumn = {};
+    allKeys.forEach(key => validValuesByColumn[key] = new Set());
 
-  array1.forEach(row => {
-    allKeys.forEach(key => {
-      const val = row[key];
-      if (val !== undefined && val !== '') {
-        validValuesByColumn[key].add(val);
-      }
-    });
-  });
-
-  // Step 3: Build rows based only on allowed values
-  const maxLength = Math.max(...Object.values(validValuesByColumn).map(set => set.size));
-  const result = Array.from({ length: maxLength }, () => ({}));
-
-  for (const key of allKeys) {
-    const values = Array.from(validValuesByColumn[key]);
-    values.forEach((val, idx) => {
-      result[idx][key] = val;
-    });
-  }
-
-  // Step 4: Normalize all rows with all keys
-  result.forEach(row => {
-    for (const key of allKeys) {
-      if (!(key in row)) {
-        row[key] = '';
-      }
-    }
-  });
-
-  return result;
-}
-
-//Sync Techniques
-function syncTechniques(NRFTechniques, customTechniques) {
-  const result = [];
-
-  const customMap = new Map(customTechniques.map(item => [item.name, item]));
-
-  // Step 1: Add or merge from NRFTechniques (source of truth)
-  NRFTechniques.forEach(sourceItem => {
-    const existing = customMap.get(sourceItem.name);
-
-    if (existing) {
-      const merged = { ...existing };
-      Object.entries(sourceItem).forEach(([key, value]) => {
-        if (
-          !(key in merged) ||
-          merged[key] === '' ||
-          merged[key] === undefined
-        ) {
-          merged[key] = value;
+    array1.forEach(row => {
+      allKeys.forEach(key => {
+        const val = row[key];
+        if (val !== undefined && val !== '') {
+          validValuesByColumn[key].add(val);
         }
       });
-      result.push(merged);
-    } else {
-      // New item from NRFTechniques
-      result.push({ ...sourceItem });
+    });
+
+    // Step 3: Build rows based only on allowed values
+    const maxLength = Math.max(...Object.values(validValuesByColumn).map(set => set.size));
+    const result = Array.from({ length: maxLength }, () => ({}));
+
+    for (const key of allKeys) {
+      const values = Array.from(validValuesByColumn[key]);
+      values.forEach((val, idx) => {
+        result[idx][key] = val;
+      });
     }
-  });
 
-  // ✅ No need to preserve custom-only techniques: they are deleted
+    // Step 4: Normalize all rows with all keys
+    result.forEach(row => {
+      for (const key of allKeys) {
+        if (!(key in row)) {
+          row[key] = '';
+        }
+      }
+    });
 
-  return result;
-}
+    return result;
+  }
+
+  //Sync Techniques
+  function syncTechniques(NRFTechniques, customTechniques) {
+    const result = [];
+
+    const customMap = new Map(customTechniques.map(item => [item.name, item]));
+
+    // Step 1: Add or merge from NRFTechniques (source of truth)
+    NRFTechniques.forEach(sourceItem => {
+      const existing = customMap.get(sourceItem.name);
+
+      if (existing) {
+        const merged = { ...existing };
+        Object.entries(sourceItem).forEach(([key, value]) => {
+          if (
+            !(key in merged) ||
+            merged[key] === '' ||
+            merged[key] === undefined
+          ) {
+            merged[key] = value;
+          }
+        });
+        result.push(merged);
+      } else {
+        // New item from NRFTechniques
+        result.push({ ...sourceItem });
+      }
+    });
+
+    // ✅ No need to preserve custom-only techniques: they are deleted
+
+    return result;
+  }
 
   // Handle Sync Content
   useEffect(() => {
@@ -252,19 +253,19 @@ function syncTechniques(NRFTechniques, customTechniques) {
 
     const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
 
-setCellColors(prev => {
-  const updated = { ...prev };
+    setCellColors(prev => {
+      const updated = { ...prev };
 
-  storedTechniques.forEach(item => {
-    if (item.color && item.color !== "") {
-      updated[item.name] = item.color;
-    }
-  });
+      storedTechniques.forEach(item => {
+        if (item.color && item.color !== "") {
+          updated[item.name] = item.color;
+        }
+      });
 
-  return updated;
-});
+      return updated;
+    });
 
-  handleCellColoring()
+    handleCellColoring()
   }, [viewCustomMode]);
 
   useEffect(() => {
@@ -1119,47 +1120,60 @@ setCellColors(prev => {
     }
   };
 
-  const handleCellClick = async (rowIndex, colIndex, item, key) => {
-    //  await resetFocus();
-    if (item[key] !== '') {
-      // Reset previously focused subcell's background color (if any)
-      if (focusedCell) {
-        const previousCell = tableRef.current?.querySelector(
-          `tbody tr:nth-child(${focusedCell.row + 1}) td:nth-child(${focusedCell.col})`,
-        );
-        if (previousCell) {
-          // If the previous cell had subcells, reset their background color
-          const subCells = previousCell.querySelectorAll('li');
-          if (subCells.length > 0) {
-            subCells.forEach((subCell) => {
-              subCell.style.backgroundColor = NO_FOCUS;
-            });
+  const clearAllTdPreserveAssignedColors = (table) => {
+    table.querySelectorAll('td').forEach((td) => {
+      if (td.style.backgroundColor === FOCUS || td.style.backgroundColor === 'transparent' || td.style.backgroundColor === BLACK_BACKGROUND) {
+        td.style.backgroundColor = NO_FOCUS;
+      }
+
+      td.querySelectorAll('*').forEach((el) => {
+        if (el && el.style) {
+          if (el.style.backgroundColor === FOCUS || el.style.backgroundColor === 'transparent' || el.style.backgroundColor === BLACK_BACKGROUND) {
+            el.style.backgroundColor = NO_FOCUS;
           }
         }
-      }
-
-      // Set the new focused cell
-      setFocusedCell({ row: rowIndex, col: colIndex });
-      setFocusedLiIndex(null); // Reset any previous subcell focus
-
-      // Focus the clicked <td> and its subcell (if any)
-      const currentCell = tableRef.current?.querySelector(
-        `tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`,
-      );
-      if (currentCell) {
-        currentCell.focus(); // Focus the <td>
-
-        // If the cell contains subcells (<li>), focus the first <li>
-        const subCells = currentCell.querySelectorAll('li');
-        if (subCells.length > 0) {
-          subCells[0]?.focus(); // Focus the first <li> element
-          // Set the background color of the newly focused subcell
-          subCells[0].style.backgroundColor = FOCUS;
-        }
-      }
-      onValueClick(item[key]);
-    }
+      });
+    });
   };
+
+  const handleTablePointerDown = (e) => {
+    const table = tableRef.current;
+    if (!table) return;
+    clearAllTdPreserveAssignedColors(table);
+  };
+
+
+  const handleCellClick = (rowIndex, colIndex, item, key) => {
+    if (item[key] === '') return;
+    const table = tableRef.current;
+    if (!table) return;
+
+    setFocusedCell({ row: rowIndex, col: colIndex });
+    setFocusedLiIndex(null);
+
+    const currentCell = table.querySelector(
+      `tbody tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`
+    );
+    if (currentCell) {
+      currentCell.focus();
+      currentCell.style.backgroundColor = FOCUS;
+
+      const subCells = currentCell.querySelectorAll('li');
+      if (subCells.length > 0) {
+        subCells[0].focus();
+        subCells[0].style.backgroundColor = FOCUS;
+        setFocusedLiIndex(0);
+      }
+    }
+
+    clearAllTdPreserveAssignedColors(table);
+
+    onValueClick(item[key]);
+  };
+
+
+
+
 
   // Track the focusedLiIndexRef after the state is updated
   useEffect(() => {
@@ -1169,7 +1183,9 @@ setCellColors(prev => {
   }, [focusedLiIndex]);
 
   useEffect(() => {
-    if (!selectedTechnique) return;
+    // if (!selectedTechnique) return;
+
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
 
     if (selectedColor === 'rgba(0, 0, 0, 1)') {
       setCellColors(prev =>
@@ -1177,27 +1193,37 @@ setCellColors(prev => {
           Object.keys(prev).map(key => [key, 'rgba(0, 0, 0, 1)'])
         )
       );
+
+      const updatedTechniques = storedTechniques.map(item => ({
+        ...item,
+        color: 'rgba(0, 0, 0, 1)',
+      }));
+
+      localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
     } else {
+      if (!selectedTechnique) return;
+
       setCellColors(prev => ({
         ...prev,
         [selectedTechnique]: selectedColor
       }));
+
+      if (selectedTechnique && selectedColor !== null) {
+
+        const updatedTechniques = storedTechniques.map(item => {
+          if (item.name === selectedTechnique) {
+            return { ...item, color: selectedColor };
+          }
+          return item;
+        });
+
+        localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
+      }
     }
 
-     if (selectedTechnique && selectedColor !== null) {
-      const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
 
-      const updatedTechniques = storedTechniques.map(item => {
-        if (item.name === selectedTechnique) {
-          return { ...item, color: selectedColor};
-        }
-        return item;
-      });
+    handleCellColoring()
 
-      localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
-    }
-
-    
   }, [selectedColor]);
 
   useEffect(() => {
@@ -1585,7 +1611,7 @@ setCellColors(prev => {
               subCells[i].style.backgroundColor = cellColors[subCells[i]?.textContent]
             }
           } else {
-            currentCell.style.backgroundColor = cellColors[tableData[rowIndex][colIndex]];
+            currentCell.style.backgroundColor = cellColors[tableData[rowIndex][colIndex]]
           }
         }
       }
@@ -1611,7 +1637,7 @@ setCellColors(prev => {
       </div>
       <nav tabIndex={0} onKeyDown={handleKeyDown} ref={tableRef}>
 
-        <table className={`table-container ${isPanelOpen ? 'shrink' : ''}`}>
+        <table className={`table-container ${isPanelOpen ? 'shrink' : ''}`} onPointerDown={handleTablePointerDown}>
           <thead>
             <tr>{renderHeaders() || <th colSpan={4}>Loading...</th>}</tr>
           </thead>
