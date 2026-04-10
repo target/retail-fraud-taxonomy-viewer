@@ -5,6 +5,7 @@
   "tactics": [
     "Pre-Compromise"
   ],
+  "channels": ["Analog", "Digital", "Social Engineering"],
   "schemes": [
     "Gift Card Fraud",
     "Account Take Over"

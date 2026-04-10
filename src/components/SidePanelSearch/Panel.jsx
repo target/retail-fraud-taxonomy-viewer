@@ -3,13 +3,15 @@ import { FaTimes } from 'react-icons/fa';
 import {
   fetchAllMitigations,
   fetchAllSchemes,
-  fetchAllDetections
+  fetchAllDetections,
+  fetchAllChannels
 } from '../../utils/dataMap';
 import { useState } from 'react';
 
 const MITIGATION = 'mitigation';
 const SCHEMES = 'schemes';
 const DETECTION = 'detection';
+const CHANNELS = 'channels';
 const RISK_SCORE = 'risk_score';
 const SHOW_ALL = 'Show All';
 
@@ -21,6 +23,7 @@ const SidePanel = ({ onFilterChange, onClose, viewCustomMode }) => {
   const mitigations = fetchAllMitigations(viewCustomMode);
   const schemes = fetchAllSchemes(viewCustomMode);
   const detections = fetchAllDetections(viewCustomMode);
+  const channels = fetchAllChannels(viewCustomMode);
   const risk_score = ['<= 50', '> 50']
   const [minRiskScore, setMinRiskScore] = useState(0);
   const [maxRiskScore, setMaxRiskScore] = useState(100);
@@ -86,6 +89,19 @@ const SidePanel = ({ onFilterChange, onClose, viewCustomMode }) => {
               onClick={() => handleFilterChange(detection, DETECTION)}
             >
               {detection}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="filter-section">
+        <h3>Channel ({channels.length})</h3>
+        <div className="filter-list">
+          {channels.map((channel, index) => (
+            <button
+              key={index}
+              onClick={() => handleFilterChange(channel, CHANNELS)}
+            >
+              {channel}
             </button>
           ))}
         </div>

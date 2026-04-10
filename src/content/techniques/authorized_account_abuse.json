@@ -5,6 +5,7 @@
   "tactics": [
     "Defense Evasion"
   ],
+  "channels": ["Digital"],
   "schemes": [
     "Gift Card Fraud",
     "Account Take Over"

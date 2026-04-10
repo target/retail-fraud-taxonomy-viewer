@@ -9,6 +9,7 @@
     "Return Fraud",
     "Gift Card Fraud"
   ],
+  "channels": ["Analog", "Digital"],
   "sub_techniques": [],
   "technique_description": [
     "Digital wallet applications (such as Apple Pay, Google Pay, and PayPal) are mobile or web-based platforms that store payment credentials and enable electronic transactions without physical cards. Fraudsters exploit these wallets to evade detection by creating multiple accounts under different identities, masking the original payment source, and requesting refunds to wallet balances instead of the original payment method, making it easier to convert funds into cash, gift cards, or resale value. In addition, Fraudsters may load stolen credit, debit and gift cards onto the wallet for reuse."

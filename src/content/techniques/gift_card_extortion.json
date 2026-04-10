@@ -6,6 +6,7 @@
     "Initial Access",
     "Control"
   ],
+  "channels": ["Analog", "Digital", "Social Engineering"],
   "schemes": [
     "Gift Card Fraud"
   ],

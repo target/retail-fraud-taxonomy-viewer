@@ -4,8 +4,10 @@
   "parent_technique": "Valid Accounts",
   "tactics": [
     "Pre-Compromise",
-    "Initial Access"
+    "Initial Access",
+    "Control"
   ],
+  "channels": ["Digital"],
   "schemes": [
     "Gift Card Fraud",
     "Account Take Over",

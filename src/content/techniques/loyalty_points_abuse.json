@@ -5,6 +5,7 @@
   "tactics": [
     "Control"
   ],
+  "channels": ["Digital"],
   "schemes": [
     "Account Take Over"
   ],

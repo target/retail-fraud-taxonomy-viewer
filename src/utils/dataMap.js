@@ -2,6 +2,7 @@ import techniques from '../content/techniques.json';
 const SCHEMES = 'schemes';
 const MITIGATION = 'mitigation';
 const DETECTION = 'detection';
+const CHANNELS = 'channels';
 const RISK_SCORE = 'risk_score';
 const SHOW_ALL = 'Show All';
 
@@ -103,7 +104,18 @@ export const filterDataMap = (selectedIcon, filterType) => {
       }
       return filteredMap;
     }, {});
-  } else if (filterType === RISK_SCORE) {
+  } else if (filterType === CHANNELS) {
+    dataMap = formDataMapfromLocalStorage()
+    return Object.keys(dataMap).reduce((filteredMap, key) => {
+      if (
+        dataMap[key].channels.some((det) => det.includes(selectedIcon))
+      ) {
+        filteredMap[key] = dataMap[key];
+      }
+      return filteredMap;
+    }, {});
+  }
+  else if (filterType === RISK_SCORE) {
     dataMap = formDataMapfromLocalStorage()
 
     const filteredDataMap = Object.keys(dataMap).reduce((filteredMap, key) => {
@@ -285,6 +297,45 @@ export const fetchAllDetections = (viewCustomMode) => {
     });
 
     const uniqueDetectionKeys = [...allDetectionKeys.values()].sort();
+    return uniqueDetectionKeys;
+  }
+};
+
+export const fetchAllChannels = (viewCustomMode) => {
+  const allChannelKeys = new Map();
+
+  if (!viewCustomMode) {
+    Object.keys(dataMap).forEach((key) => {
+      dataMap[key].channels.forEach((channelItem) => {
+        // Normalize the type for uniqueness check (lowercase)
+        const normalizedType = channelItem.trim().toLowerCase();
+
+        // Only add the first occurrence of the normalized type
+        if (!allChannelKeys.has(normalizedType)) {
+          allChannelKeys.set(normalizedType, channelItem);
+        }
+      });
+    });
+
+    const uniqueChannelKeys = [...allChannelKeys.values()].sort();
+    return uniqueChannelKeys;
+  } else {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+    storedTechniques.forEach((technique) => {
+      technique.channels.forEach((channelItem) => {
+
+        // Normalize the type for uniqueness check (lowercase)
+        const normalizedType = channelItem.type.trim().toLowerCase();
+
+        // Only add the first occurrence of the normalized type
+        if (!allChannelKeys.has(normalizedType)) {
+          allChannelKeys.set(normalizedType, channelItem);
+        }
+      });
+    });
+
+    const uniqueDetectionKeys = [...allChannelKeys.values()].sort();
     return uniqueDetectionKeys;
   }
 };

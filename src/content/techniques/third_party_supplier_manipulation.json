@@ -5,6 +5,7 @@
   "tactics": [
     "Pre-Compromise"
   ],
+  "channels": ["Analog", "Digital"],
   "schemes": [
     "Return Fraud"
   ],

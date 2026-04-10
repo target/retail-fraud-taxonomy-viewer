@@ -5,6 +5,7 @@
   "tactics": [
     "Control"
   ],
+  "channels": ["Analog", "Digital"],
   "schemes": [
     "Return Fraud"
   ],

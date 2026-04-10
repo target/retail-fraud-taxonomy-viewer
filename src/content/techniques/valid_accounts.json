@@ -3,8 +3,11 @@
   "name": "Valid Accounts",
   "parent_technique": "",
   "tactics": [
-    "Initial Access"
+    "Initial Access",
+    "Defense Evasion",
+    "Control"
   ],
+  "channels": ["Digital"],
   "schemes": [
     "Gift Card Fraud",
     "Account Take Over",
