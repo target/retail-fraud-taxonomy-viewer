@@ -1121,6 +1121,12 @@ const TechniquesTable = ({
     setFocusedCell({ row: rowIndex, col: colIndex });
     setFocusedLiIndex(null);
 
+    // Reset ALL li in the table
+    const allSubCells = tableRef.current?.querySelectorAll('li');
+    allSubCells?.forEach((li) => {
+      li.style.backgroundColor = NO_FOCUS;
+    });
+
     const currentCell = table.querySelector(
       `tbody tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`
     );
