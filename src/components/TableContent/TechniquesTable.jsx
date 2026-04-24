@@ -577,148 +577,109 @@ const TechniquesTable = ({
   };
 
   const handle_sub_techniques = (sub_techniques, rowIndex, colIndex) => {
-    const stringWithBreaks = (
-      <ul>
-        {sub_techniques &&
-          sub_techniques.map((line, index) => {
-            // Check if the line should be included
-            if (!hideToggleStatus && !hiddenTechniques?.includes(line)) {
-              return (
-                <li
-                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                  tabIndex={0}
-                  key={index}
-                  onFocus={() => {
-                    let row = rowIndex;
-                    let col = colIndex;
-                    const currentCell = tableRef.current?.querySelector(
-                      `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`
-                    );
+  const shouldRenderLine = (line) => {
+    if (hideToggleStatus) return true;
+    return !hiddenTechniques?.includes(line);
+  };
 
-                    if (!currentCell) return;
+  const handleFocus = (index) => {
+    let row = rowIndex;
+    let col = colIndex;
 
-                    const subCells = currentCell.querySelectorAll('li');
-                    const isSubcell = subCells.length > 0;
-
-                    if (isSubcell) {
-                      for (let i = 0; i < subCells.length; i++) {
-                        if (i === index) {
-                          subCells[i]?.focus();
-                          subCells[i].style.backgroundColor = FOCUS;
-                        } else {
-                          subCells[i].style.backgroundColor = NO_FOCUS;
-                        }
-                      }
-                    }
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevents the event from bubbling up to the <td>
-                    handleSubCellClick(rowIndex, colIndex, line, index);
-                  }}
-                >
-                  <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
-
-                  {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && line && (
-                    <div>
-                      {fetchImplementationStatus(line)
-                        ? CustomCheckbox()
-                        : <RiFolderWarningFill style={{ color: 'orange' }} />}
-                    </div>
-                  )}
-
-                  {editStatus && (
-                    <div
-                      style={{
-                        paddingRight: '10px',
-                        cursor: 'pointer',
-                        backgroundColor: 'rgb(48, 48, 48)',
-                        color: 'white'
-                      }}
-                      aria-label="edit"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEdit(line);
-                      }}
-                    >
-                      <RiEdit2Fill className="white-icon" />
-                    </div>
-                  )}
-                </li>
-              );
-            }
-
-            if (hideToggleStatus) {
-              return (
-                <li
-                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                  tabIndex={0}
-                  key={index}
-                  onFocus={() => {
-                    let row = rowIndex;
-                    let col = colIndex;
-                    const currentCell = tableRef.current?.querySelector(
-                      `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`
-                    );
-
-                    if (!currentCell) return;
-
-                    const subCells = currentCell.querySelectorAll('li');
-                    const isSubcell = subCells.length > 0;
-
-                    if (isSubcell) {
-                      for (let i = 0; i < subCells.length; i++) {
-                        if (i === index) {
-                          subCells[i]?.focus();
-                          subCells[i].style.backgroundColor = FOCUS;
-                        } else {
-                          subCells[i].style.backgroundColor = NO_FOCUS;
-                        }
-                      }
-                    }
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevents the event from bubbling up to the <td>
-                    handleSubCellClick(rowIndex, colIndex, line, index);
-                  }}
-                >
-                  <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
-
-                  {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && line && (
-                    <div>
-                      {fetchImplementationStatus(line)
-                        ? CustomCheckbox()
-                        : <RiFolderWarningFill style={{ color: 'orange' }} />}
-                    </div>
-                  )}
-
-                  {editStatus && (
-                    <div
-                      style={{
-                        paddingRight: '10px',
-                        cursor: 'pointer',
-                        backgroundColor: 'rgb(48, 48, 48)',
-                        color: 'white'
-                      }}
-                      aria-label="edit"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEdit(line);
-                      }}
-                    >
-                      <RiEdit2Fill className="white-icon" />
-                    </div>
-                  )}
-                </li>
-              );
-            }
-            // If condition not met, return null (i.e., don't render this item)
-            return null;
-          })}
-      </ul>
+    const currentCell = tableRef.current?.querySelector(
+      `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`
     );
 
-    return stringWithBreaks;
+    if (!currentCell) return;
+
+    const subCells = currentCell.querySelectorAll('li');
+
+    subCells.forEach((cell, i) => {
+      if (i === index) {
+        cell.focus();
+        cell.style.backgroundColor = FOCUS;
+      } else {
+        cell.style.backgroundColor = NO_FOCUS;
+      }
+    });
   };
+
+  return (
+    <ul>
+      {sub_techniques &&
+        sub_techniques.map((line, index) => {
+          if (!shouldRenderLine(line)) return null;
+
+          return (
+            <li
+              key={index}
+              tabIndex={0}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                position: 'relative',
+                width: '100%' 
+               }}
+              onFocus={() => handleFocus(index)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSubCellClick(rowIndex, colIndex, line, index);
+              }}
+            >
+              {/* Centered text */}
+              <span
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  textAlign: 'center'
+                }}
+              >
+                {line}
+              </span>
+
+              {/* Right-side actions */}
+              <div
+                style={{
+                  marginLeft: 'auto',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+              >
+                {searchFilter !== '' &&
+                  (searchFilterType === MITIGATION ||
+                    searchFilterType === DETECTION) &&
+                  line && (
+                    fetchImplementationStatus(line)
+                      ? CustomCheckbox()
+                      : <RiFolderWarningFill style={{ color: 'orange' }} />
+                  )}
+
+                {editStatus && (
+                  <div
+                    style={{
+                      paddingRight: '10px',
+                      cursor: 'pointer',
+                      backgroundColor: 'rgb(48, 48, 48)',
+                      color: 'white'
+                    }}
+                    aria-label="edit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEdit(line);
+                    }}
+                  >
+                    <RiEdit2Fill className="white-icon" />
+                  </div>
+                )}
+              </div>
+            </li>
+          );
+        })}
+    </ul>
+  );
+};
 
   const rename_headers = (updatedData, operation, other_columns) => {
     let headers = [];
@@ -1074,6 +1035,13 @@ const TechniquesTable = ({
 
   const handleSubCellClick = async (rowIndex, colIndex, line, index) => {
     if (line !== '') {
+
+    // Reset ALL li in the table
+    const allSubCells = tableRef.current?.querySelectorAll('li');
+    allSubCells?.forEach((li) => {
+      li.style.backgroundColor = NO_FOCUS;
+    });
+
       // Reset previously focused subcell's background color (if any)
       if (focusedCell) {
         const previousCell = tableRef.current?.querySelector(
@@ -1116,7 +1084,9 @@ const TechniquesTable = ({
           }
         }
       }
+      // clearAllTdPreserveAssignedColors(table);
       onValueClick(line);
+
     }
   };
 
