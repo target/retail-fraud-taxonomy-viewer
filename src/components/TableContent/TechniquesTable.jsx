@@ -39,7 +39,8 @@ const TechniquesTable = ({
   selectedColor,
   riskScoreInfo,
   shouldSync,
-  onSyncCompletion
+  onSyncCompletion,
+  hideTechniqueIDStatus
 }) => {
   const [tableData, setTableData] = useState(() => {
     const savedData = localStorage.getItem('technique_table');
@@ -1239,6 +1240,14 @@ const TechniquesTable = ({
     return '';
   }
 
+  function getTechniqueID(techniqueName) {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+    const technique = storedTechniques.find(item => item.name === techniqueName);
+    if (!technique) return null;
+    return technique.code
+  }
+
   function extractLiValues(reactUlElement) {
     const children = reactUlElement?.props?.children;
     if (!children) return [];
@@ -1356,7 +1365,16 @@ const TechniquesTable = ({
                             handleSubCellClick(rowIndex, colIndex, line, index);
                           }}
                         >
-                          <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
+                          <span style={{ flex: 1, textAlign: 'center' }}>
+                            {hideTechniqueIDStatus && getTechniqueID(line) && (
+                            <>
+                              {getTechniqueID(line)}
+                              <br />
+                            </>
+                          )}
+                          {line}
+                            
+                            </span>
                           {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && cellValue && (
                             <div>
                               {fetchImplementationStatus(cellValue)
@@ -1394,6 +1412,7 @@ const TechniquesTable = ({
                   </ul>
                 ) : (
                   <>
+
                     {editStatus && cellValue && (
                       <div
                         className="editicon"
@@ -1416,7 +1435,13 @@ const TechniquesTable = ({
                           : <RiFolderWarningFill style={{ color: 'orange' }} />}
                       </div>
                     )}
-                    {cellValue}
+                    {hideTechniqueIDStatus && getTechniqueID(cellValue) && (
+                      <>
+                        {getTechniqueID(cellValue)}
+                        <br />
+                      </>
+                    )}
+{cellValue}
                   </>
                 )}
 

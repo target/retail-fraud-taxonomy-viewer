@@ -22,7 +22,7 @@ const ToggleSwitch = ({ label, value, onToggle }) => (
 const Header = ({
   toggleControl, onAddClick, onEditMode, onImportClick,
   onViewCustomContent, editStatus, editContent, onBackClick,
-  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus,
+  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus, hideTechniqueIDStatus, onHideTechniqueIDToggle,
   onColorClick, onRiskScore, selectedTechnique, viewCustomMode, onSyncClick
 }) => {
   const [isToggled, setIsToggled] = useState(editStatus);
@@ -35,6 +35,7 @@ const Header = ({
   const [showFailAlert, setShowFailAlert] = useState(false);
   const [hide, setHide] = useState(hideStatus);
   const [showHidden, setShowHidden] = useState(hideToggleStatus);
+  const [hideTechniqueID, setHideTechniqueID] = useState(hideTechniqueIDStatus);
   const fileInputRef = useRef();
   const [showPopup, setShowPopup] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -147,6 +148,7 @@ const Header = ({
   useEffect(() => setIsToggled(editStatus), [editStatus]);
   useEffect(() => setHide(hideStatus), [hideStatus]);
   useEffect(() => setShowHidden(hideToggleStatus), [hideToggleStatus]);
+  useEffect(() => setHideTechniqueID(hideTechniqueIDStatus), [hideTechniqueIDStatus]);  
   useEffect(() => setViewCustomContent(viewCustomMode), [viewCustomMode]);
 
   useEffect(() => {
@@ -315,6 +317,14 @@ const Header = ({
               onToggle={(v) => {
                 setShowHidden(v);
                 onHideToggle(v);
+              }}
+            />
+             <ToggleSwitch
+              label={hideTechniqueID ? 'SHOW Techique ID' : 'HIDE Techique ID'}
+              value={hideTechniqueID}
+              onToggle={(v) => {
+                setHideTechniqueID(v);
+                onHideTechniqueIDToggle(v);
               }}
             />
 

@@ -22,6 +22,7 @@ export const Main = () => {
   const [colorSelect, setColorSelect] = useState(null);
   const [riskScoreContent, setRiskScoreContent] = useState(null);
   const [hideToggleVal, setHideToggleVal] = useState(true);
+  const [hideTechniqueIDToggleVal, setHideTechniqueIDToggleVal] = useState(false);
   const [syncContent, setSyncContent] = useState(null);
 
   useEffect(() => {
@@ -109,6 +110,10 @@ export const Main = () => {
   const handleHideToggle = useCallback((hideToggleStatus) => {
     setHideToggleVal(hideToggleStatus);
   }, []);
+  
+  const handleHideTechniqueIDToggle = useCallback((hideTechniqueIDStatus) => {
+    setHideTechniqueIDToggleVal(hideTechniqueIDStatus);
+  }, []);
 
   const handleViewCustomContent = useCallback((viewCustomContentMode) => {
     setViewCustomContent(viewCustomContentMode);
@@ -139,6 +144,7 @@ export const Main = () => {
         selectedTechnique={selectedValue}
         viewCustomMode={viewCustomContent}
         onSyncClick={handleSyncClick}
+        onHideTechniqueIDToggle={handleHideTechniqueIDToggle}
       />
 
       {shouldRenderTechniques && !addContent && !editContent && !hideTechnique && (
@@ -159,6 +165,7 @@ export const Main = () => {
           riskScoreInfo={riskScoreContent}
           onSyncCompletion={handleSyncCompletion}
           shouldSync={syncContent}
+          hideTechniqueIDStatus={hideTechniqueIDToggleVal}
         />
       )}
 
