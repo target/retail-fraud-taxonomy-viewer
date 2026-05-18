@@ -1,3 +1,9 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [1.6.4](https://github.com/target/retail-fraud-taxonomy-viewer/compare/v1.6.3...v1.6.4) (2026-05-18)
+
 # v2.0.3 (Thu Jun 26 2025)
 
 ### Release Notes
