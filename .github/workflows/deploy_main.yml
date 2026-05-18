@@ -9,7 +9,6 @@ permissions:
   contents: write
   pages: write
   id-token: write
-  actions: write
 
 jobs:
   build-and-deploy:
@@ -22,25 +21,24 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Install
         run: npm ci
 
       - name: Release changelog/version
-        if: github.ref == 'refs/heads/main'
         run: npm run release
+
+      - name: Push release commit and tags
+        run: |
+          git push origin HEAD:main
+          git push origin --tags
 
       - name: Build
         run: npm run build
-
-      - name: Deploy dev
-        if: github.ref == 'refs/heads/dev'
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: dist/dev
-          target-folder: dev
-          clean: true
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy main
         if: github.ref == 'refs/heads/main'
@@ -50,3 +48,13 @@ jobs:
           folder: dist
           clean: true
           token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Deploy dev
+        if: github.ref == 'refs/heads/dev'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist/dev
+          target-folder: dev
+          clean: true
+          token: ${{ secrets.GITHUB_TOKEN }}          

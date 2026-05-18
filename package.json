@@ -15,7 +15,7 @@
     "build:dev": "vite build --mode development",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "release": "npx --yes commit-and-tag-version",
+    "release": "commit-and-tag-version --commit-message \"chore(release): %s [skip ci]\"",
     "test": "vitest",
     "lint": "eslint src/**/*.{js,jsx}"
   },
@@ -47,7 +47,8 @@
     "vite": "^8.0.12",
     "vite-tsconfig-paths": "^6.1.1",
     "vitest": "^3.0.5",
-    "web-vitals": "^4.2.4"
+    "web-vitals": "^4.2.4",
+    "commit-and-tag-version": "^12.7.2"
   },
   "prettier": {
     "singleQuote": true
