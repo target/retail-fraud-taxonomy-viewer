@@ -37,8 +37,23 @@ jobs:
           git push origin HEAD:main
           git push origin --tags
 
-      - name: Build
-        run: npm run build
+      - name: Set build mode
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+            echo "NODE_ENV=development" >> $GITHUB_ENV
+            echo "BUILD_MODE=development" >> $GITHUB_ENV
+          else
+            echo "NODE_ENV=production" >> $GITHUB_ENV
+            echo "BUILD_MODE=production" >> $GITHUB_ENV
+          fi
+
+      - name: Build project
+        run: |
+          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
+            npm run build:dev
+          else
+            npm run build:prod
+          fi
 
       - name: Deploy main
         if: github.ref == 'refs/heads/main'
