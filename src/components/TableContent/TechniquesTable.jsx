@@ -1133,7 +1133,7 @@ const TechniquesTable = ({
     );
     if (currentCell) {
       currentCell.focus();
-      currentCell.style.backgroundColor = FOCUS;
+      // currentCell.style.backgroundColor = FOCUS;
 
       const subCells = currentCell.querySelectorAll('li');
       if (subCells.length > 0) {
