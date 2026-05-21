@@ -1,3 +1,70 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
+
+## [1.6.6](https://github.com/target/retail-fraud-taxonomy-viewer/compare/v1.6.5...v1.6.6) (2026-05-18)
+
+## [1.6.5](https://github.com/target/retail-fraud-taxonomy-viewer/compare/v1.6.4...v1.6.5) (2026-05-18)
+
+## [1.6.4](https://github.com/target/retail-fraud-taxonomy-viewer/compare/v1.6.3...v1.6.4) (2026-05-18)
+
+# v2.0.3 (Thu Jun 26 2025)
+
+### Release Notes
+
+#### Dev ([#42](https://github.com/target/retail-fraud-taxonomy-viewer/pull/42))
+
+
+
+#### Fix:The pop up now disappears on click of anywhere on the browser ([#41](https://github.com/target/retail-fraud-taxonomy-viewer/pull/41))
+
+
+
+---
+
+#### 🐛 Bug Fix
+
+- Dev [#42](https://github.com/target/retail-fraud-taxonomy-viewer/pull/42) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+- Fix:The pop up now disappears on click of anywhere on the browser [#41](https://github.com/target/retail-fraud-taxonomy-viewer/pull/41) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### ⚠️ Pushed to `main`
+
+- Update CHANGELOG.md ([@actions-user](https://github.com/actions-user))
+- fix: Streamlined version ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 2
+
+- [@actions-user](https://github.com/actions-user)
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
+# v2.0.3 (Thu Jun 26 2025)
+
+### Release Notes
+
+#### Fix:The pop up now disappears on click of anywhere on the browser ([#41](https://github.com/target/retail-fraud-taxonomy-viewer/pull/41))
+
+
+
+---
+
+#### 🐛 Bug Fix
+
+- Fix:The pop up now disappears on click of anywhere on the browser [#41](https://github.com/target/retail-fraud-taxonomy-viewer/pull/41) ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### ⚠️ Pushed to `main`
+
+- Update CHANGELOG.md ([@actions-user](https://github.com/actions-user))
+- fix: Streamlined version ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+#### Authors: 2
+
+- [@actions-user](https://github.com/actions-user)
+- YashwanthRaoBN ([@YashwanthRaoBN](https://github.com/YashwanthRaoBN))
+
+---
+
 # v2.0.3 (Thu Jun 12 2025)
 
 #### ⚠️ Pushed to `main`
