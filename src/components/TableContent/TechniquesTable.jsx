@@ -1092,20 +1092,32 @@ const TechniquesTable = ({
   };
 
   const clearAllTdPreserveAssignedColors = (table) => {
-    table.querySelectorAll('td').forEach((td) => {
-      if (td.style.backgroundColor === FOCUS || td.style.backgroundColor === 'transparent' || td.style.backgroundColor === BLACK_BACKGROUND) {
-        td.style.backgroundColor = NO_FOCUS;
-      }
+  table.querySelectorAll('td').forEach((td) => {
+    const bg = getComputedStyle(td).backgroundColor;
 
-      td.querySelectorAll('*').forEach((el) => {
-        if (el && el.style) {
-          if (el.style.backgroundColor === FOCUS || el.style.backgroundColor === 'transparent' || el.style.backgroundColor === BLACK_BACKGROUND) {
-            el.style.backgroundColor = NO_FOCUS;
-          }
-        }
-      });
+    if (
+      bg === FOCUS ||
+      bg === 'rgba(0, 0, 0, 0)' ||
+      bg === BLACK_BACKGROUND ||
+      bg === 'rgb(68, 68, 68)'
+    ) {
+      td.style.backgroundColor = NO_FOCUS;
+    }
+
+    td.querySelectorAll('*').forEach((el) => {
+      const elBg = getComputedStyle(el).backgroundColor;
+
+      if (
+        elBg === FOCUS ||
+        elBg === 'rgba(0, 0, 0, 0)' ||
+        elBg === BLACK_BACKGROUND ||
+        elBg === 'rgb(68, 68, 68)'
+      ) {
+        el.style.backgroundColor = NO_FOCUS;
+      }
     });
-  };
+  });
+};
 
   const handleTablePointerDown = (e) => {
     const table = tableRef.current;
@@ -1115,40 +1127,62 @@ const TechniquesTable = ({
 
 
   const handleCellClick = (rowIndex, colIndex, item, key) => {
-    if (item[key] === '') return;
-    const table = tableRef.current;
-    if (!table) return;
+  if (item[key] === '') return;
 
-    setFocusedCell({ row: rowIndex, col: colIndex });
-    setFocusedLiIndex(null);
+  const table = tableRef.current;
+  if (!table) return;
 
-    // Reset ALL li in the table
-    const allSubCells = tableRef.current?.querySelectorAll('li');
-    allSubCells?.forEach((li) => {
-      li.style.backgroundColor = NO_FOCUS;
-    });
+  // FIRST clear previous focus
+  clearAllTdPreserveAssignedColors(table);
 
-    const currentCell = table.querySelector(
-      `tbody tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`
-    );
-    if (currentCell) {
-      currentCell.focus();
-      // currentCell.style.backgroundColor = FOCUS;
+  setFocusedCell({ row: rowIndex, col: colIndex });
+  setFocusedLiIndex(null);
 
-      const subCells = currentCell.querySelectorAll('li');
-      if (subCells.length > 0) {
-        subCells[0].focus();
-        subCells[0].style.backgroundColor = FOCUS;
-        setFocusedLiIndex(0);
-      }
+  // Reset all li
+  const allSubCells = table.querySelectorAll('li');
+
+  allSubCells.forEach((li) => {
+    li.style.backgroundColor = NO_FOCUS;
+  });
+
+  const currentCell = table.querySelector(
+    `tbody tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`
+  );
+
+  if (currentCell) {
+    currentCell.focus();
+
+    const assignedColor = cellColors[currentCell.textContent];
+
+
+    if (assignedColor === FOCUS) {
+      currentCell.style.backgroundColor = NO_FOCUS;
     }
 
-    clearAllTdPreserveAssignedColors(table);
+    // If no assigned color → show focus
+    if (
+      assignedColor === 'rgba(0, 0, 0, 0)' ||
+      assignedColor === 'rgb(68, 68, 68)' ||
+      !assignedColor
+    ) {
+      currentCell.style.backgroundColor = FOCUS;
+    } else {
+      // preserve assigned color
+      currentCell.style.backgroundColor = assignedColor;
+    }
 
-    onValueClick(item[key]);
-  };
+    const subCells = currentCell.querySelectorAll('li');
 
-  // Track the focusedLiIndexRef after the state is updated
+    if (subCells.length > 0) {
+      subCells[0].focus();
+      subCells[0].style.backgroundColor = FOCUS;
+      setFocusedLiIndex(0);
+    }
+  }
+
+  onValueClick(item[key]);
+};
+  
   useEffect(() => {
     if (focusedLiIndex !== null) {
       focusedLiIndexRef.current = focusedLiIndex;
@@ -1163,13 +1197,13 @@ const TechniquesTable = ({
     if (selectedColor === 'rgba(0, 0, 0, 1)') {
       setCellColors(prev =>
         Object.fromEntries(
-          Object.keys(prev).map(key => [key, 'rgba(0, 0, 0, 1)'])
+          Object.keys(prev).map(key => [key, 'rgba(0, 0, 0, 0)'])
         )
       );
 
       const updatedTechniques = storedTechniques.map(item => ({
         ...item,
-        color: 'rgba(0, 0, 0, 1)',
+        color: 'rgba(0, 0, 0, 0)',
       }));
 
       localStorage.setItem('techniques', JSON.stringify(updatedTechniques));

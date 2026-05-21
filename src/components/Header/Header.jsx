@@ -142,7 +142,12 @@ const Header = ({
 
   const handleColorClick = (color) => {
     onColorClick(color);
-    setSelectedColor(color);
+
+    if (color === 'rgba(0, 0, 0, 1)') {
+      setSelectedColor('transparent');
+    } else {
+setSelectedColor(color);
+    }
   };
 
   useEffect(() => setIsToggled(editStatus), [editStatus]);
