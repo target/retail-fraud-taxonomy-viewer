@@ -12,7 +12,7 @@
   "sub_techniques": [
     "Application",
     "Phone Verification",
-    "In-Store Gift Card Verification"
+    "In Store Gift Card Verification"
   ],
   "technique_description": [
     "The fraudster may abuse legitimate functions to confirm a gift card is active and has funds. To reduce overhead, retailers may have autonomous systems for gift card owners and recipients to check if their gift card is usable and has value. These systems are generally available to the public for interaction."

@@ -11,7 +11,7 @@
   ],
   "sub_techniques": [],
   "technique_description": [
-    "A fraudster orders multiple items in one shipment and then falsely claims that damage to one item rendered the entire order unusable (e.g., leakage, shattered glass, food contamination). They request an order level refund or reshipment rather than a partial remedy, exploiting lenient damage policies and limited evidence requirements.",
+    "A fraudster orders multiple items in one shipment and then falsely claims that damage to one item rendered the entire order unusable (e.g., leakage, shattered glass, food contamination). They request an orderlevel refund or reshipment rather than a partial remedy, exploiting lenient damage policies and limited evidence requirements.",
     "One example is when a fraudster orders printer ink toner and a laptop, then claims the toner exploded during shipping and damaged the laptop. The fraudster requests a refund for all items while keeping them."
   ],
   "mitigation": [

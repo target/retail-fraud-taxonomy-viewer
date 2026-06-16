@@ -1,6 +1,6 @@
 {
   "code": "FT1202",
-  "name": "Gift Card Merging",
+  "name": "Gift Card Merge",
   "parent_technique": "",
   "tactics": [
     "Control"
@@ -11,8 +11,8 @@
   ],
   "sub_techniques": [],
   "technique_description": [
-    "The fraudster obtains a gift card through legitimate means. Using a retailer-provided method they transfer value from an illicitly obtained gift card to legitimate gift cards.",
-    "For example, a fraudster purchases a legitimate gift card with a value of $5. They illicitly obtain multiple gift cards with values of $100 and $150. Using a legitimate retailer feature they combine gift cards. The values of the illicitly obtained gift cards are added to the legitimate one. The fraudster added $250 to their $5 gift card. They now have $255 on their legitimate gift card."
+    "The Fraudster obtains a gift card through legitimate means. Using a retailer provided method they transfer value from a illicitly obtained gift to the legitimate gift cards",
+    "For example, a Fraudster purchases a legitimate gift card with a value of $5. They illicitly obtain multiple gift cards with values of $100 and $150. Using a legitimate retailer feature they combine gift cards. The values of the illicitly-obtained gift cards are added to the legitimate one. The Fraudster added $250 to his $5 gift card. He now has $255 on his legitimate gift card."
   ],
   "mitigation": [
     {

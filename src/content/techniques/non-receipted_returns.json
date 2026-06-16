@@ -11,7 +11,7 @@
   ],
   "sub_techniques": [],
   "technique_description": [
-    "Fraudster intentionally misuses the returns process without a valid receipt (or other proof of purchase) to obtain cash refunds, store credit, gift cards, or replacements. The actor exploits no receipt allowances, low evidence thresholds, and minimal inspection."
+    "Fraudster intentionally misuses the returns process without a valid receipt (or other proof of purchase) to obtain cash refunds, store credit, gift cards, or replacements. The actor exploits noreceipt allowances, low evidence thresholds, and minimal inspection."
   ],
   "mitigation": [
     {

@@ -15,7 +15,7 @@
   ],
   "sub_techniques": [],
   "technique_description": [
-    "The fraudster uses a legitimate resource to create an account for malicious usage. These accounts may be used for reconnaissance and to probe the defenses of the victim\u2019s applications.",
+    "The fraudster uses a legitimate resource to create an account for malicious usage. These accounts may be used for reconnaissance and to probe the defenses of the victim's applications.",
     "One example of this is if a fraudster creates an account with fake information. Using this as a foothold the fraudster may gather information on the application itself such as naming convention, loyalty points and other information that may be used to monetize the account."
   ],
   "mitigation": [
