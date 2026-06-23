@@ -2,7 +2,7 @@
 
 The Retail Fraud Taxonomy is a knowledge base of retail theft, fraud and abuse techniques derived from real-world observations, aimed at enhancing the community's ability to define, understand, prepare for, mitigate and detect fraud. The Taxonomy provides coverage of fraud behaviors, mitigations and detections from a wide range of fraud professionals. By categorizing techniques and related countermeasures,the Framework serves as an effective tool for education, communication, security assessments, team exercises and resource prioritization. This will help organizations bolster their defenses against the evolving landscape of fraud threats.
 
-The main feature of the Retail Fraud Taxonomy Viewer is the ability for the users to have custom views of the fraud taxonomy information - e.g. showing just those techniques for a particular platform or highlighting techniques a specific adversary has been known to use. Custom techniques/sub-techniques can be created interactively within the tool or generated programmatically and then visualized via the Taxonomy Viewer.
+The main feature of the Retail Fraud Taxonomy Viewer is the ability for the users to have custom views of the fraud taxonomy information - e.g. showing just those techniques for a particular platform or highlighting techniques a specific adversary has been known to use. Custom techniques/sub-techniques can be created interactively within the tool or generated programmatically and then visualized via the Taxonomy Viewer
 ## Usage
 
 The Retail Fraud Taxonomy Viewer is hosted live via GitHub Pages. [You can find a live instance of the current version of the Retail Fraud Taxonomy Viewer here](https://target.github.io/retail-fraud-taxonomy-viewer)
