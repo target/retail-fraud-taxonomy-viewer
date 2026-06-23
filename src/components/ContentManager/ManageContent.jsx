@@ -11,6 +11,7 @@ const ManageContent = (props) => {
     description: [{ value: '' }],
     tactics: [{ value: '' }],
     schemes: [{ value: '' }],
+    channels: [{value: ''}],
     sub_techniques: [{ value: '' }],
   });
 
@@ -52,6 +53,7 @@ const ManageContent = (props) => {
       description: [{ value: '' }],
       tactics: [{ value: '' }],
       schemes: [{ value: '' }],
+      channels: [{value: ''}],
       sub_techniques: [{ value: '' }],
     })
 
@@ -86,6 +88,7 @@ const ManageContent = (props) => {
               description: transformData(techniqueInfo.technique_description || ['']),
               tactics: transformData(techniqueInfo.tactics.length === 0 ? [''] : techniqueInfo.tactics),
               schemes: transformData(techniqueInfo.schemes.length === 0 ? [''] : techniqueInfo.schemes),
+              channels: transformData(techniqueInfo.channels.length === 0 ? [''] : techniqueInfo.channels),
               sub_techniques: transformData(techniqueInfo.sub_techniques.length === 0 ? [''] : techniqueInfo.sub_techniques),
             });
 
@@ -329,6 +332,7 @@ const ManageContent = (props) => {
       parent_technique: parentTechnique,
       tactics: formatFields(fields.tactics),
       schemes: formatFields(fields.schemes),
+      channels: formatFields(fields.channels),
       sub_techniques: formatFields(fields.sub_techniques),
       technique_description: formatFields(fields.description),
       mitigation: formatDetails(keyValuePairs.mitigation),
@@ -531,6 +535,28 @@ const ManageContent = (props) => {
                     </div>
                   ))}
                   <RiAddCircleLine className="add-value" onClick={() => addField('schemes')} />
+                </div>
+
+                {/* Channels Section */}
+                <div className="box-section">
+                  <h4 style={{ color: 'white' }}>Channels</h4>
+                  {fields.channels.map((field, index) => (
+                    <div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                      <input
+                        value={field.value}
+                        onChange={(e) => handleFieldChange('channels', index, e)}
+                        placeholder={`Channel ${index + 1}`}
+                        className="key-text"
+                      />
+                      {fields.channels.length > 1 && (
+                        <RiDeleteBinLine
+                          className="remove-value-info"
+                          onClick={() => removeField('channels', index)}
+                        />
+                      )}
+                    </div>
+                  ))}
+                  <RiAddCircleLine className="add-value" onClick={() => addField('channels')} />
                 </div>
 
                 {/* Sub-Techniques Section */}

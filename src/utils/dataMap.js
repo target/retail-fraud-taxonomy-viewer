@@ -209,7 +209,7 @@ export const fetchAllMitigations = (viewCustomMode) => {
     Object.keys(dataMap).forEach((key) => {
       dataMap[key].mitigation.forEach((mitigationItem) => {
         // Normalize the type for uniqueness check (lowercase)
-        const normalizedType = mitigationItem.type.trim().toLowerCase();
+        const normalizedType = mitigationItem.type?.trim().toLowerCase();
 
         // Only add the first occurrence of the normalized type
         if (!allMitigationKeys.has(normalizedType)) {
@@ -226,7 +226,7 @@ export const fetchAllMitigations = (viewCustomMode) => {
     storedTechniques.forEach((technique) => {
       technique.mitigation.forEach((mitigationItem) => {
         // Normalize the type for uniqueness check (lowercase)
-        const normalizedType = mitigationItem.type.trim().toLowerCase();
+        const normalizedType = mitigationItem.type?.trim().toLowerCase();
 
         // Only add the first occurrence of the normalized type
         if (!allMitigationKeys.has(normalizedType)) {
@@ -287,7 +287,7 @@ export const fetchAllDetections = (viewCustomMode) => {
       technique.detection.forEach((detectionItem) => {
 
         // Normalize the type for uniqueness check (lowercase)
-        const normalizedType = detectionItem.type.trim().toLowerCase();
+        const normalizedType = detectionItem.type?.trim().toLowerCase();
 
         // Only add the first occurrence of the normalized type
         if (!allDetectionKeys.has(normalizedType)) {
@@ -308,7 +308,7 @@ export const fetchAllChannels = (viewCustomMode) => {
     Object.keys(dataMap).forEach((key) => {
       dataMap[key].channels.forEach((channelItem) => {
         // Normalize the type for uniqueness check (lowercase)
-        const normalizedType = channelItem.trim().toLowerCase();
+        const normalizedType = channelItem?.trim().toLowerCase();
 
         // Only add the first occurrence of the normalized type
         if (!allChannelKeys.has(normalizedType)) {
@@ -324,9 +324,8 @@ export const fetchAllChannels = (viewCustomMode) => {
 
     storedTechniques.forEach((technique) => {
       technique.channels.forEach((channelItem) => {
-
         // Normalize the type for uniqueness check (lowercase)
-        const normalizedType = channelItem.type.trim().toLowerCase();
+        const normalizedType = channelItem.trim().toLowerCase();
 
         // Only add the first occurrence of the normalized type
         if (!allChannelKeys.has(normalizedType)) {
@@ -335,8 +334,8 @@ export const fetchAllChannels = (viewCustomMode) => {
       });
     });
 
-    const uniqueDetectionKeys = [...allChannelKeys.values()].sort();
-    return uniqueDetectionKeys;
+    const uniqueChannelKeys = [...allChannelKeys.values()].sort();
+    return uniqueChannelKeys;
   }
 };
 

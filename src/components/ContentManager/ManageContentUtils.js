@@ -125,7 +125,7 @@ export const handleNewTactic = (techniqueName, tactics) => {
 
   // Normalize tactics to snake_case: spaces and dashes -> _
   const normalize = (str) =>
-    str.trim().toLowerCase().replace(/[\s-]+/g, '_');
+    str?.trim().toLowerCase().replace(/[\s-]+/g, '_');
 
   const normalizedKeys = tactics.map(normalize);
 
@@ -179,7 +179,7 @@ export const handleNewTactic = (techniqueName, tactics) => {
 };
 
 export const addTechniqueIfNotExists = (inputJSON, keysToUpdate, newTechnique) => {
-  const normalize = (str) => str.trim().toLowerCase().replace(/[\s-]+/g, '_');
+  const normalize = (str) => str?.trim().toLowerCase().replace(/[\s-]+/g, '_');
   const normalizedTechnique = newTechnique.trim();
 
   const targetKeys = Array.isArray(keysToUpdate) ? keysToUpdate : [keysToUpdate];
