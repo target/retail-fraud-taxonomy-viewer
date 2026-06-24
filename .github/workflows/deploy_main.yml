@@ -7,12 +7,28 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
   pages: write
   id-token: write
 
 jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Create or update release PR
+        uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+
   build-and-deploy:
     runs-on: ubuntu-latest
+    needs: release
     concurrency: ci-${{ github.ref }}
 
     steps:
@@ -29,31 +45,8 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Release changelog/version
-        run: npm run release
-
-      - name: Push release commit and tags
-        run: |
-          git push origin HEAD:main
-          git push origin --tags
-
-      - name: Set build mode
-        run: |
-          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
-            echo "NODE_ENV=development" >> $GITHUB_ENV
-            echo "BUILD_MODE=development" >> $GITHUB_ENV
-          else
-            echo "NODE_ENV=production" >> $GITHUB_ENV
-            echo "BUILD_MODE=production" >> $GITHUB_ENV
-          fi
-
       - name: Build project
-        run: |
-          if [[ $GITHUB_REF == 'refs/heads/dev' ]]; then
-            npm run build:dev
-          else
-            npm run build:prod
-          fi
+        run: npm run build:prod
 
       - name: Deploy main
         if: github.ref == 'refs/heads/main'
@@ -63,13 +56,3 @@ jobs:
           folder: dist
           clean: true
           token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Deploy dev
-        if: github.ref == 'refs/heads/dev'
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: dist/dev
-          target-folder: dev
-          clean: true
-          token: ${{ secrets.GITHUB_TOKEN }}          
