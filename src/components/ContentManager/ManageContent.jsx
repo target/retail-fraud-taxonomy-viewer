@@ -329,6 +329,7 @@ const ManageContent = (props) => {
     let requestBody = {
       code,
       name: techniqueName,
+      color: '',
       parent_technique: parentTechnique,
       tactics: formatFields(fields.tactics),
       schemes: formatFields(fields.schemes),
