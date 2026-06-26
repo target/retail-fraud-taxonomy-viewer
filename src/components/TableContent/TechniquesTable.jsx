@@ -35,6 +35,7 @@ const TechniquesTable = ({
   viewCustomMode,
   selectedTechnique,
   hideStatus,
+  hideStatusAll,
   hideToggleStatus,
   selectedColor,
   riskScoreInfo,
@@ -315,6 +316,39 @@ const TechniquesTable = ({
     fetchTechniques();
 
   }, [hideStatus]);
+
+  useEffect(() => {
+  const fetchTechniques = async () => {
+    if (!localStorage.getItem("technique_table")) {
+      const fetchedTechniques = await fetchAllTechniques(viewCustomMode);
+      localStorage.setItem("technique_table", JSON.stringify(fetchedTechniques));
+      localStorage.setItem("techniques", JSON.stringify(dataArray));
+    }
+
+    const storedTechniques =
+      JSON.parse(localStorage.getItem("techniques")) || [];
+
+    // Update hide status for all techniques
+    const updatedTechniques = storedTechniques.map((item) => ({
+      ...item,
+      hide: hideStatusAll,
+    }));
+
+    localStorage.setItem(
+      "techniques",
+      JSON.stringify(updatedTechniques)
+    );
+
+    // Update hidden techniques list
+    setHideTechniques(
+      hideStatusAll
+        ? updatedTechniques.map((item) => item.name)
+        : []
+    );
+  };
+
+  fetchTechniques();
+}, [hideStatusAll]);
 
   useEffect(() => {
     setAddedColumns([]);

@@ -18,6 +18,7 @@ export const Main = () => {
   const [importContent, setImportContent] = useState(null);
   const [viewCustomContent, setViewCustomContent] = useState(false);
   const [hide, setHide] = useState(false);
+  const [hideAll, setHideAll] = useState(false);
   const [hideTechnique, setHideTechnique] = useState(null);
   const [colorSelect, setColorSelect] = useState(null);
   const [riskScoreContent, setRiskScoreContent] = useState(null);
@@ -51,6 +52,10 @@ export const Main = () => {
   const handleHideClick = useCallback((value) => {
     setHideTechnique(selectedValue)
     setHide(value);
+  }, []);
+
+  const handleHideClickAll = useCallback((value) => {
+    setHideAll(value);
   }, []);
 
   const handleEditClick = useCallback((value) => {
@@ -137,7 +142,9 @@ export const Main = () => {
           onBackClick={handleBackClick}
           addContent={addContent}
           onHideClick={handleHideClick}
+          onHideClickAll={handleHideClickAll}
           hideStatus={hide}
+          hideStatusAll={hideAll}
           onHideToggle={handleHideToggle}
           hideToggleStatus={hideToggleVal}
           onColorClick={handleColorClick}
@@ -161,6 +168,7 @@ export const Main = () => {
             viewCustomMode={viewCustomContent}
             selectedTechnique={selectedValue}
             hideStatus={hide}
+            hideStatusAll={hideAll}
             hideToggleStatus={hideToggleVal}
             selectedColor={colorSelect}
             riskScoreInfo={riskScoreContent}

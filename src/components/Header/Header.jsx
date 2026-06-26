@@ -23,7 +23,7 @@ const Header = ({
   toggleControl, onAddClick, onEditMode, onImportClick,
   onViewCustomContent, editStatus, editContent, onBackClick,
   addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus, hideTechniqueIDStatus, onHideTechniqueIDToggle,
-  onColorClick, onRiskScore, selectedTechnique, viewCustomMode, onSyncClick
+  onColorClick, onRiskScore, selectedTechnique, viewCustomMode, onSyncClick, hideStatusAll, onHideClickAll
 }) => {
   const [isToggled, setIsToggled] = useState(editStatus);
   const [viewCustomContent, setViewCustomContent] = useState(viewCustomMode);
@@ -34,6 +34,7 @@ const Header = ({
   const [responseSubmit, setResponseSubmit] = useState(false);
   const [showFailAlert, setShowFailAlert] = useState(false);
   const [hide, setHide] = useState(hideStatus);
+  const [hideAll, setHideAll] = useState(hideStatusAll);
   const [showHidden, setShowHidden] = useState(hideToggleStatus);
   const [hideTechniqueID, setHideTechniqueID] = useState(hideTechniqueIDStatus);
   const fileInputRef = useRef();
@@ -130,6 +131,11 @@ const Header = ({
       setHide(newValue);
       onHideClick(newValue);
       onViewCustomContent(true);
+    } else if (iconName === 'RiEyeLineAll') {
+      const newValue = !hideAll;
+      setHideAll(newValue);
+      onHideClickAll(newValue);
+      onViewCustomContent(true);
     } else if (iconName === 'RiPaletteLine') {
       setShowPopup(!showPopup);
     } else if (iconName === 'RiBarChartFill') {
@@ -152,6 +158,7 @@ setSelectedColor(color);
 
   useEffect(() => setIsToggled(editStatus), [editStatus]);
   useEffect(() => setHide(hideStatus), [hideStatus]);
+  useEffect(() => setHideAll(hideStatusAll), [hideStatusAll]);
   useEffect(() => setShowHidden(hideToggleStatus), [hideToggleStatus]);
   useEffect(() => setHideTechniqueID(hideTechniqueIDStatus), [hideTechniqueIDStatus]);  
   useEffect(() => setViewCustomContent(viewCustomMode), [viewCustomMode]);
@@ -270,11 +277,20 @@ setSelectedColor(color);
                 borderRadius: '6px',
                 zIndex: 10,
               }}>
-                <RiEyeLine
-                  title='Hide/Unhide'
-                  style={{ fontSize: '24px', color: 'white', cursor: 'pointer' }}
-                  onClick={() => toggleHide('RiEyeLine')}
-                />
+                <button
+                  onClick={() => toggleHide("RiEyeLine")}
+                  style={{ display: "flex", alignItems: "center", gap: "1px", background: '#333', color: 'white', cursor: "pointer" }}
+                >
+                  <RiEyeLine style={{ fontSize: "24px" }} title="Hide/Unhide All" />
+                  <span>Hide/Unhide Selected</span>
+                </button>
+                <button
+                  onClick={() => toggleHide("RiEyeLineAll")}
+                  style={{ display: "flex", alignItems: "center", gap: "1px", background: '#333', color: 'white', cursor: "pointer" }}
+                >
+                  <RiEyeLine style={{ fontSize: "24px" }} title="Hide/Unhide All" />
+                  <span>Hide/Unhide All</span>
+                </button>
                 <RiPaletteLine
                   title='Coloring'
                   style={{ fontSize: '24px', color: 'white', cursor: 'pointer' }}
