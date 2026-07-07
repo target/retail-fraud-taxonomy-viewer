@@ -1370,80 +1370,162 @@ const TechniquesTable = ({
     );
   };
 
-  const toggleHideMode = (name) => {
-  const isHidden = hiddenTechniques.includes(name);
-  const nextHidden = !isHidden;
+  const getSubTechniqueValues = (technique) => {
+  if (!technique) return [];
+
+  const subs = technique.sub_techniques;
+
+  if (Array.isArray(subs)) return subs;
+
+  if (typeof subs === 'string') {
+    try {
+      const parsed = JSON.parse(subs);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  return [];
+};
+
+const toggleHideMode = (name) => {
+  const storedTechniques = JSON.parse(localStorage.getItem('techniques') || '[]');
+  const isCurrentlyHidden = hiddenTechniques?.includes(name);
+  const nextHidden = !isCurrentlyHidden;
+
+  // Find parent techniques that contain this sub-technique
+  const parentNames = storedTechniques
+    .filter((tech) => getSubTechniqueValues(tech).includes(name))
+    .map((tech) => tech.name);
+
+  // Update hide state for the clicked item
+  const updatedTechniques = storedTechniques.map((item) => {
+    if (item.name === name) {
+      return { ...item, hide: nextHidden };
+    }
+    return item;
+  });
+
+  // If a sub-technique is being unhidden, also unhide its parent technique(s)
+  if (!nextHidden && parentNames.length > 0) {
+    parentNames.forEach((parentName) => {
+      const parentIndex = updatedTechniques.findIndex((t) => t.name === parentName);
+      if (parentIndex !== -1) {
+        updatedTechniques[parentIndex] = {
+          ...updatedTechniques[parentIndex],
+          hide: false,
+        };
+      }
+    });
+  }
+
+  localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
 
   setHideTechniques((prev) => {
     const list = Array.isArray(prev) ? prev : [];
-    return nextHidden
+
+    let nextList = nextHidden
       ? [...new Set([...list, name])]
       : list.filter((item) => item !== name);
-  });
 
-  const storedTechniques = JSON.parse(localStorage.getItem('techniques') || '[]');
-  const updatedTechniques = storedTechniques.map((item) =>
-    item.name === name ? { ...item, hide: nextHidden } : item
-  );
-  localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
+    // Remove parent from hidden list when a child is made visible
+    if (!nextHidden && parentNames.length > 0) {
+      nextList = nextList.filter((item) => !parentNames.includes(item));
+    }
+
+    return nextList;
+  });
 
   onHideClick(name);
 };
 
   const renderRows = () => {
-    if (tableData && tableData.length === 0) {
-      if (viewCustomMode) {
-        const savedData = localStorage.getItem('technique_table');
-        if (savedData) setTableData(JSON.parse(savedData));
-      }
+  if (tableData && tableData.length === 0) {
+    if (viewCustomMode) {
+      const savedData = localStorage.getItem('technique_table');
+      if (savedData) setTableData(JSON.parse(savedData));
     }
+  }
 
-    return (
-      tableData &&
-      tableData.map((item, rowIndex) => (
-        <tr key={rowIndex}>
-          {Object.keys(item).map((key, colIndex) => {
-            const cellValue = item[key];
+  const isLineVisible = (line) => {
+    return !hiddenTechniques?.includes(line);
+  };
 
-            let isSubcell = false
-            let sub_techniques = []
+  return (
+    tableData &&
+    tableData.map((item, rowIndex) => (
+      <tr key={rowIndex}>
+        {Object.keys(item).map((key, colIndex) => {
+          const cellValue = item[key];
 
-            if (cellValue !== null && typeof cellValue === 'object' && !Array.isArray(cellValue)) { //Sub Techniques
-              isSubcell = true
-              sub_techniques = extractLiValues(cellValue)
-            }
+          let isSubcell = false;
+          let sub_techniques = [];
 
-            return (
-              <td
-                key={rowIndex + '-' + colIndex}
-                className={cellValue === '' ? 'emptycell' : 'tabledata'}
-                tabIndex={0}
-                style={{
-                  backgroundColor:
-                    cellColors[cellValue] ??
-                    (focusedCell.row === rowIndex &&
-                      focusedCell.col === colIndex &&
-                      focusedLiIndex == null
-                      ? FOCUS
-                      : NO_FOCUS),
-                  outline: 'none',
-                  color: hiddenTechniques?.includes(cellValue) ? 'grey' : 'white',
-                }}
-                onClick={() => {
-                  if (cellValue !== '') {
-                    handleCellClick(rowIndex, colIndex, item, key);
-                  }
-                }}
-              >
-                {/* Subcell rendering */}
-                {isSubcell ? (
-                  <ul>
-                    {sub_techniques &&
-                      sub_techniques.map((line, index) => (
+          if (
+            cellValue !== null &&
+            typeof cellValue === 'object' &&
+            !Array.isArray(cellValue)
+          ) {
+            isSubcell = true;
+            sub_techniques = extractLiValues(cellValue);
+          }
+
+          // Only for the current sub-technique cell:
+          // if any child is visible, the parent cell must remain visible too
+          const hasVisibleChild =
+            isSubcell && sub_techniques.some((line) => isLineVisible(line));
+
+          const parentIsForcedVisible =
+            isSubcell &&
+            typeof cellValue === 'object' &&
+            !Array.isArray(cellValue) &&
+            hasVisibleChild;
+
+          return (
+            <td
+              key={rowIndex + '-' + colIndex}
+              className={cellValue === '' ? 'emptycell' : 'tabledata'}
+              tabIndex={0}
+              style={{
+                backgroundColor:
+                  cellColors[cellValue] ??
+                  (focusedCell.row === rowIndex &&
+                  focusedCell.col === colIndex &&
+                  focusedLiIndex == null
+                    ? FOCUS
+                    : NO_FOCUS),
+                outline: 'none',
+                color:
+                  parentIsForcedVisible
+                    ? 'white'
+                    : hiddenTechniques?.includes(cellValue)
+                      ? 'grey'
+                      : 'white',
+              }}
+              onClick={() => {
+                if (cellValue !== '') {
+                  handleCellClick(rowIndex, colIndex, item, key);
+                }
+              }}
+            >
+              {/* Subcell rendering */}
+              {isSubcell ? (
+                <ul>
+                  {sub_techniques &&
+                    sub_techniques.map((line, index) => {
+                      if (!isLineVisible(line) && !hideToggleStatus) return null;
+                      if (!hideToggleStatus && hiddenTechniques?.includes(line)) return null;
+
+                      return (
                         <li
                           style={{
-                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                            color: hiddenTechniques?.includes(line) ? 'grey' : 'white',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            color: hiddenTechniques?.includes(line)
+                              ? 'grey'
+                              : 'white',
                           }}
                           tabIndex={0}
                           key={index}
@@ -1457,9 +1539,9 @@ const TechniquesTable = ({
                             if (!currentCell) return;
 
                             const subCells = currentCell.querySelectorAll('li');
-                            const isSubcell = subCells.length > 0;
+                            const isSubcellFocused = subCells.length > 0;
 
-                            if (isSubcell) {
+                            if (isSubcellFocused) {
                               for (let i = 0; i < subCells.length; i++) {
                                 if (i === index) {
                                   subCells[i]?.focus();
@@ -1471,56 +1553,56 @@ const TechniquesTable = ({
                             }
                           }}
                           onClick={(e) => {
-                            e.stopPropagation(); // Prevents the event from bubbling up to the <td>
-                            // onValueClick(line); // Trigger the onValueClick function
+                            e.stopPropagation();
                             handleSubCellClick(rowIndex, colIndex, line, index);
                           }}
                         >
                           <span style={{ flex: 1, textAlign: 'center' }}>
                             {hideTechniqueIDStatus && getTechniqueID(line) && (
-                            <>
-                              {getTechniqueID(line)}
-                              <br />
-                            </>
-                          )}
-                          {line}
-                            
-                            </span>
-                          {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && cellValue && (
-                            <div>
-                              {fetchImplementationStatus(cellValue)
-                                ? CustomCheckbox()
-                                : <RiFolderWarningFill style={{ color: 'orange' }} />}
+                              <>
+                                {getTechniqueID(line)}
+                                <br />
+                              </>
+                            )}
+                            {line}
+                          </span>
+
+                          {searchFilter !== '' &&
+                            (searchFilterType === MITIGATION ||
+                              searchFilterType === DETECTION) &&
+                            line && (
+                              <div>
+                                {fetchImplementationStatus(line)
+                                  ? CustomCheckbox()
+                                  : <RiFolderWarningFill style={{ color: 'orange' }} />}
+                              </div>
+                            )}
+
+                          {editStatus && (
+                            <div
+                              style={{
+                                paddingRight: '10px',
+                                cursor: 'pointer',
+                                backgroundColor: 'rgb(48, 48, 48)',
+                                color: 'white',
+                              }}
+                              aria-label="edit"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEdit(line);
+                              }}
+                            >
+                              <RiEdit2Fill className="white-icon" />
                             </div>
                           )}
-                          {editStatus && (
-                            <>
-                              <div
-                                // className="sub-technique-editicon"
-                                style={{
-                                  paddingRight: '10px',
-                                  cursor: 'pointer',
-                                  backgroundColor: 'rgb(48, 48, 48)',
-                                  color: 'white'
-                                }}
-                                aria-label="edit"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  // e.preventDefault();
-                                  handleEdit(line);
-                                }}
-                              >
-                                <RiEdit2Fill className="white-icon" />
-                              </div>
-                            </>
-                          )}
+
                           {hideModeStatus && (
                             <div
                               style={{
                                 paddingRight: '10px',
                                 cursor: 'pointer',
                                 backgroundColor: 'rgb(48, 48, 48)',
-                                color: 'white'
+                                color: 'white',
                               }}
                               aria-label="edit"
                               onClick={(e) => {
@@ -1528,51 +1610,53 @@ const TechniquesTable = ({
                                 toggleHideMode(line);
                               }}
                             >
-                          {hiddenTechniques.includes(line) ? (
-                              <RiEyeOffLine/>
-                            ) : (
-                              <RiEyeLine/>
-                            )}
+                              {hiddenTechniques.includes(line) ? (
+                                <RiEyeOffLine />
+                              ) : (
+                                <RiEyeLine />
+                              )}
                             </div>
                           )}
-                          {/* <RiEdit2Fill/> */}
                         </li>
-                      ))}
-                  </ul>
-                ) : (
-                  <>
-
-                    {editStatus && cellValue && (
-                      <div
-                        className="editicon"
-                        aria-label="edit"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEdit(cellValue);
-                        }}
-                      >
-                        <RiEdit2Fill className="white-icon" />
-                      </div>
-                    )}
-
-                    {hideModeStatus && cellValue && (
+                      );
+                    })}
+                </ul>
+              ) : (
+                <>
+                  {editStatus && cellValue && (
                     <div
-                        className="editicon"
-                        aria-label="hideMode"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleHideMode(cellValue);
-                        }}
-                            >
-                              
-                              {hiddenTechniques.includes(cellValue) ? (
-                              <RiEyeOffLine/>
-                            ) : (
-                              <RiEyeLine/>
-                            )}
-                            </div>
-                          )}
-                    {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && cellValue && (
+                      className="editicon"
+                      aria-label="edit"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(cellValue);
+                      }}
+                    >
+                      <RiEdit2Fill className="white-icon" />
+                    </div>
+                  )}
+
+                  {hideModeStatus && cellValue && (
+                    <div
+                      className="editicon"
+                      aria-label="hideMode"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleHideMode(cellValue);
+                      }}
+                    >
+                      {hiddenTechniques.includes(cellValue) ? (
+                        <RiEyeOffLine />
+                      ) : (
+                        <RiEyeLine />
+                      )}
+                    </div>
+                  )}
+
+                  {searchFilter !== '' &&
+                    (searchFilterType === MITIGATION ||
+                      searchFilterType === DETECTION) &&
+                    cellValue && (
                       <div
                         className="implementationicon"
                         aria-label="implementation"
@@ -1582,41 +1666,43 @@ const TechniquesTable = ({
                           : <RiFolderWarningFill style={{ color: 'orange' }} />}
                       </div>
                     )}
-                    {hideTechniqueIDStatus && getTechniqueID(cellValue) && (
-                      <>
-                        {getTechniqueID(cellValue)}
-                        <br />
-                      </>
-                    )}
-                      {cellValue}
-                  </>
-                )}
 
-                {/* Expand/collapse if sub-technique is present */}
-                {cellValue &&
-                  hasSubTechnique(cellValue, viewCustomMode) && (
-                    <div
-                      className="sidebar"
-                      aria-label="expand collapse"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        manage_columns(
-                          typeof cellValue === 'string' ? cellValue.toLowerCase() : '',
-                          rowIndex,
-                          colIndex
-                        );
-                      }}
-                    >
-                      <RiExpandLeftRightFill />
-                    </div>
+                  {hideTechniqueIDStatus && getTechniqueID(cellValue) && (
+                    <>
+                      {getTechniqueID(cellValue)}
+                      <br />
+                    </>
                   )}
-              </td>
-            );
-          })}
-        </tr>
-      ))
-    );
-  };
+
+                  {cellValue}
+                </>
+              )}
+
+              {/* Expand/collapse if sub-technique is present */}
+              {cellValue &&
+                hasSubTechnique(cellValue, viewCustomMode) && (
+                  <div
+                    className="sidebar"
+                    aria-label="expand collapse"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      manage_columns(
+                        typeof cellValue === 'string' ? cellValue.toLowerCase() : '',
+                        rowIndex,
+                        colIndex
+                      );
+                    }}
+                  >
+                    <RiExpandLeftRightFill />
+                  </div>
+                )}
+            </td>
+          );
+        })}
+      </tr>
+    ))
+  );
+};
 
   const handleKeyDown = (event) => {
     const { row, col } = focusedCell;
