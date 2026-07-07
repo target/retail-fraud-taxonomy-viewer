@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { RiExpandLeftRightFill, RiEdit2Fill, RiCheckboxBlankFill, RiCheckLine, RiFolderWarningFill } from 'react-icons/ri';
+import { RiExpandLeftRightFill, RiEdit2Fill, RiCheckboxBlankFill, RiCheckLine, RiFolderWarningFill, RiEyeLine , RiEyeOffLine} from 'react-icons/ri';
 import {
   fetchTechnique,
   hasSubTechnique,
@@ -30,7 +30,9 @@ const TechniquesTable = ({
   searchFilterType,
   isPanelOpen,
   onEditClick,
+  onHideClick,
   editStatus,
+  hideModeStatus,
   importContent,
   viewCustomMode,
   selectedTechnique,
@@ -708,6 +710,27 @@ const TechniquesTable = ({
                     <RiEdit2Fill className="white-icon" />
                   </div>
                 )}
+                {hideModeStatus && (
+                  <div
+                    style={{
+                      paddingRight: '10px',
+                      cursor: 'pointer',
+                      backgroundColor: 'rgb(48, 48, 48)',
+                      color: 'white'
+                    }}
+                    aria-label="edit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleHideMode(line);   
+                    }}
+                  >
+                      {hiddenTechniques.includes(line) ? (
+                              <RiEyeOffLine/>
+                            ) : (
+                              <RiEyeLine/>
+                            )}
+                  </div>
+                )}
               </div>
             </li>
           );
@@ -1347,6 +1370,26 @@ const TechniquesTable = ({
     );
   };
 
+  const toggleHideMode = (name) => {
+  const isHidden = hiddenTechniques.includes(name);
+  const nextHidden = !isHidden;
+
+  setHideTechniques((prev) => {
+    const list = Array.isArray(prev) ? prev : [];
+    return nextHidden
+      ? [...new Set([...list, name])]
+      : list.filter((item) => item !== name);
+  });
+
+  const storedTechniques = JSON.parse(localStorage.getItem('techniques') || '[]');
+  const updatedTechniques = storedTechniques.map((item) =>
+    item.name === name ? { ...item, hide: nextHidden } : item
+  );
+  localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
+
+  onHideClick(name);
+};
+
   const renderRows = () => {
     if (tableData && tableData.length === 0) {
       if (viewCustomMode) {
@@ -1471,9 +1514,27 @@ const TechniquesTable = ({
                               </div>
                             </>
                           )}
-
-
-
+                          {hideModeStatus && (
+                            <div
+                              style={{
+                                paddingRight: '10px',
+                                cursor: 'pointer',
+                                backgroundColor: 'rgb(48, 48, 48)',
+                                color: 'white'
+                              }}
+                              aria-label="edit"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleHideMode(line);
+                              }}
+                            >
+                          {hiddenTechniques.includes(line) ? (
+                              <RiEyeOffLine/>
+                            ) : (
+                              <RiEyeLine/>
+                            )}
+                            </div>
+                          )}
                           {/* <RiEdit2Fill/> */}
                         </li>
                       ))}
@@ -1493,6 +1554,24 @@ const TechniquesTable = ({
                         <RiEdit2Fill className="white-icon" />
                       </div>
                     )}
+
+                    {hideModeStatus && cellValue && (
+                    <div
+                        className="editicon"
+                        aria-label="hideMode"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleHideMode(cellValue);
+                        }}
+                            >
+                              
+                              {hiddenTechniques.includes(cellValue) ? (
+                              <RiEyeOffLine/>
+                            ) : (
+                              <RiEyeLine/>
+                            )}
+                            </div>
+                          )}
                     {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && cellValue && (
                       <div
                         className="implementationicon"
@@ -1509,7 +1588,7 @@ const TechniquesTable = ({
                         <br />
                       </>
                     )}
-{cellValue}
+                      {cellValue}
                   </>
                 )}
 

@@ -15,6 +15,7 @@ export const Main = () => {
   const [editContent, setEditContent] = useState(null);
   const [addContent, setAddContent] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const [hideMode, setHideMode] = useState(false);
   const [importContent, setImportContent] = useState(null);
   const [viewCustomContent, setViewCustomContent] = useState(false);
   const [hide, setHide] = useState(false);
@@ -35,6 +36,7 @@ export const Main = () => {
     setEditContent(null);
     setViewCustomContent(false);
     setEditMode(false)
+    setHideMode(false)
     setShouldRenderTechniques(true);
     setFilter('')
     setFilterType('')
@@ -60,6 +62,10 @@ export const Main = () => {
 
   const handleEditClick = useCallback((value) => {
     setEditContent(value);
+  }, []);
+
+  const handleHideTechniqueClick= useCallback((value) => {
+    // setEditContent(value);
   }, []);
 
   const handleAddClick = useCallback((value) => {
@@ -88,6 +94,7 @@ export const Main = () => {
     setEditContent(null);
     setViewCustomContent(true);
     setEditMode(false)
+    setHideMode(false)
     setHideTechnique(false)
     setColorSelect('')
     setShouldRenderTechniques(true);
@@ -113,6 +120,10 @@ export const Main = () => {
       setEditMode(editStatus);
     }, []);
 
+    const handleHideModeChange = useCallback((hideModeStatus) => {
+      setHideMode(hideModeStatus);
+    }, []);
+
     const handleHideToggle = useCallback((hideToggleStatus) => {
       setHideToggleVal(hideToggleStatus);
     }, []);
@@ -135,9 +146,11 @@ export const Main = () => {
           toggleControl={handleOpenSidePanel}
           onAddClick={handleAddClick}
           onEditMode={handleEditModeChange}
+          onHideMode={handleHideModeChange}
           onImportClick={handleImportClick}
           onViewCustomContent={handleViewCustomContent}
           editStatus={editMode}
+          hideModeStatus={hideMode}
           editContent={editContent}
           onBackClick={handleBackClick}
           addContent={addContent}
@@ -159,11 +172,13 @@ export const Main = () => {
           <TechniquesTable
             onValueClick={handleValueClick}
             onEditClick={handleEditClick}
+            onHideClick={handleHideTechniqueClick}
             onImportClick={handleImportClick}
             searchFilter={filter}
             searchFilterType={filterType}
             isPanelOpen={isSidePanelVisible}
             editStatus={editMode}
+            hideModeStatus={hideMode}
             importContent={importContent}
             viewCustomMode={viewCustomContent}
             selectedTechnique={selectedValue}

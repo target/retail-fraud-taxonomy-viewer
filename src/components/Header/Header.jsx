@@ -23,9 +23,10 @@ const Header = ({
   toggleControl, onAddClick, onEditMode, onImportClick,
   onViewCustomContent, editStatus, editContent, onBackClick,
   addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus, hideTechniqueIDStatus, onHideTechniqueIDToggle,
-  onColorClick, onRiskScore, selectedTechnique, viewCustomMode, onSyncClick, hideStatusAll, onHideClickAll
+  onColorClick, onRiskScore, selectedTechnique, viewCustomMode, onSyncClick, hideStatusAll, onHideClickAll, onHideMode, hideModeStatus
 }) => {
   const [isToggled, setIsToggled] = useState(editStatus);
+  const [isHideModeToggled, setHideModeToggled] = useState(hideModeStatus);
   const [viewCustomContent, setViewCustomContent] = useState(viewCustomMode);
   const [fileData, setFileData] = useState(null);
   const [activeControl, setActiveControl] = useState(null);
@@ -277,13 +278,16 @@ setSelectedColor(color);
                 borderRadius: '6px',
                 zIndex: 10,
               }}>
-                <button
-                  onClick={() => toggleHide("RiEyeLine")}
-                  style={{ display: "flex", alignItems: "center", gap: "1px", background: '#333', color: 'white', cursor: "pointer" }}
-                >
-                  <RiEyeLine style={{ fontSize: "24px" }} title="Hide/Unhide All" />
-                  <span>Hide/Unhide Selected</span>
-                </button>
+                <div className="toggle-group">
+                  <ToggleSwitch
+                    label={isHideModeToggled ? 'HIDE MODE ON' : 'HIDE MODE OFF'}
+                    value={isHideModeToggled}
+                    onToggle={(v) => {
+                      setHideModeToggled(v);
+                      onHideMode(v);
+                    }}
+                  />
+                </div>
                 <button
                   onClick={() => toggleHide("RiEyeLineAll")}
                   style={{ display: "flex", alignItems: "center", gap: "1px", background: '#333', color: 'white', cursor: "pointer" }}
