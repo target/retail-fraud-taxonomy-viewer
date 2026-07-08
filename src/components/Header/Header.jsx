@@ -280,7 +280,7 @@ setSelectedColor(color);
               }}>
                 <div className="toggle-group">
                   <ToggleSwitch
-                    label={isHideModeToggled ? 'HIDE MODE ON' : 'HIDE MODE OFF'}
+                    label={isHideModeToggled ? 'HIDE EDIT MODE ON' : 'HIDE EDIT MODE OFF'}
                     value={isHideModeToggled}
                     onToggle={(v) => {
                       setHideModeToggled(v);
@@ -297,13 +297,13 @@ setSelectedColor(color);
                 </button>
                 <RiPaletteLine
                   title='Coloring'
-                  style={{ fontSize: '24px', color: 'white', cursor: 'pointer' }}
+                  style={{ fontSize: '34px', color: 'white', cursor: 'pointer' }}
                   onClick={() => toggleHide('RiPaletteLine')}
                 />
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <RiBarChartFill
                     title='Risk score'
-                    style={{ fontSize: '24px', color: 'white', cursor: 'pointer' }}
+                    style={{ fontSize: '28px', color: 'white', cursor: 'pointer' }}
                     onClick={() => toggleHide('RiBarChartFill')}
                   />
                   {showRiskScore && (
