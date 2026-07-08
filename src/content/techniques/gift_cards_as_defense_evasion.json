@@ -1,24 +1,23 @@
 {
-  "code": "FT1204",
-  "name": "Gift Card Redemption",
+  "code": "FT 1404",
+  "name": "Gift Cards As Defense Evasion",
   "parent_technique": "",
   "tactics": [
-    "Control"
+    "Defense Evasion"
   ],
-  "channels": ["Analog", "Digital", "Social Engineering"],
+  "channels": ["Analog", "Digital"],
   "schemes": [
-    "Gift Card Fraud"
+    "Return Fraud"
   ],
   "sub_techniques": [],
   "technique_description": [
-    "The Fraudster obtains a gift card through legitimate or illicit means and purchases an item.",
-    "One example of this is a Fraudster uses a gift card to purchase a high value easy-to-sell item such as jewelry or electronics. The Fraudster then can monetize these items through various strategies such as resale or drop shipping."
+    "Commonly exploited in fraud schemes due to their anonymity, liquidity, and ease of transfer. Fraudsters use them to bypass traditional detection systems by converting stolen funds or merchandise into gift card balances, which are harder to trace."
   ],
   "mitigation": [
     {
       "type": "Primary Gift Card Lock-In",
       "details": [
-        "For gift cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
+        "For gift Cards, lock the gift card into the identity of the purchaser. Do not allow another person to use the gift card without identify verification or authentication."
       ],
       "implemented": false
     },
@@ -43,6 +42,10 @@
     {
       "name": "Detecting and Reporting the Illicit Financial Flows Tied to Organized Theft Groups (OTG) and Organized Retail Crime (ORC)",
       "source": "https://www.acams.org/en/media/document/29436"
+    },
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
     }
   ],
   "hide": false,

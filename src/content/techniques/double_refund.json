@@ -1,0 +1,81 @@
+{
+  "code": "FT 1304.002",
+  "name": "Double Refund",
+  "parent_technique":  "Fraudulent Refund",
+  "tactics": [
+    "Monetization"
+  ],
+  "channels": ["Digital", "Social Engineering"],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "Fraudsters refund the same item multiple times either in multiple stores, online or some combination of both."
+  ],
+  "mitigation": [
+    {
+      "type": "Return Limit",
+      "details": [
+        "Link each order to an individual refund.",
+        "Restrict how many times a refund can be requested per order."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Escalation",
+      "details": [
+        "Escalate repeat attempts to return the same item to manager."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavior Prevention",
+      "details": [
+        "Stop refunds if the same order ID is already refunded."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction Data",
+      "details": [
+        "Identify multiple refund requests for the same order.",
+        "Identify the same return in multiple stores and online."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Flag accounts doing frequent gift card refunds.",
+        "Identify in person or Online Identities attempting gift card refund."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Device Attributes",
+      "details": [
+        "Detect repeat attempts from the same computer or phone submitting duplicate requests."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Velocity Attributes",
+      "details": [
+        "Identify accounts requesting several refunds in a short time"
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

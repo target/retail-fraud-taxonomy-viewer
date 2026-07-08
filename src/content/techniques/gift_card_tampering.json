@@ -5,13 +5,14 @@
   "tactics": [
     "Control"
   ],
+  "channels": ["Analog"],
   "schemes": [
     "Gift Card Fraud"
   ],
   "sub_techniques": [],
   "technique_description": [
-    "Fraudster takes physical possession of an unactivated gift card and takes the information that allows them to control the gift card when it is funded and activated.",
-    "An example is if a fraudster steals gift cards from a store. They copy down the pertinent information needed to control the gift card and verify funds such as gift card number and security PIN. The fraudster then repackages the gift card and returns it to the store. When a victim purchases the gift card and loads value, the fraudster can spend the funds on the gift card without the victim\u2019s awareness."
+    "Fraudster takes physical possession of an unactivated gift card and takes the information that allows them to control the gift card when it is funded and activated",
+    "An example is a Fraudster steals gift cards from a store. They copy down the pertinent information needed to control the gift card and verify funds such as gift card number and security pin. The Fraudster then repackages the gift card and returns it to the store. When a victim purchases the gift card and loads value, the Fraudster can spend the funds on the gift card without the victim’s awareness."
   ],
   "mitigation": [
     {

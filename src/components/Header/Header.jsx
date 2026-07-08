@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   RiAddCircleLine, RiImportLine, RiArrowLeftLine,
   RiExportLine, RiDeleteBin5Line, RiEyeLine, RiPaletteLine,
-  RiFilterFill, RiSettings5Fill, RiBarChartFill
+  RiFilterFill, RiSettings5Fill, RiBarChartFill, RiRefreshFill
 } from 'react-icons/ri';
 import { handleExport } from '../ContentManager/ManageContentUtils';
 import { Alert } from '../Alert/Alert';
@@ -22,10 +22,11 @@ const ToggleSwitch = ({ label, value, onToggle }) => (
 const Header = ({
   toggleControl, onAddClick, onEditMode, onImportClick,
   onViewCustomContent, editStatus, editContent, onBackClick,
-  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus,
-  onColorClick, onRiskScore, selectedTechnique, viewCustomMode
+  addContent, onHideClick, hideStatus, onHideToggle, hideToggleStatus, hideTechniqueIDStatus, onHideTechniqueIDToggle,
+  onColorClick, onRiskScore, selectedTechnique, viewCustomMode, onSyncClick, hideStatusAll, onHideClickAll, onHideMode, hideModeStatus
 }) => {
   const [isToggled, setIsToggled] = useState(editStatus);
+  const [isHideModeToggled, setHideModeToggled] = useState(hideModeStatus);
   const [viewCustomContent, setViewCustomContent] = useState(viewCustomMode);
   const [fileData, setFileData] = useState(null);
   const [activeControl, setActiveControl] = useState(null);
@@ -34,13 +35,16 @@ const Header = ({
   const [responseSubmit, setResponseSubmit] = useState(false);
   const [showFailAlert, setShowFailAlert] = useState(false);
   const [hide, setHide] = useState(hideStatus);
+  const [hideAll, setHideAll] = useState(hideStatusAll);
   const [showHidden, setShowHidden] = useState(hideToggleStatus);
+  const [hideTechniqueID, setHideTechniqueID] = useState(hideTechniqueIDStatus);
   const fileInputRef = useRef();
   const [showPopup, setShowPopup] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
   const [showRiskScore, setShowRiskScore] = useState(false);
   const [riskScore, setRiskScore] = useState('');
   const iconContainerRef = useRef(null);
+  const popupRef = useRef(null);
 
   const handleRiskScoreChange = (e) => {
     const val = e.target.value;
@@ -49,6 +53,8 @@ const Header = ({
   };
 
   const handleAddClick = () => onAddClick('add');
+
+  const handleSynclick = () => onSyncClick('sync')
 
   const handleBackClick = () => {
     setViewCustomContent(false);
@@ -104,10 +110,11 @@ const Header = ({
   // Hide on outside click on anywhere on browser
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        iconContainerRef.current &&
-        !iconContainerRef.current.contains(event.target)
-      ) {
+      // if click is neither inside iconContainer nor inside popup, close
+      const clickedInsideIcon = iconContainerRef.current && iconContainerRef.current.contains(event.target);
+      const clickedInsidePopup = popupRef.current && popupRef.current.contains(event.target);
+
+      if (!clickedInsideIcon && !clickedInsidePopup) {
         setActiveControl(false);
         setShowPopup(false);
       }
@@ -125,6 +132,11 @@ const Header = ({
       setHide(newValue);
       onHideClick(newValue);
       onViewCustomContent(true);
+    } else if (iconName === 'RiEyeLineAll') {
+      const newValue = !hideAll;
+      setHideAll(newValue);
+      onHideClickAll(newValue);
+      onViewCustomContent(true);
     } else if (iconName === 'RiPaletteLine') {
       setShowPopup(!showPopup);
     } else if (iconName === 'RiBarChartFill') {
@@ -137,12 +149,19 @@ const Header = ({
 
   const handleColorClick = (color) => {
     onColorClick(color);
-    setSelectedColor(color);
+
+    if (color === 'rgba(0, 0, 0, 1)') {
+      setSelectedColor('transparent');
+    } else {
+setSelectedColor(color);
+    }
   };
 
   useEffect(() => setIsToggled(editStatus), [editStatus]);
   useEffect(() => setHide(hideStatus), [hideStatus]);
+  useEffect(() => setHideAll(hideStatusAll), [hideStatusAll]);
   useEffect(() => setShowHidden(hideToggleStatus), [hideToggleStatus]);
+  useEffect(() => setHideTechniqueID(hideTechniqueIDStatus), [hideTechniqueIDStatus]);  
   useEffect(() => setViewCustomContent(viewCustomMode), [viewCustomMode]);
 
   useEffect(() => {
@@ -175,7 +194,7 @@ const Header = ({
 
     return (
       showPopup && (
-        <div className="popup">
+        <div className="popup" ref={popupRef}>
           <div className="color-grid">
             {colors.map((color, index) => {
               const NO_COLOR = 'rgba(0, 0, 0, 0)';
@@ -185,7 +204,6 @@ const Header = ({
               // Add extra spacing between the special color boxes
               const isLastSpecial = color === REMOVE_COLOR;
               const isFirstSpecial = color === NO_COLOR;
-
               return (
                 <div
                   key={index}
@@ -204,42 +222,48 @@ const Header = ({
                     marginBottom: '8px', // General spacing
                   }}
                   onClick={() => handleColorClick(color)}
+                  // optional: ensure mousedown doesn't bubble if you still see trouble
+                  onMouseDown={(e) => e.stopPropagation()}
                 >
-                  {color === NO_COLOR && 'No Color'}
-                  {color === REMOVE_COLOR && 'Remove All'}
+                  {color === 'rgba(0, 0, 0, 0)' && 'No Color'}
+                  {color === 'rgba(0, 0, 0, 1)' && 'Remove All'}
                 </div>
               );
             })}
-
-
           </div>
         </div>
       )
-    );
+    )
   };
 
   return (
     <header>
       <img width="250" height="50" className="logo" alt="NRF Logo" src={NRFLogo} />
+      <span>Dev Build</span>
 
       {showFailAlert && <Alert classStyle="alert-fail" heading={alertHeading} value={alertVal} />}
       {responseSubmit && <Alert classStyle="alert-success" heading={alertHeading} value={alertVal} />}
 
       {!editContent && !addContent && (
         <div className="header-controls">
+          <button className="header-button" onClick={handleSynclick}>
+            <RiRefreshFill style={{ fontSize: '50px' }} />
+            Sync NRF Content
+          </button>
+
           <button className="header-button" onClick={handleAddClick}>
-            <RiAddCircleLine style={{ fontSize: '30px' }} />
+            <RiAddCircleLine style={{ fontSize: '35px' }} />
             Add Technique
           </button>
 
           <button className="header-button" onClick={handleImportClick}>
-            <RiImportLine style={{ fontSize: '30px' }} />
+            <RiImportLine style={{ fontSize: '35px' }} />
             Import Data
           </button>
 
           <div style={{ position: 'relative' }} ref={iconContainerRef}>
             <button className="header-button" onClick={() => setActiveControl(!activeControl)}>
-              <RiSettings5Fill style={{ fontSize: '30px' }} />
+              <RiSettings5Fill style={{ fontSize: '40px' }} />
               Technique Controls
             </button>
             {activeControl && (
@@ -254,20 +278,32 @@ const Header = ({
                 borderRadius: '6px',
                 zIndex: 10,
               }}>
-                <RiEyeLine
-                  title='Hide/Unhide'
-                  style={{ fontSize: '24px', color: 'white', cursor: 'pointer' }}
-                  onClick={() => toggleHide('RiEyeLine')}
-                />
+                <div className="toggle-group">
+                  <ToggleSwitch
+                    label={isHideModeToggled ? 'HIDE EDIT MODE ON' : 'HIDE EDIT MODE OFF'}
+                    value={isHideModeToggled}
+                    onToggle={(v) => {
+                      setHideModeToggled(v);
+                      onHideMode(v);
+                    }}
+                  />
+                </div>
+                <button
+                  onClick={() => toggleHide("RiEyeLineAll")}
+                  style={{ display: "flex", alignItems: "center", gap: "1px", background: '#333', color: 'white', cursor: "pointer" }}
+                >
+                  <RiEyeLine style={{ fontSize: "24px" }} title="Hide/Unhide All" />
+                  <span>Hide/Unhide All</span>
+                </button>
                 <RiPaletteLine
                   title='Coloring'
-                  style={{ fontSize: '24px', color: 'white', cursor: 'pointer' }}
+                  style={{ fontSize: '34px', color: 'white', cursor: 'pointer' }}
                   onClick={() => toggleHide('RiPaletteLine')}
                 />
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <RiBarChartFill
                     title='Risk score'
-                    style={{ fontSize: '24px', color: 'white', cursor: 'pointer' }}
+                    style={{ fontSize: '28px', color: 'white', cursor: 'pointer' }}
                     onClick={() => toggleHide('RiBarChartFill')}
                   />
                   {showRiskScore && (
@@ -308,6 +344,14 @@ const Header = ({
                 onHideToggle(v);
               }}
             />
+             <ToggleSwitch
+              label={hideTechniqueID ? 'SHOW Techique ID' : 'HIDE Techique ID'}
+              value={hideTechniqueID}
+              onToggle={(v) => {
+                setHideTechniqueID(v);
+                onHideTechniqueIDToggle(v);
+              }}
+            />
 
             {(localStorage.getItem('technique_table') || fileData) && (
               <>
@@ -318,12 +362,12 @@ const Header = ({
                 />
 
                 <button className="header-button" onClick={handleExport}>
-                  <RiExportLine style={{ fontSize: '30px' }} />
+                  <RiExportLine style={{ fontSize: '40px' }} />
                   Export Custom Content
                 </button>
 
                 <button className="header-button" onClick={deleteCustomContent}>
-                  <RiDeleteBin5Line style={{ fontSize: '30px' }} />
+                  <RiDeleteBin5Line style={{ fontSize: '40px' }} />
                   Delete Custom Content
                 </button>
               </>
@@ -351,7 +395,7 @@ const Header = ({
         </div>
       )}
 
-      <ColorPopup showPopup={showPopup} togglePopup={() => setShowPopup(!showPopup)} />
+      <ColorPopup showPopup={showPopup} popupRef={popupRef} togglePopup={() => setShowPopup(!showPopup)} />
     </header>
   );
 };

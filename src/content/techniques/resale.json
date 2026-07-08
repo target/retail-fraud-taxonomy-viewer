@@ -5,6 +5,7 @@
   "tactics": [
     "Monetization"
   ],
+  "channels": ["Analog", "Digital", "Social Engineering"],
   "schemes": [
     "Gift Card Fraud"
   ],
@@ -13,8 +14,8 @@
     "Unwitting Buyer"
   ],
   "technique_description": [
-    "The fraudster exchanges the illicitly obtained items or gift cards with another person or organization in exchange for liquid funds.",
-    "For example, a fraudster may steal jewelry worth $100. Using a third-party market such as Facebook Marketplace, they sell the illicitly obtained jewelry for $80, converting the item to currency the fraudster controls."
+    "The Fraudster exchanges the illicitly obtained items or gift cards with another person or organization in exchange for liquid funds.",
+    "For example, a Fraudster may steal jewelry worth $100. Using a third party market such as Facebook Marketplace, they sell the illicitly obtained jewelry for $80, converting the item to currency the Fraudster controls."
   ],
   "mitigation": [
     {

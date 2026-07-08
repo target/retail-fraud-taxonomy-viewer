@@ -5,6 +5,7 @@
   "tactics": [
     "Monetization"
   ],
+  "channels": ["Analog", "Digital", "Social Engineering"],
   "schemes": [
     "Gift Card Fraud",
     "Account Take Over"

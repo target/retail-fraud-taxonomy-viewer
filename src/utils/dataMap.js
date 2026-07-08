@@ -2,6 +2,7 @@ import techniques from '../content/techniques.json';
 const SCHEMES = 'schemes';
 const MITIGATION = 'mitigation';
 const DETECTION = 'detection';
+const CHANNELS = 'channels';
 const RISK_SCORE = 'risk_score';
 const SHOW_ALL = 'Show All';
 
@@ -29,6 +30,12 @@ export const fetchAllTechniques = (customData) => {
     return techniques;
   }
   else {
+    if (!localStorage.getItem('technique_table')){
+        localStorage.setItem('technique_table', JSON.stringify(techniques));
+    }
+    if(!localStorage.getItem('techniques')){
+      localStorage.setItem('techniques', JSON.stringify(dataArray));
+    }
     return JSON.parse(localStorage.getItem('technique_table'));
   }
 };
@@ -97,7 +104,18 @@ export const filterDataMap = (selectedIcon, filterType) => {
       }
       return filteredMap;
     }, {});
-  } else if (filterType === RISK_SCORE) {
+  } else if (filterType === CHANNELS) {
+    dataMap = formDataMapfromLocalStorage()
+    return Object.keys(dataMap).reduce((filteredMap, key) => {
+      if (
+        dataMap[key].channels.some((det) => det.includes(selectedIcon))
+      ) {
+        filteredMap[key] = dataMap[key];
+      }
+      return filteredMap;
+    }, {});
+  }
+  else if (filterType === RISK_SCORE) {
     dataMap = formDataMapfromLocalStorage()
 
     const filteredDataMap = Object.keys(dataMap).reduce((filteredMap, key) => {
@@ -191,7 +209,7 @@ export const fetchAllMitigations = (viewCustomMode) => {
     Object.keys(dataMap).forEach((key) => {
       dataMap[key].mitigation.forEach((mitigationItem) => {
         // Normalize the type for uniqueness check (lowercase)
-        const normalizedType = mitigationItem.type.trim().toLowerCase();
+        const normalizedType = mitigationItem.type?.trim().toLowerCase();
 
         // Only add the first occurrence of the normalized type
         if (!allMitigationKeys.has(normalizedType)) {
@@ -208,7 +226,7 @@ export const fetchAllMitigations = (viewCustomMode) => {
     storedTechniques.forEach((technique) => {
       technique.mitigation.forEach((mitigationItem) => {
         // Normalize the type for uniqueness check (lowercase)
-        const normalizedType = mitigationItem.type.trim().toLowerCase();
+        const normalizedType = mitigationItem.type?.trim().toLowerCase();
 
         // Only add the first occurrence of the normalized type
         if (!allMitigationKeys.has(normalizedType)) {
@@ -269,7 +287,7 @@ export const fetchAllDetections = (viewCustomMode) => {
       technique.detection.forEach((detectionItem) => {
 
         // Normalize the type for uniqueness check (lowercase)
-        const normalizedType = detectionItem.type.trim().toLowerCase();
+        const normalizedType = detectionItem.type?.trim().toLowerCase();
 
         // Only add the first occurrence of the normalized type
         if (!allDetectionKeys.has(normalizedType)) {
@@ -280,6 +298,44 @@ export const fetchAllDetections = (viewCustomMode) => {
 
     const uniqueDetectionKeys = [...allDetectionKeys.values()].sort();
     return uniqueDetectionKeys;
+  }
+};
+
+export const fetchAllChannels = (viewCustomMode) => {
+  const allChannelKeys = new Map();
+
+  if (!viewCustomMode) {
+    Object.keys(dataMap).forEach((key) => {
+      dataMap[key].channels.forEach((channelItem) => {
+        // Normalize the type for uniqueness check (lowercase)
+        const normalizedType = channelItem?.trim().toLowerCase();
+
+        // Only add the first occurrence of the normalized type
+        if (!allChannelKeys.has(normalizedType)) {
+          allChannelKeys.set(normalizedType, channelItem);
+        }
+      });
+    });
+
+    const uniqueChannelKeys = [...allChannelKeys.values()].sort();
+    return uniqueChannelKeys;
+  } else {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+    storedTechniques.forEach((technique) => {
+      technique.channels.forEach((channelItem) => {
+        // Normalize the type for uniqueness check (lowercase)
+        const normalizedType = channelItem.trim().toLowerCase();
+
+        // Only add the first occurrence of the normalized type
+        if (!allChannelKeys.has(normalizedType)) {
+          allChannelKeys.set(normalizedType, channelItem);
+        }
+      });
+    });
+
+    const uniqueChannelKeys = [...allChannelKeys.values()].sort();
+    return uniqueChannelKeys;
   }
 };
 

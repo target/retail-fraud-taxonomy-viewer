@@ -5,6 +5,7 @@
   "tactics": [
     "Initial Access"
   ],
+  "channels": ["Analog"],
   "schemes": [
     "Gift Card Fraud"
   ],

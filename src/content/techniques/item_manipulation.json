@@ -1,0 +1,117 @@
+{
+  "code": "FT 1206",
+  "name": "Item Manipulation",
+  "parent_technique": "",
+  "tactics": [
+    "Control"
+  ],
+  "channels": ["Analog", "Digital", "Social Engineering"],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": ["Harvesting", "Switch Merchandise"],
+  "technique_description": [
+    "Fraudster returns merchandise to a retailer under deceptive circumstances to obtain monetary refunds, store credit, replacement goods, or has somehow extracted value from the merchandise. This technique involves presenting an item at the point of return (altered, incomplete, counterfeit, or previously used) while misrepresenting its condition or origin."
+  ],
+  "mitigation": [
+    {
+      "type": "Item Condition & Tag Checks",
+      "details": [
+        "Ensure item is returned with all its components such as packaging, accessories, and documentation in good condition.",
+        "Verify additional attributes such as weight, general wear and tear - " ,
+         "o           Scuffs on screws",
+         "o           Reapplied tape",
+        "Do not accept returns that are missing components or may be suspicious."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Anti-theft Protection",
+      "details": [
+        "Use unique serial numbers or RFID tags tied to the original transaction record.",
+        "Verify serial numbers / digital product IDs upon return.",
+        "Apply tamper-proof seals or packaging that are difficult to replicate."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Return Limit",
+      "details": [
+        "Require original packaging in return policy for high-value items. Shorten return windows for high-risk categories (electronics, luxury goods).",
+        "Deny returns to guests or tenders with a history of abuse or suspected abuse."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Proof of Purchase",
+      "details": [
+        "Require receipts and ID for high-value returns."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Restocking Fees",
+      "details": [
+        "Charge fees for high-risk categories."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Training and Awareness",
+      "details": [
+        "Train associates to identify mismatched logos, misspelled labels, or damaged packaging."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Escalation",
+      "details": [
+        "Implement escalation paths for suspicious returns."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction Data",
+      "details": [
+        "Match returned product identifiers (IMEI, serial, RFID) to the original purchase record."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Profiles or tenders with high rates of returns in specific categories"
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Device Attributes",
+      "details": [
+        "Use graph or link analysis to find connected devices, IPs, or payment tenders and label them as suspicious for future tracking."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Online Identities",
+      "details": [
+        "Use graph or link analysis to find connected accounts."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Appriss",
+      "source": "https://apprissretail.com/blog/8-common-types-of-return-fraud"
+    },
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

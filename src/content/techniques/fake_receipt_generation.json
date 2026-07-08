@@ -1,0 +1,58 @@
+{
+  "code": "FT 1009",
+  "name": "Fake Receipt Generation",
+  "parent_technique": "",
+  "tactics": [
+    "Pre-Compromise"
+  ],
+  "channels": ["Analog", "Digital"],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "A fraudulent receipt created by a fraudster that appears legitimate. The primary purpose is to fabricate proof of purchase or transaction to deceive systems, individuals, or institutions and often to claim refunds, reimbursements, or validate false returns."
+  ],
+  "mitigation": [
+    {
+      "type": "Behavior Prevention",
+      "details": [
+        "Validate the receipt with store records (preferably by electronic scan). Do not permit use of receipts without validation of store-controlled records."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Training and Awareness",
+      "details": [
+        "Identify fake receipts, which may appear visually different."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction Data",
+      "details": [
+        "Identify refunds that do not have proper proof of purchase."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Velocity Attributes",
+      "details": [
+        "A large volume of receipts may obscure or overlap with a genuine receipt.",
+        "A large number of items on the receipt."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

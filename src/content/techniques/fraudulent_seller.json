@@ -1,0 +1,65 @@
+{
+  "code": "FT 1302.002",
+  "name": "Fraudulent Seller",
+  "parent_technique": "Marketplace Exploitation",
+  "tactics": [
+    "Control"
+  ],
+  "channels": ["Analog", "Digital"],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "A fraudulent seller is an account operating on (or connected to) your storefront/marketplace that appears legitimate but uses drop shipping to execute scams that shift loss, reputational damage, and chargebacks onto your retail brand.",
+    "A legitimate customer may buy an item from the reseller that is counterfeit, damaged, or inferior. This results in the customer returning the item for a full refund of the full cost of a legitimate item. In the event the item does not exist or it is not delivered, the customer will then initiate a refund. Both situations result in the retailer losing money, chargebacks, or returns.",
+    "A fraudster may work with the fraudulent seller to purchase the item with stolen funds or other illicit resources. The seller either does not deliver an item or delivers an inferior item, resulting in a return or chargeback. The seller is then able to convert stolen funds into legitimate cash."
+  ],
+  "mitigation": [
+    {
+      "type": "Delivery Confirmation",
+      "details": [
+        "Only refund after the item is received and verified."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavior Prevention",
+      "details": [
+        "Do not permit resellers to operate in your ecosystem without legitimate business credentials or insufficient time in market.",
+        "Validate address is legitimate and do not deliver to unlisted addresses",
+        "Blacklist known High-Risk Addresses",
+        "Require Signature on delivery"
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Refund returns only to the method of purchase."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Velocity Attributes",
+      "details": [],
+      "implemented": false
+    },
+    {
+      "type": "Flag sellers with multiple returns or chargebacks",
+      "details": [],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

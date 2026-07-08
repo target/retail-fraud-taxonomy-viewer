@@ -1,0 +1,46 @@
+{
+  "code": "FT 1401",
+  "name": "VOIP Abuse",
+  "parent_technique": "",
+  "tactics": [
+    "Defense Evasion"
+  ],
+  "channels": ["Digital"],
+  "schemes": [
+    "Return Fraud",
+    "Gift Card Fraud",
+    "Account Take Over"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "Fraudsters leverage Voice over Internet Protocol (VOIP) services to mask or manipulate their true geographic location and identity during fraudulent transactions. By using VOIP numbers, they can appear to originate from a trusted region or local area, even when operating from a completely different country or jurisdiction. This tactic is designed to evade fraud detection systems that rely on phone number validation, geolocation checks, or call-back verification. These numbers may also be used on seemingly normal account creations."
+  ],
+  "mitigation": [
+    {
+      "type": "Behavior Prevention",
+      "details": [
+        "Do not permit registration of VOIP numbers on accounts or other customer resources"
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "VoIP Attribute",
+      "details": [
+        "Identify VOIP phone usage and correlate against customer profile",
+        "Identify high risk VOIP numbers or multiple accounts with the same VOIP number in your database."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

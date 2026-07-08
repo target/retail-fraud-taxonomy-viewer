@@ -1,0 +1,69 @@
+{
+  "code": "FT 1302.001",
+  "name": "Fraudulent Delivery",
+  "parent_technique": "Marketplace Exploitation",
+  "tactics": [
+    "Control"
+  ],
+  "channels": ["Analog", "Digital"],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "The fraudster places an order using a fraudulent, fake, incorrect, or nonexistent shipping address. This could be, but is not limited to: a fake street number, a real street but non-existent apartment number, an abandoned property, or a vacant lot. The fraudster may use stolen credit cards or other illicit resources to pay for the item.",
+    "If the item is successfully delivered, the fraudster may steal the item from the real, but fraudulent location or a consolidated mailroom such as an apartment, business, or delivery service.",
+    "The fraudster may attempt to intercept the item from the delivery service to gain control of the item.",
+    "The fraudster may “double dip” and intercept the package to keep the goods and claim non-delivery."
+  ],
+  "mitigation": [
+    {
+      "type": "Delivery Confirmation",
+      "details": [
+        "Only refund after the item is received and verified."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavior Prevention",
+      "details": [
+        "Validate address is legitimate and do not deliver to unlisted addresses",
+        "Blacklist known High-Risk Addresses",
+        "Require Signature on delivery"
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Network Traffic Attributes",
+      "details": [
+        "Identify mismatch between Network Traffic Attributes such as IP geo location against the billing and shipping address."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Location Attributes",
+      "details": [
+        "Identify mismatch between billing and shipping address."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Refund returns only to the method of purchase."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

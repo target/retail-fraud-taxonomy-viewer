@@ -1,0 +1,68 @@
+{
+  "code": "FT 1207.002",
+  "name": "Damaged Shipment",
+  "parent_technique": "Returns Process Exploitation",
+  "tactics": [
+    "Control"
+  ],
+  "channels": ["Analog", "Digital", "Social Engineering"],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "A fraudster orders multiple items in one shipment and then falsely claims that damage to one item rendered the entire order unusable (e.g., leakage, shattered glass, food contamination). They request an orderlevel refund or reshipment rather than a partial remedy, exploiting lenient damage policies and limited evidence requirements.",
+    "One example is when a fraudster orders printer ink toner and a laptop, then claims the toner exploded during shipping and damaged the laptop. The fraudster requests a refund for all items while keeping them."
+  ],
+  "mitigation": [
+    {
+      "type": "Proof of Damage",
+      "details": [
+        "Require customers to submit photos or video evidence of damage.",
+        "Require the physical return of damaged goods before issuing a refund."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Enhanced Packaging",
+      "details": [
+        "Isolate items that could leak or cause contamination into separate packages",
+        "Use waterproof packaging or tamperproof seals."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Return Limit",
+      "details": [
+        "Limit the amount that can be refunded without requiring the item to be physically returned."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Flag customers with repeated claims tied to specific accounts, addresses, and/or payment identities.",
+        "Monitor for claims made on first-time orders by new customers."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Velocity Attributes",
+      "details": [
+        "Monitor for frequent damage claims of specific items."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

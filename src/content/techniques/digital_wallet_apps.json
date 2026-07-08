@@ -1,0 +1,51 @@
+{
+  "code": "FT 1402",
+  "name": "Digital Wallet Apps",
+  "parent_technique": "",
+  "tactics": [
+    "Defense Evasion"
+  ],
+  "schemes": [
+    "Return Fraud",
+    "Gift Card Fraud"
+  ],
+  "channels": ["Analog", "Digital"],
+  "sub_techniques": [],
+  "technique_description": [
+    "Digital wallet applications (such as Apple Pay, Google Pay, and PayPal) are mobile or web-based platforms that store payment credentials and enable electronic transactions without physical cards. Fraudsters exploit these wallets to evade detection by creating multiple accounts under different identities, masking the original payment source, and requesting refunds to wallet balances instead of the original payment method, making it easier to convert funds into cash, gift cards, or resale value. In addition, Fraudsters may load stolen credit, debit and gift cards onto the wallet for reuse."
+  ],
+  "mitigation": [
+    {
+      "type": "Identity Verification",
+      "details": [
+        "Verify the person's identity matches what is on the card in the wallet."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavior Prevention",
+      "details": [
+        "Do not permit multiple use of the same credit, debit, or gift cards within a defined period"
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Location Attributes",
+      "details": [
+        "Identify impossible travel transactions for the same credit, debit, or gift card"
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

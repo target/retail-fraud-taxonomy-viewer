@@ -3,15 +3,20 @@
   "name": "Valid Accounts",
   "parent_technique": "",
   "tactics": [
-    "Initial Access"
+    "Initial Access",
+    "Defense Evasion",
+    "Control"
   ],
+  "channels": ["Digital"],
   "schemes": [
     "Gift Card Fraud",
-    "Account Take Over"
+    "Account Take Over",
+    "Return Fraud"
   ],
   "sub_techniques": [
     "Fraudulent Account",
-    "Fraudulent Account Update"
+    "Fraudulent Account Update",
+    "Authorized Account Abuse"
   ],
   "technique_description": [
     "The fraudster may obtain, create and abuse accounts to gain access, elevate access or control a resource. Since these credentials are generally legitimate, they may be used to bypass access controls in place to protect resources. This can also be used to achieve persistence in a system.",

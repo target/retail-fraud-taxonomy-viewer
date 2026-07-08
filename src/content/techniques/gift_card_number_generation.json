@@ -5,6 +5,7 @@
   "tactics": [
     "Pre-Compromise"
   ],
+  "channels": ["Digital"],
   "schemes": [
     "Gift Card Fraud"
   ],
@@ -25,7 +26,7 @@
     {
       "type": "Info",
       "details": [
-        "This technique cannot be easily detected by organizational controls due to it occurring outside of the organization\u2019s scope."
+        "This technique cannot be easily detected by organizational controls due to it occurring outside of the organization's scope."
       ],
       "implemented": false
     }

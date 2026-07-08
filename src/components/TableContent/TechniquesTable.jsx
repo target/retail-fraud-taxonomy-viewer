@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useLayoutEffect } from 'react';
-import { RiExpandLeftRightFill, RiEdit2Fill, RiCheckboxBlankFill, RiCheckLine, RiFolderWarningFill } from 'react-icons/ri';
+import { RiExpandLeftRightFill, RiEdit2Fill, RiCheckboxBlankFill, RiCheckLine, RiFolderWarningFill, RiEyeLine , RiEyeOffLine} from 'react-icons/ri';
 import {
   fetchTechnique,
   hasSubTechnique,
@@ -11,6 +11,7 @@ import {
 import './Table.css';
 import './subtechnique.css';
 import './more_details.css';
+import { Alert } from '../Alert/Alert'
 
 const EXPAND = 'expand';
 const COLLAPSE = 'collapse';
@@ -21,6 +22,7 @@ const SCHEMES = 'schemes';
 const DETECTION = 'detection';
 const FOCUS = '#444';
 const NO_FOCUS = 'transparent';
+const BLACK_BACKGROUND = 'rgb(0, 0, 0)'
 
 const TechniquesTable = ({
   onValueClick,
@@ -28,14 +30,20 @@ const TechniquesTable = ({
   searchFilterType,
   isPanelOpen,
   onEditClick,
+  onHideClick,
   editStatus,
+  hideModeStatus,
   importContent,
   viewCustomMode,
   selectedTechnique,
   hideStatus,
+  hideStatusAll,
   hideToggleStatus,
   selectedColor,
-  riskScoreInfo
+  riskScoreInfo,
+  shouldSync,
+  onSyncCompletion,
+  hideTechniqueIDStatus
 }) => {
   const [tableData, setTableData] = useState(() => {
     const savedData = localStorage.getItem('technique_table');
@@ -54,12 +62,18 @@ const TechniquesTable = ({
   const [hiddenTechniques, setHideTechniques] = useState([]);
   const [cellColors, setCellColors] = useState({});
 
+  const [alertVal, setAlertVal] = useState('')
+  const [showFailAlert, setShowFailAlert] = useState(false)
+  const [alertHeading, setAlertHeading] = useState('')
+  const [responseSubmit, setResponseSubmit] = useState(false)
+
   const handleEdit = (technique) => {
     onEditClick(technique);
   };
 
   const fetchTechniques = async () => {
     const fetchedTechniques = await fetchAllTechniques(viewCustomMode);
+
     setAllTechniques(fetchedTechniques);
     setTableData(fetchedTechniques);
   };
@@ -83,6 +97,9 @@ const TechniquesTable = ({
     };
   }, []);
 
+
+
+
   useEffect(() => {
     if (viewCustomMode) {
       const local = localStorage.getItem("technique_table");
@@ -100,6 +117,109 @@ const TechniquesTable = ({
       fetchTechniques();
     }
   }, []);
+
+  //Sync TechniqueTable
+  function syncTechniquesTable(array1, array2) {
+    // Step 1: Collect all keys (columns)
+    const allKeys = new Set([
+      ...array1.flatMap(row => Object.keys(row)),
+      ...array2.flatMap(row => Object.keys(row))
+    ]);
+
+    // Step 2: Collect valid values per column FROM array1 (source of truth)
+    const validValuesByColumn = {};
+    allKeys.forEach(key => validValuesByColumn[key] = new Set());
+
+    array1.forEach(row => {
+      allKeys.forEach(key => {
+        const val = row[key];
+        if (val !== undefined && val !== '') {
+          validValuesByColumn[key].add(val);
+        }
+      });
+    });
+
+    // Step 3: Build rows based only on allowed values
+    const maxLength = Math.max(...Object.values(validValuesByColumn).map(set => set.size));
+    const result = Array.from({ length: maxLength }, () => ({}));
+
+    for (const key of allKeys) {
+      const values = Array.from(validValuesByColumn[key]);
+      values.forEach((val, idx) => {
+        result[idx][key] = val;
+      });
+    }
+
+    // Step 4: Normalize all rows with all keys
+    result.forEach(row => {
+      for (const key of allKeys) {
+        if (!(key in row)) {
+          row[key] = '';
+        }
+      }
+    });
+
+    return result;
+  }
+
+  //Sync Techniques
+  function syncTechniques(NRFTechniques, customTechniques) {
+    const result = [];
+
+    const customMap = new Map(customTechniques.map(item => [item.name, item]));
+
+    // Step 1: Add or merge from NRFTechniques (source of truth)
+    NRFTechniques.forEach(sourceItem => {
+      const existing = customMap.get(sourceItem.name);
+
+      if (existing) {
+        const merged = { ...existing };
+        Object.entries(sourceItem).forEach(([key, value]) => {
+          if (
+            !(key in merged) ||
+            merged[key] === '' ||
+            merged[key] === undefined
+          ) {
+            merged[key] = value;
+          }
+        });
+        result.push(merged);
+      } else {
+        // New item from NRFTechniques
+        result.push({ ...sourceItem });
+      }
+    });
+
+    // ✅ No need to preserve custom-only techniques: they are deleted
+
+    return result;
+  }
+
+  // Handle Sync Content
+  useEffect(() => {
+    if (shouldSync) {
+      onSyncCompletion('synccompleted')
+
+      //Sync TechniqueTable
+      const NRFTechniqueTable = fetchAllTechniques(false);
+      const customTechniqueTable = JSON.parse(localStorage.getItem('technique_table')) || [];
+      const mergedTechniqueTable = syncTechniquesTable(NRFTechniqueTable, customTechniqueTable);
+      localStorage.setItem('technique_table', JSON.stringify(mergedTechniqueTable));
+
+      //Sync Techniques
+      const NRFTechniques = dataArray
+      const customTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+      const syncedArray = syncTechniques(NRFTechniques, customTechniques)
+      localStorage.setItem('techniques', JSON.stringify(syncedArray));
+
+      setResponseSubmit(true)
+      setAlertVal('Data synced successfully')
+      setTimeout(() => {
+        setResponseSubmit(false)
+      }, 2000)
+    }
+
+  }, [shouldSync]);
 
   // Handle importContent updates
   useEffect(() => {
@@ -135,7 +255,21 @@ const TechniquesTable = ({
       handleHideTechniques()
     }
 
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
 
+    setCellColors(prev => {
+      const updated = { ...prev };
+
+      storedTechniques.forEach(item => {
+        if (item.color && item.color !== "") {
+          updated[item.name] = item.color;
+        }
+      });
+
+      return updated;
+    });
+
+    handleCellColoring()
   }, [viewCustomMode]);
 
   useEffect(() => {
@@ -184,6 +318,39 @@ const TechniquesTable = ({
     fetchTechniques();
 
   }, [hideStatus]);
+
+  useEffect(() => {
+  const fetchTechniques = async () => {
+    if (!localStorage.getItem("technique_table")) {
+      const fetchedTechniques = await fetchAllTechniques(viewCustomMode);
+      localStorage.setItem("technique_table", JSON.stringify(fetchedTechniques));
+      localStorage.setItem("techniques", JSON.stringify(dataArray));
+    }
+
+    const storedTechniques =
+      JSON.parse(localStorage.getItem("techniques")) || [];
+
+    // Update hide status for all techniques
+    const updatedTechniques = storedTechniques.map((item) => ({
+      ...item,
+      hide: hideStatusAll,
+    }));
+
+    localStorage.setItem(
+      "techniques",
+      JSON.stringify(updatedTechniques)
+    );
+
+    // Update hidden techniques list
+    setHideTechniques(
+      hideStatusAll
+        ? updatedTechniques.map((item) => item.name)
+        : []
+    );
+  };
+
+  fetchTechniques();
+}, [hideStatusAll]);
 
   useEffect(() => {
     setAddedColumns([]);
@@ -447,149 +614,131 @@ const TechniquesTable = ({
   };
 
   const handle_sub_techniques = (sub_techniques, rowIndex, colIndex) => {
-    const stringWithBreaks = (
-      <ul>
-        {sub_techniques &&
-          sub_techniques.map((line, index) => {
-            // Check if the line should be included
-            if (!hideToggleStatus && !hiddenTechniques?.includes(line)) {
-              return (
-                <li
-                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                  tabIndex={0}
-                  key={index}
-                  onFocus={() => {
-                    let row = rowIndex;
-                    let col = colIndex;
-                    const currentCell = tableRef.current?.querySelector(
-                      `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`
-                    );
-  
-                    if (!currentCell) return;
-  
-                    const subCells = currentCell.querySelectorAll('li');
-                    const isSubcell = subCells.length > 0;
-  
-                    if (isSubcell) {
-                      for (let i = 0; i < subCells.length; i++) {
-                        if (i === index) {
-                          subCells[i]?.focus();
-                          subCells[i].style.backgroundColor = FOCUS;
-                        } else {
-                          subCells[i].style.backgroundColor = NO_FOCUS;
-                        }
-                      }
-                    }
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevents the event from bubbling up to the <td>
-                    handleSubCellClick(rowIndex, colIndex, line, index);
-                  }}
-                >
-                  <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
-  
-                  {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && line && (
-                    <div>
-                      {fetchImplementationStatus(line)
-                        ? CustomCheckbox()
-                        : <RiFolderWarningFill style={{ color: 'orange' }} />}
-                    </div>
-                  )}
-  
-                  {editStatus && (
-                    <div
-                      style={{
-                        paddingRight: '10px',
-                        cursor: 'pointer',
-                        backgroundColor: 'rgb(48, 48, 48)',
-                        color: 'white'
-                      }}
-                      aria-label="edit"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEdit(line);
-                      }}
-                    >
-                      <RiEdit2Fill className="white-icon" />
-                    </div>
-                  )}
-                </li>
-              );
-            } 
-            
-            if (hideToggleStatus) {
-              return (
-                <li
-                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                  tabIndex={0}
-                  key={index}
-                  onFocus={() => {
-                    let row = rowIndex;
-                    let col = colIndex;
-                    const currentCell = tableRef.current?.querySelector(
-                      `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`
-                    );
-          
-                    if (!currentCell) return;
-          
-                    const subCells = currentCell.querySelectorAll('li');
-                    const isSubcell = subCells.length > 0;
-          
-                    if (isSubcell) {
-                      for (let i = 0; i < subCells.length; i++) {
-                        if (i === index) {
-                          subCells[i]?.focus();
-                          subCells[i].style.backgroundColor = FOCUS;
-                        } else {
-                          subCells[i].style.backgroundColor = NO_FOCUS;
-                        }
-                      }
-                    }
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevents the event from bubbling up to the <td>
-                    handleSubCellClick(rowIndex, colIndex, line, index);
-                  }}
-                >
-                  <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
-          
-                  {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && line && (
-                    <div>
-                      {fetchImplementationStatus(line)
-                        ? CustomCheckbox()
-                        : <RiFolderWarningFill style={{ color: 'orange' }} />}
-                    </div>
-                  )}
-          
-                  {editStatus && (
-                    <div
-                      style={{
-                        paddingRight: '10px',
-                        cursor: 'pointer',
-                        backgroundColor: 'rgb(48, 48, 48)',
-                        color: 'white'
-                      }}
-                      aria-label="edit"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEdit(line);
-                      }}
-                    >
-                      <RiEdit2Fill className="white-icon" />
-                    </div>
-                  )}
-                </li>
-              );
-            }
-            // If condition not met, return null (i.e., don't render this item)
-            return null;
-          })}
-      </ul>
-    );
-  
-    return stringWithBreaks;
+  const shouldRenderLine = (line) => {
+    if (hideToggleStatus) return true;
+    return !hiddenTechniques?.includes(line);
   };
-  
+
+  const handleFocus = (index) => {
+    let row = rowIndex;
+    let col = colIndex;
+
+    const currentCell = tableRef.current?.querySelector(
+      `tr:nth-child(${row + 1}) td:nth-child(${col + 2})`
+    );
+
+    if (!currentCell) return;
+
+    const subCells = currentCell.querySelectorAll('li');
+
+    subCells.forEach((cell, i) => {
+      if (i === index) {
+        cell.focus();
+        cell.style.backgroundColor = FOCUS;
+      } else {
+        cell.style.backgroundColor = NO_FOCUS;
+      }
+    });
+  };
+
+  return (
+    <ul>
+      {sub_techniques &&
+        sub_techniques.map((line, index) => {
+          if (!shouldRenderLine(line)) return null;
+
+          return (
+            <li
+              key={index}
+              tabIndex={0}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                position: 'relative',
+                width: '100%' 
+               }}
+              onFocus={() => handleFocus(index)}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSubCellClick(rowIndex, colIndex, line, index);
+              }}
+            >
+              {/* Centered text */}
+              <span
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  textAlign: 'center'
+                }}
+              >
+                {line}
+              </span>
+
+              {/* Right-side actions */}
+              <div
+                style={{
+                  marginLeft: 'auto',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+              >
+                {searchFilter !== '' &&
+                  (searchFilterType === MITIGATION ||
+                    searchFilterType === DETECTION) &&
+                  line && (
+                    fetchImplementationStatus(line)
+                      ? CustomCheckbox()
+                      : <RiFolderWarningFill style={{ color: 'orange' }} />
+                  )}
+
+                {editStatus && (
+                  <div
+                    style={{
+                      paddingRight: '10px',
+                      cursor: 'pointer',
+                      backgroundColor: 'rgb(48, 48, 48)',
+                      color: 'white'
+                    }}
+                    aria-label="edit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEdit(line);
+                    }}
+                  >
+                    <RiEdit2Fill className="white-icon" />
+                  </div>
+                )}
+                {hideModeStatus && (
+                  <div
+                    style={{
+                      paddingRight: '10px',
+                      cursor: 'pointer',
+                      backgroundColor: 'rgb(48, 48, 48)',
+                      color: 'white'
+                    }}
+                    aria-label="edit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleHideMode(line);   
+                    }}
+                  >
+                      {hiddenTechniques.includes(line) ? (
+                              <RiEyeOffLine/>
+                            ) : (
+                              <RiEyeLine/>
+                            )}
+                  </div>
+                )}
+              </div>
+            </li>
+          );
+        })}
+    </ul>
+  );
+};
+
   const rename_headers = (updatedData, operation, other_columns) => {
     let headers = [];
 
@@ -944,6 +1093,13 @@ const TechniquesTable = ({
 
   const handleSubCellClick = async (rowIndex, colIndex, line, index) => {
     if (line !== '') {
+
+    // Reset ALL li in the table
+    const allSubCells = tableRef.current?.querySelectorAll('li');
+    allSubCells?.forEach((li) => {
+      li.style.backgroundColor = NO_FOCUS;
+    });
+
       // Reset previously focused subcell's background color (if any)
       if (focusedCell) {
         const previousCell = tableRef.current?.querySelector(
@@ -986,53 +1142,104 @@ const TechniquesTable = ({
           }
         }
       }
+      // clearAllTdPreserveAssignedColors(table);
       onValueClick(line);
+
     }
   };
 
-  const handleCellClick = async (rowIndex, colIndex, item, key) => {
-    //  await resetFocus();
-    if (item[key] !== '') {
-      // Reset previously focused subcell's background color (if any)
-      if (focusedCell) {
-        const previousCell = tableRef.current?.querySelector(
-          `tbody tr:nth-child(${focusedCell.row + 1}) td:nth-child(${focusedCell.col})`,
-        );
-        if (previousCell) {
-          // If the previous cell had subcells, reset their background color
-          const subCells = previousCell.querySelectorAll('li');
-          if (subCells.length > 0) {
-            subCells.forEach((subCell) => {
-              subCell.style.backgroundColor = NO_FOCUS;
-            });
-          }
-        }
-      }
+  const clearAllTdPreserveAssignedColors = (table) => {
+  table.querySelectorAll('td').forEach((td) => {
+    const bg = getComputedStyle(td).backgroundColor;
 
-      // Set the new focused cell
-      setFocusedCell({ row: rowIndex, col: colIndex });
-      setFocusedLiIndex(null); // Reset any previous subcell focus
-
-      // Focus the clicked <td> and its subcell (if any)
-      const currentCell = tableRef.current?.querySelector(
-        `tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`,
-      );
-      if (currentCell) {
-        currentCell.focus(); // Focus the <td>
-
-        // If the cell contains subcells (<li>), focus the first <li>
-        const subCells = currentCell.querySelectorAll('li');
-        if (subCells.length > 0) {
-          subCells[0]?.focus(); // Focus the first <li> element
-          // Set the background color of the newly focused subcell
-          subCells[0].style.backgroundColor = FOCUS;
-        }
-      }
-      onValueClick(item[key]);
+    if (
+      bg === FOCUS ||
+      bg === 'rgba(0, 0, 0, 0)' ||
+      bg === BLACK_BACKGROUND ||
+      bg === 'rgb(68, 68, 68)'
+    ) {
+      td.style.backgroundColor = NO_FOCUS;
     }
+
+    td.querySelectorAll('*').forEach((el) => {
+      const elBg = getComputedStyle(el).backgroundColor;
+
+      if (
+        elBg === FOCUS ||
+        elBg === 'rgba(0, 0, 0, 0)' ||
+        elBg === BLACK_BACKGROUND ||
+        elBg === 'rgb(68, 68, 68)'
+      ) {
+        el.style.backgroundColor = NO_FOCUS;
+      }
+    });
+  });
+};
+
+  const handleTablePointerDown = (e) => {
+    const table = tableRef.current;
+    if (!table) return;
+    clearAllTdPreserveAssignedColors(table);
   };
 
-  // Track the focusedLiIndexRef after the state is updated
+
+  const handleCellClick = (rowIndex, colIndex, item, key) => {
+  if (item[key] === '') return;
+
+  const table = tableRef.current;
+  if (!table) return;
+
+  // FIRST clear previous focus
+  clearAllTdPreserveAssignedColors(table);
+
+  setFocusedCell({ row: rowIndex, col: colIndex });
+  setFocusedLiIndex(null);
+
+  // Reset all li
+  const allSubCells = table.querySelectorAll('li');
+
+  allSubCells.forEach((li) => {
+    li.style.backgroundColor = NO_FOCUS;
+  });
+
+  const currentCell = table.querySelector(
+    `tbody tr:nth-child(${rowIndex + 1}) td:nth-child(${colIndex + 1})`
+  );
+
+  if (currentCell) {
+    currentCell.focus();
+
+    const assignedColor = cellColors[currentCell.textContent];
+
+
+    if (assignedColor === FOCUS) {
+      currentCell.style.backgroundColor = NO_FOCUS;
+    }
+
+    // If no assigned color → show focus
+    if (
+      assignedColor === 'rgba(0, 0, 0, 0)' ||
+      assignedColor === 'rgb(68, 68, 68)' ||
+      !assignedColor
+    ) {
+      currentCell.style.backgroundColor = FOCUS;
+    } else {
+      // preserve assigned color
+      currentCell.style.backgroundColor = assignedColor;
+    }
+
+    const subCells = currentCell.querySelectorAll('li');
+
+    if (subCells.length > 0) {
+      subCells[0].focus();
+      subCells[0].style.backgroundColor = FOCUS;
+      setFocusedLiIndex(0);
+    }
+  }
+
+  onValueClick(item[key]);
+};
+  
   useEffect(() => {
     if (focusedLiIndex !== null) {
       focusedLiIndexRef.current = focusedLiIndex;
@@ -1040,20 +1247,47 @@ const TechniquesTable = ({
   }, [focusedLiIndex]);
 
   useEffect(() => {
-    if (!selectedTechnique) return;
+    // if (!selectedTechnique) return;
+
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
 
     if (selectedColor === 'rgba(0, 0, 0, 1)') {
       setCellColors(prev =>
         Object.fromEntries(
-          Object.keys(prev).map(key => [key, 'rgba(0, 0, 0, 1)'])
+          Object.keys(prev).map(key => [key, 'rgba(0, 0, 0, 0)'])
         )
       );
+
+      const updatedTechniques = storedTechniques.map(item => ({
+        ...item,
+        color: 'rgba(0, 0, 0, 0)',
+      }));
+
+      localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
     } else {
+      if (!selectedTechnique) return;
+
       setCellColors(prev => ({
         ...prev,
         [selectedTechnique]: selectedColor
       }));
+
+      if (selectedTechnique && selectedColor !== null) {
+
+        const updatedTechniques = storedTechniques.map(item => {
+          if (item.name === selectedTechnique) {
+            return { ...item, color: selectedColor };
+          }
+          return item;
+        });
+
+        localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
+      }
     }
+
+
+    handleCellColoring()
+
   }, [selectedColor]);
 
   useEffect(() => {
@@ -1097,6 +1331,14 @@ const TechniquesTable = ({
     return '';
   }
 
+  function getTechniqueID(techniqueName) {
+    const storedTechniques = JSON.parse(localStorage.getItem('techniques')) || [];
+
+    const technique = storedTechniques.find(item => item.name === techniqueName);
+    if (!technique) return null;
+    return technique.code
+  }
+
   function extractLiValues(reactUlElement) {
     const children = reactUlElement?.props?.children;
     if (!children) return [];
@@ -1128,60 +1370,163 @@ const TechniquesTable = ({
     );
   };
 
-  const renderRows = () => {
-    if (tableData && tableData.length === 0) {
-      if (viewCustomMode) {
-        const savedData = localStorage.getItem('technique_table');
-        if (savedData) setTableData(JSON.parse(savedData));
+  const getSubTechniqueValues = (technique) => {
+  if (!technique) return [];
+
+  const subs = technique.sub_techniques;
+
+  if (Array.isArray(subs)) return subs;
+
+  if (typeof subs === 'string') {
+    try {
+      const parsed = JSON.parse(subs);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  return [];
+};
+
+const toggleHideMode = (name) => {
+  const storedTechniques = JSON.parse(localStorage.getItem('techniques') || '[]');
+  const isCurrentlyHidden = hiddenTechniques?.includes(name);
+  const nextHidden = !isCurrentlyHidden;
+
+  // Find parent techniques that contain this sub-technique
+  const parentNames = storedTechniques
+    .filter((tech) => getSubTechniqueValues(tech).includes(name))
+    .map((tech) => tech.name);
+
+  // Update hide state for the clicked item
+  const updatedTechniques = storedTechniques.map((item) => {
+    if (item.name === name) {
+      return { ...item, hide: nextHidden };
+    }
+    return item;
+  });
+
+  // If a sub-technique is being unhidden, also unhide its parent technique(s)
+  if (!nextHidden && parentNames.length > 0) {
+    parentNames.forEach((parentName) => {
+      const parentIndex = updatedTechniques.findIndex((t) => t.name === parentName);
+      if (parentIndex !== -1) {
+        updatedTechniques[parentIndex] = {
+          ...updatedTechniques[parentIndex],
+          hide: false,
+        };
       }
+    });
+  }
+
+  localStorage.setItem('techniques', JSON.stringify(updatedTechniques));
+
+  setHideTechniques((prev) => {
+    const list = Array.isArray(prev) ? prev : [];
+
+    let nextList = nextHidden
+      ? [...new Set([...list, name])]
+      : list.filter((item) => item !== name);
+
+    // Remove parent from hidden list when a child is made visible
+    if (!nextHidden && parentNames.length > 0) {
+      nextList = nextList.filter((item) => !parentNames.includes(item));
     }
 
-    return (
-      tableData &&
-      tableData.map((item, rowIndex) => (
-        <tr key={rowIndex}>
-          {Object.keys(item).map((key, colIndex) => {
-            const cellValue = item[key];
+    return nextList;
+  });
 
-            let isSubcell = false
-            let sub_techniques = []
+  onHideClick(name);
+};
 
-            if (cellValue !== null && typeof cellValue === 'object' && !Array.isArray(cellValue)) { //Sub Techniques
-              isSubcell = true
-              sub_techniques = extractLiValues(cellValue)
-            }
+  const renderRows = () => {
+  if (tableData && tableData.length === 0) {
+    if (viewCustomMode) {
+      const savedData = localStorage.getItem('technique_table');
+      if (savedData) setTableData(JSON.parse(savedData));
+    }
+  }
 
-            return (
-              <td
-                key={rowIndex + '-' + colIndex}
-                className={cellValue === '' ? 'emptycell' : 'tabledata'}
-                tabIndex={0}
-                style={{
-                  backgroundColor:
-                    cellColors[cellValue] ??
-                    (focusedCell.row === rowIndex &&
-                      focusedCell.col === colIndex &&
-                      focusedLiIndex == null
-                      ? FOCUS
-                      : NO_FOCUS),
-                  outline: 'none',
-                  color: hiddenTechniques?.includes(cellValue) ? 'grey' : 'white',
-                }}
-                onClick={() => {
-                  if (cellValue !== '') {
-                    handleCellClick(rowIndex, colIndex, item, key);
-                  }
-                }}
-              >
-                {/* Subcell rendering */}
-                {isSubcell ? (
-                  <ul>
-                    {sub_techniques &&
-                      sub_techniques.map((line, index) => (
+  const isLineVisible = (line) => {
+    return !hiddenTechniques?.includes(line);
+  };
+
+  return (
+    tableData &&
+    tableData.map((item, rowIndex) => (
+      <tr key={rowIndex}>
+        {Object.keys(item).map((key, colIndex) => {
+          const cellValue = item[key];
+
+          let isSubcell = false;
+          let sub_techniques = [];
+
+          if (
+            cellValue !== null &&
+            typeof cellValue === 'object' &&
+            !Array.isArray(cellValue)
+          ) {
+            isSubcell = true;
+            sub_techniques = extractLiValues(cellValue);
+          }
+
+          // Only for the current sub-technique cell:
+          // if any child is visible, the parent cell must remain visible too
+          const hasVisibleChild =
+            isSubcell && sub_techniques.some((line) => isLineVisible(line));
+
+          const parentIsForcedVisible =
+            isSubcell &&
+            typeof cellValue === 'object' &&
+            !Array.isArray(cellValue) &&
+            hasVisibleChild;
+
+          return (
+            <td
+              key={rowIndex + '-' + colIndex}
+              className={cellValue === '' ? 'emptycell' : 'tabledata'}
+              tabIndex={0}
+              style={{
+                backgroundColor:
+                  cellColors[cellValue] ??
+                  (focusedCell.row === rowIndex &&
+                  focusedCell.col === colIndex &&
+                  focusedLiIndex == null
+                    ? FOCUS
+                    : NO_FOCUS),
+                outline: 'none',
+                color:
+                  parentIsForcedVisible
+                    ? 'white'
+                    : hiddenTechniques?.includes(cellValue)
+                      ? 'grey'
+                      : 'white',
+              }}
+              onClick={() => {
+                if (cellValue !== '') {
+                  handleCellClick(rowIndex, colIndex, item, key);
+                }
+              }}
+            >
+              {/* Subcell rendering */}
+              {isSubcell ? (
+                <ul>
+                  {sub_techniques &&
+                    sub_techniques.map((line, index) => {
+                      if (!isLineVisible(line) && !hideToggleStatus) return null;
+                      if (!hideToggleStatus && hiddenTechniques?.includes(line)) return null;
+
+                      return (
                         <li
-                          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                            color: hiddenTechniques?.includes(line) ? 'grey' : 'white',
-                           }}
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            color: hiddenTechniques?.includes(line)
+                              ? 'grey'
+                              : 'white',
+                          }}
                           tabIndex={0}
                           key={index}
                           onFocus={() => {
@@ -1194,9 +1539,9 @@ const TechniquesTable = ({
                             if (!currentCell) return;
 
                             const subCells = currentCell.querySelectorAll('li');
-                            const isSubcell = subCells.length > 0;
+                            const isSubcellFocused = subCells.length > 0;
 
-                            if (isSubcell) {
+                            if (isSubcellFocused) {
                               for (let i = 0; i < subCells.length; i++) {
                                 if (i === index) {
                                   subCells[i]?.focus();
@@ -1208,62 +1553,110 @@ const TechniquesTable = ({
                             }
                           }}
                           onClick={(e) => {
-                            e.stopPropagation(); // Prevents the event from bubbling up to the <td>
-                            // onValueClick(line); // Trigger the onValueClick function
+                            e.stopPropagation();
                             handleSubCellClick(rowIndex, colIndex, line, index);
                           }}
                         >
-                          <span style={{ flex: 1, textAlign: 'center' }}>{line}</span>
-                          {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && cellValue && (
-                            <div>
-                              {fetchImplementationStatus(cellValue)
-                                ? CustomCheckbox()
-                                : <RiFolderWarningFill style={{ color: 'orange' }} />}
+                          <span style={{ flex: 1, textAlign: 'center' }}>
+                            {hideTechniqueIDStatus && getTechniqueID(line) && (
+                              <>
+                                {getTechniqueID(line)}
+                                <br />
+                              </>
+                            )}
+                            {line}
+                          </span>
+
+                          {searchFilter !== '' &&
+                            (searchFilterType === MITIGATION ||
+                              searchFilterType === DETECTION) &&
+                            line && (
+                              <div>
+                                {fetchImplementationStatus(line)
+                                  ? CustomCheckbox()
+                                  : <RiFolderWarningFill style={{ color: 'orange' }} />}
+                              </div>
+                            )}
+
+                          {editStatus && (
+                            <div
+                              style={{
+                                paddingRight: '10px',
+                                cursor: 'pointer',
+                                backgroundColor: 'rgb(48, 48, 48)',
+                                color: 'white',
+                              }}
+                              aria-label="edit"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEdit(line);
+                              }}
+                            >
+                              <RiEdit2Fill className="white-icon" />
                             </div>
                           )}
-                          {editStatus && (
-                            <>
-                              <div
-                                // className="sub-technique-editicon"
-                                style={{
-                                  paddingRight: '10px',
-                                  cursor: 'pointer',
-                                  backgroundColor: 'rgb(48, 48, 48)',
-                                  color: 'white'
-                                }}
-                                aria-label="edit"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  // e.preventDefault();
-                                  handleEdit(line);
-                                }}
-                              >
-                                <RiEdit2Fill className="white-icon" />
-                              </div>
-                            </>
+
+                          {hideModeStatus && (
+                            <div
+                              style={{
+                                paddingRight: '10px',
+                                cursor: 'pointer',
+                                backgroundColor: 'rgb(48, 48, 48)',
+                                color: 'white',
+                              }}
+                              aria-label="edit"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleHideMode(line);
+                              }}
+                            >
+                              {hiddenTechniques.includes(line) ? (
+                                <RiEyeOffLine />
+                              ) : (
+                                <RiEyeLine />
+                              )}
+                            </div>
                           )}
-
-
-
-                          {/* <RiEdit2Fill/> */}
                         </li>
-                      ))}
-                  </ul>
-                ) : (
-                  <>
-                    {editStatus && cellValue && (
-                      <div
-                        className="editicon"
-                        aria-label="edit"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEdit(cellValue);
-                        }}
-                      >
-                        <RiEdit2Fill className="white-icon" />
-                      </div>
-                    )}
-                    {searchFilter !== '' && (searchFilterType === MITIGATION || searchFilterType === DETECTION) && cellValue && (
+                      );
+                    })}
+                </ul>
+              ) : (
+                <>
+                  {editStatus && cellValue && (
+                    <div
+                      className="editicon"
+                      aria-label="edit"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(cellValue);
+                      }}
+                    >
+                      <RiEdit2Fill className="white-icon" />
+                    </div>
+                  )}
+
+                  {hideModeStatus && cellValue && (
+                    <div
+                      className="editicon"
+                      aria-label="hideMode"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleHideMode(cellValue);
+                      }}
+                    >
+                      {hiddenTechniques.includes(cellValue) ? (
+                        <RiEyeOffLine />
+                      ) : (
+                        <RiEyeLine />
+                      )}
+                    </div>
+                  )}
+
+                  {searchFilter !== '' &&
+                    (searchFilterType === MITIGATION ||
+                      searchFilterType === DETECTION) &&
+                    cellValue && (
                       <div
                         className="implementationicon"
                         aria-label="implementation"
@@ -1273,35 +1666,43 @@ const TechniquesTable = ({
                           : <RiFolderWarningFill style={{ color: 'orange' }} />}
                       </div>
                     )}
-                    {cellValue}
-                  </>
-                )}
 
-                {/* Expand/collapse if sub-technique is present */}
-                {cellValue &&
-                  hasSubTechnique(cellValue, viewCustomMode) && (
-                    <div
-                      className="sidebar"
-                      aria-label="expand collapse"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        manage_columns(
-                          typeof cellValue === 'string' ? cellValue.toLowerCase() : '',
-                          rowIndex,
-                          colIndex
-                        );
-                      }}
-                    >
-                      <RiExpandLeftRightFill />
-                    </div>
+                  {hideTechniqueIDStatus && getTechniqueID(cellValue) && (
+                    <>
+                      {getTechniqueID(cellValue)}
+                      <br />
+                    </>
                   )}
-              </td>
-            );
-          })}
-        </tr>
-      ))
-    );
-  };
+
+                  {cellValue}
+                </>
+              )}
+
+              {/* Expand/collapse if sub-technique is present */}
+              {cellValue &&
+                hasSubTechnique(cellValue, viewCustomMode) && (
+                  <div
+                    className="sidebar"
+                    aria-label="expand collapse"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      manage_columns(
+                        typeof cellValue === 'string' ? cellValue.toLowerCase() : '',
+                        rowIndex,
+                        colIndex
+                      );
+                    }}
+                  >
+                    <RiExpandLeftRightFill />
+                  </div>
+                )}
+            </td>
+          );
+        })}
+      </tr>
+    ))
+  );
+};
 
   const handleKeyDown = (event) => {
     const { row, col } = focusedCell;
@@ -1440,21 +1841,40 @@ const TechniquesTable = ({
               subCells[i].style.backgroundColor = cellColors[subCells[i]?.textContent]
             }
           } else {
-            currentCell.style.backgroundColor = cellColors[tableData[rowIndex][colIndex]];
+            currentCell.style.backgroundColor = cellColors[tableData[rowIndex][colIndex]]
           }
         }
       }
     }
   }
   return (
-    <nav tabIndex={0} onKeyDown={handleKeyDown} ref={tableRef}>
-      <table className={`table-container ${isPanelOpen ? 'shrink' : ''}`}>
-        <thead>
-          <tr>{renderHeaders() || <th colSpan={4}>Loading...</th>}</tr>
-        </thead>
-        <tbody>{renderRows()}</tbody>
-      </table>
-    </nav>
+    <>
+      <div>
+        {showFailAlert && (
+          <Alert
+            classStyle="alert-fail"
+            heading={alertHeading}
+            value={alertVal}
+          />
+        )}
+        {responseSubmit && (
+          <Alert
+            classStyle="alert-success"
+            heading={alertHeading}
+            value={alertVal}
+          />
+        )}
+      </div>
+      <nav tabIndex={0} onKeyDown={handleKeyDown} ref={tableRef}>
+
+        <table className={`table-container ${isPanelOpen ? 'shrink' : ''}`} onPointerDown={handleTablePointerDown}>
+          <thead>
+            <tr>{renderHeaders() || <th colSpan={4}>Loading...</th>}</tr>
+          </thead>
+          <tbody>{renderRows()}</tbody>
+        </table>
+      </nav>
+    </>
   );
 };
 

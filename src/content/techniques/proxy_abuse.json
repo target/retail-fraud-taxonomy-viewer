@@ -5,12 +5,13 @@
   "tactics": [
     "Pre-Compromise"
   ],
+  "channels": ["Digital"],
   "schemes": [
     "Account Take Over"
   ],
   "sub_techniques": [],
   "technique_description": [
-    "Actors abuse legitimate or illegal proxy services that act as an intermediary for requests from clients seeking resources from other servers, effectively masking the fraudster\u2019s IP address or other network attributes. Some examples of this are use of commercial VPN services, proxies through hosting providers, residential proxies, compromised machines such as botnets and malware infected hosts, and TOR services."
+    "Actors abuse legitimate or illegal proxy services that acts as an intermediary for requests from clients seeking resources from other servers, effectively masking the fraudster’s IP address or other network attributes. Some examples of this are use of commercial VPN services, proxies through hosting providers, residential proxies, compromised machines such as botnets and malware infected hosts, and TOR services."
   ],
   "mitigation": [
     {

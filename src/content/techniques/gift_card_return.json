@@ -5,17 +5,18 @@
   "tactics": [
     "Control"
   ],
+  "channels": ["Analog", "Digital", "Social Engineering"],
   "schemes": [
     "Gift Card Fraud"
   ],
   "sub_techniques": [],
   "technique_description": [
-    "The fraudster converts an illicitly acquired or invalid gift card into a legitimate gift card.",
-    "For example, a fraudster illicitly obtains a gift card. Through social engineering or taking advantage of a retailer\u2019s legitimate system, they transfer the value from the illicitly obtained gift card to a new gift card that the fraudster legitimately owns."
+    "The Fraudster converts an illicitly acquired or invalid gift card for a legitimate gift card.",
+    "For example, a Fraudster illicitly obtains a gift card. Through social engineering or taking advantage of a retailer's legitimate system, they transfer the value from the illicitly obtained gift card to a new gift card that the fraudster legitimately owns."
   ],
   "mitigation": [
     {
-      "type": "Return Limits",
+      "type": "Return Limit",
       "details": [
         "Do not exchange gift cards over a pre-determined value."
       ],

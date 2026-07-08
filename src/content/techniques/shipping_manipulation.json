@@ -1,0 +1,82 @@
+{
+  "code": "FT 1207.001",
+  "name": "Shipping Manipulation",
+  "parent_technique": "Returns Process Exploitation",
+  "tactics": [
+    "Control"
+  ],
+  "channels": ["Analog", "Digital", "Social Engineering"],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "Fraudster purchases an item with the intent to return the item. They request a return from the retailer and tamper with the return label, resulting in a loss package. The fraudster does not return the original item, but an item with similar weight and size. The retailer in good faith refunds the fraudster as soon as the return is initiated. The fraudster now possesses the merchandise as well as the value of the refund."
+  ],
+  "mitigation": [
+    {
+      "type": "Delivery Confirmation",
+      "details": [
+        "Only refund after the item is received and verified."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Behavior Prevention",
+      "details": [
+        "Flag customers that make too many returns and delay or deny returns."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Return Limit",
+      "details": [
+        "Restrict fast refunds on high-risk items like electronics."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Delayed Reimbursement",
+      "details": [
+        "Delay reimbursement for a specific amount of time or until the return is verified."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Identify fraudsters that make repeat or frequent delivery-based returns."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Transaction Data",
+      "details": [
+        "Match refund claims with shipping records."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Device Attributes",
+      "details": [
+        "Identify devices such as a single phone or computer are used for many returns attempts."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Appriss",
+      "source": "https://apprissretail.com/blog/8-common-types-of-return-fraud"
+    },
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

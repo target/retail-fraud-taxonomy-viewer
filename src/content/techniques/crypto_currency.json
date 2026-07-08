@@ -1,0 +1,45 @@
+{
+  "code": "FT 1403",
+  "name": "Crypto Currency",
+  "parent_technique": "",
+  "tactics": [
+    "Defense Evasion",
+    "Control",
+    "Monetization"
+  ],
+  "channels": ["Digital"],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "Fraudsters in retail exploit cryptocurrency as a tool to hide their tracks and bypass traditional fraud controls. After committing fraud or policy abuse, they often convert refunds or store credits into crypto through gift cards, prepaid instruments, or resale of goods on secondary markets. Crypto’s anonymity, lack of centralized oversight, and irreversible transactions make it ideal for laundering value obtained from fraudulent returns. Fraudsters also use multiple wallets, peer-to-peer exchanges, and privacy coins to fragment and obscure transaction history. This enables them to quickly move value across borders and outside retailer monitoring systems, making detection and recovery extremely difficult."
+  ],
+  "mitigation": [
+    {
+      "type": "Behavior Prevention",
+      "details": [
+        "Do not accept Crypto Currency in your marketplace"
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Transaction data",
+      "details": [
+        "Use CTI to correlate and identify crypto wallets that are either suspicious or have been identified as supporting illegal activity or fraud."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

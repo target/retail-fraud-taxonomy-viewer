@@ -1,0 +1,63 @@
+{
+  "code": "FT 1206.001",
+  "name": "Harvesting",
+  "parent_technique": "Item Manipulation",
+  "tactics": [
+    "Control"
+  ],
+  "channels": ["Analog", "Digital", "Social Engineering"],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "Fraudster harvests valuable components of an item and returns the merchandise for a full refund.",
+    "For example, a fraudster purchases a computer. They harvest valuable components such as the graphics processor and CPU. They then return the item to the store and receive full value of the purchase but have stolen the components.",
+    "Another example: a fraudster purchases a console system that comes with redeemable points or other single use credit that is meant for purchaser. They steal and redeem this credit then return the console for full value."
+  ],
+  "mitigation": [
+    {
+      "type": "Item Condition & Tag Checks",
+      "details": [
+        "Ensure item is returned with all its components such as packaging, accessories, and documentation in good condition.",
+        "Verify additional attributes such as weight, general wear and tear - " ,
+         "o           Scuffs on screws",
+         "o           Reapplied tape",
+        "Do not accept returns that are missing components or may be suspicious."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Anti-theft Protection",
+      "details": [
+        "Apply tamper-proof seals or packaging that are difficult to replicate."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Restocking Fees",
+      "details": [
+        "Charge fees for high-risk categories."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Behavioral Attributes",
+      "details": [
+        "Profiles or tenders with high rates of returns in specific categories"
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}

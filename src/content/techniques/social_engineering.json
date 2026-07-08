@@ -3,11 +3,15 @@
   "name": "Social Engineering",
   "parent_technique": "",
   "tactics": [
-    "Pre-Compromise"
+    "Pre-Compromise",
+     "Initial Access",
+     "Monetization"
   ],
+  "channels": [],
   "schemes": [
     "Gift Card Fraud",
-    "Account Take Over"
+    "Account Take Over",
+    "Return Fraud"
   ],
   "sub_techniques": [],
   "technique_description": [

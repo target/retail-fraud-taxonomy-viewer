@@ -1,0 +1,64 @@
+{
+  "code": "FT 1008",
+  "name": "Third Party Supplier Manipulation",
+  "parent_technique": "",
+  "tactics": [
+    "Pre-Compromise"
+  ],
+  "channels": ["Analog", "Digital"],
+  "schemes": [
+    "Return Fraud"
+  ],
+  "sub_techniques": [],
+  "technique_description": [
+    "A supplier or manufacturer knowingly produces and distributes nongenuine goods with the intent (or willful disregard of the likelihood) that these items will be returned to legitimate retailers for refunds, store credit, or replacements, thereby monetizing counterfeits via the retailer’s returns channel and shifting losses to the merchant. This scheme often leverages high demand SKUs and categories with permissive return policies to maximize refund yield and minimize detection."
+  ],
+  "mitigation": [
+    {
+      "type": "Law Enforcement",
+      "details": [
+        "Report known counterfeiters or other confirmed illegal activity to Law Enforcement for action."
+      ],
+      "implemented": false
+    }
+  ],
+  "detection": [
+    {
+      "type": "Controlled Purchase",
+      "details": [
+        "Purchase items from Third Party Supplier to identify indicators of fraud."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Transaction Data",
+      "details": [
+        "Identify indicators of counterfeit or fake items such as poor packaging or labeling with incorrect or repeating serial numbers."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Time-Based Attributes",
+      "details": [
+        "Identify returns that happen quickly. This can range from a few minutes from purchase to a day depending on fraudster behavior."
+      ],
+      "implemented": false
+    },
+    {
+      "type": "Velocity Attributes",
+      "details": [
+        "Fraudsters will attempt a high number of returns at once. This may be multiples of same item or different items."
+      ],
+      "implemented": false
+    }
+  ],
+  "references": [
+    {
+      "name": "Industry Partner Collaboration",
+      "source": ""
+    }
+  ],
+  "hide": false,
+  "color": "",
+  "risk_score": 0
+}
