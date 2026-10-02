@@ -100,4 +100,17 @@ header {
   font-size: 14px;
 }
 
+.download-link {
+  display: block;
+  padding: 10px 12px;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.download-link:hover {
+  background: #444;
+}
+
 

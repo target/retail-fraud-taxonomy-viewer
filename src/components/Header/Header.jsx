@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   RiAddCircleLine, RiImportLine, RiArrowLeftLine,
   RiExportLine, RiDeleteBin5Line, RiEyeLine, RiPaletteLine,
-  RiFilterFill, RiSettings5Fill, RiBarChartFill, RiRefreshFill
+  RiFilterFill, RiSettings5Fill, RiBarChartFill, RiRefreshFill, RiDownload2Fill
 } from 'react-icons/ri';
 import { handleExport } from '../ContentManager/ManageContentUtils';
 import { Alert } from '../Alert/Alert';
@@ -30,6 +30,7 @@ const Header = ({
   const [viewCustomContent, setViewCustomContent] = useState(viewCustomMode);
   const [fileData, setFileData] = useState(null);
   const [activeControl, setActiveControl] = useState(null);
+  const [downloadFormat, setDownloadFormat] = useState(null);
   const [alertVal, setAlertVal] = useState('');
   const [alertHeading, setAlertHeading] = useState('');
   const [responseSubmit, setResponseSubmit] = useState(false);
@@ -117,6 +118,7 @@ const Header = ({
       if (!clickedInsideIcon && !clickedInsidePopup) {
         setActiveControl(false);
         setShowPopup(false);
+        setDownloadFormat(false)
       }
     };
 
@@ -153,7 +155,7 @@ const Header = ({
     if (color === 'rgba(0, 0, 0, 1)') {
       setSelectedColor('transparent');
     } else {
-setSelectedColor(color);
+      setSelectedColor(color);
     }
   };
 
@@ -161,7 +163,7 @@ setSelectedColor(color);
   useEffect(() => setHide(hideStatus), [hideStatus]);
   useEffect(() => setHideAll(hideStatusAll), [hideStatusAll]);
   useEffect(() => setShowHidden(hideToggleStatus), [hideToggleStatus]);
-  useEffect(() => setHideTechniqueID(hideTechniqueIDStatus), [hideTechniqueIDStatus]);  
+  useEffect(() => setHideTechniqueID(hideTechniqueIDStatus), [hideTechniqueIDStatus]);
   useEffect(() => setViewCustomContent(viewCustomMode), [viewCustomMode]);
 
   useEffect(() => {
@@ -262,7 +264,7 @@ setSelectedColor(color);
           </button>
 
           <div style={{ position: 'relative' }} ref={iconContainerRef}>
-            <button className="header-button" onClick={() => setActiveControl(!activeControl)}>
+            <button className="header-button" onClick={() => { setActiveControl(!activeControl); setDownloadFormat(false) }}>
               <RiSettings5Fill style={{ fontSize: '40px' }} />
               Technique Controls
             </button>
@@ -320,6 +322,74 @@ setSelectedColor(color);
             )}
           </div>
 
+
+          <div style={{ position: 'relative' }} ref={iconContainerRef}>
+            <button
+              className="header-button"
+              onClick={() => { setDownloadFormat(!downloadFormat); setActiveControl(false) }}
+            >
+              <RiDownload2Fill style={{ fontSize: '40px' }} />
+              Download other formats
+            </button>
+
+            {downloadFormat && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '50px',
+                  right: '0',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  minWidth: '180px',
+                  background: '#333',
+                  padding: '8px',
+                  borderRadius: '6px',
+                  zIndex: 10,
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.25)',
+                }}
+              >
+                <a
+                  href="formats/nrf-retail-fraud-v2.0.pdf"
+                  download="nrf-retail-fraud-v2.0.pdf"
+                  className="download-link"
+                >
+                  PDF
+                </a>
+
+                <a
+                  href="formats/nrf-retail-fraud-v2.0.xlsx"
+                  download="nrf-retail-fraud-v2.0.xlsx"
+                  className="download-link"
+                >
+                  Excel
+                </a>
+
+                <a
+                  href="formats/taxonomy_v2.json"
+                  download="taxonomy_v2.json"
+                  className="download-link"
+                >
+                  JSON
+                </a>
+
+                <a
+                  href="formats/nrf-retail-fraud-v2.0-stix.json"
+                  download="nrf-retail-fraud-v2.0-stix.json"
+                  className="download-link"
+                >
+                  STIX JSON
+                </a>
+                  <a
+                  href="formats/nrf-retail-fraud-v2.0.md"
+                  download="nrf-retail-fraud-v2.0.md"
+                  className="download-link"
+                >
+                  MD
+                </a>
+              </div>
+            )}
+          </div>
+
           <input
             type="file"
             ref={fileInputRef}
@@ -344,7 +414,7 @@ setSelectedColor(color);
                 onHideToggle(v);
               }}
             />
-             <ToggleSwitch
+            <ToggleSwitch
               label={hideTechniqueID ? 'SHOW Techique ID' : 'HIDE Techique ID'}
               value={hideTechniqueID}
               onToggle={(v) => {
