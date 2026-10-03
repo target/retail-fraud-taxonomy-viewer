@@ -325,7 +325,7 @@ const Header = ({
 
           <div style={{ position: 'relative' }} ref={iconContainerRef}>
             <button
-              className="header-button"
+              className="header-button-download"
               onClick={() => { setDownloadFormat(!downloadFormat); setActiveControl(false) }}
             >
               <RiDownload2Fill style={{ fontSize: '40px' }} />
